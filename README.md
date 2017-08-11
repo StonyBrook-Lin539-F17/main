@@ -38,7 +38,7 @@ In contrast to a proper mathematics course, we also focus more on techniques and
 This means that you will learn how to work with things like matrices, semirings, and lattices, but you won't have to prove things about them.
 So this is more like a CS methods course than a proper math class.
 
-For more information about the content, see the [#Selected_Topics] section.
+For more information about the content, see the [Selected Topics](#Selected-Topics) section.
 You will see that the schedule for this class is very ambitious.
 It has to be: this class serves an integral function of our Computational Linguistics MA and must get students to a level where they can take courses and read textbooks on mathematically demanding topics such as machine learning.
 This is not your typical graduate-level course, it is a **boot camp**, so be prepared to invest a fair amount of blood, sweat, and tears.
