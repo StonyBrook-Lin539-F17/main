@@ -4,7 +4,7 @@ Mathematical Methods in Linguistics
 
 | Course        | Info                          |
 | --:           | :--                           |
-| Course number | lin539                        |
+| Course#       | lin539                        |
 | Time          | MF 1:00-2:20pm                |
 | Location      | Humanities 3020               |
 | Website       | lin539.thomasgraf.net         |
@@ -38,7 +38,7 @@ In contrast to a proper mathematics course, we also focus more on techniques and
 This means that you will learn how to work with things like matrices, semirings, and lattices, but you won't have to prove things about them.
 So this is more like a CS methods course than a proper math class.
 
-For more information about the content, see the [#Selected Topics] section.
+For more information about the content, see the [#Selected_Topics] section.
 You will see that the schedule for this class is very ambitious.
 It has to be: this class serves an integral function of our Computational Linguistics MA and must get students to a level where they can take courses and read textbooks on mathematically demanding topics such as machine learning.
 This is not your typical graduate-level course, it is a **boot camp**, so be prepared to invest a fair amount of blood, sweat, and tears.
@@ -88,44 +88,44 @@ Selected Topics
 
 A brief selection of the topics to be covered (though we will proceed in a different order):
 
-1. Basics of mathematics
-   - Topics: sets, multisets, tuples, functions, relations
-   - Applications: bag of words model of text, n-gram models of grammaticality
+1.  Basics of mathematics
+    - Topics: sets, multisets, tuples, functions, relations
+    - Applications: bag of words model of text, n-gram models of grammaticality
 
-1. Types of infinity
-   - Applications: is language infinite?
+1.  Types of infinity
+    - Applications: is language infinite?
 
-1. Relations and orders
-   - Topics: properties of orders, posets, lattices, antimatroids
-   - Applications: mereology, string extension learners, OT, feature systems
+1.  Relations and orders
+    - Topics: properties of orders, posets, lattices, antimatroids
+    - Applications: mereology, string extension learners, OT, feature systems
 
-1. Linear algebra
-   - Topics: vectors and vector spaces, matrices, tensor product
-   - Application: vector space semantics, spatial semantics, inflectional morphology
+1.  Linear algebra
+    - Topics: vectors and vector spaces, matrices, tensor product
+    - Application: vector space semantics, spatial semantics, inflectional morphology
 
-1. Abstract algebra
-   - Topics: monoids, groups, semirings
-   - Application: violation semirings in OT, semiring parsing
+1.  Abstract algebra
+    - Topics: monoids, groups, semirings
+    - Application: violation semirings in OT, semiring parsing
 
-1. Graph theory
-   - Topics: (un)directed graphs, connectedness, components
-   - Application: morphological paradigms, parse forest representation, autosegmental phonology
+1.  Graph theory
+    - Topics: (un)directed graphs, connectedness, components
+    - Application: morphological paradigms, parse forest representation, autosegmental phonology
 
-1. Automata theory
-   - Topics: finite-state automata and transducers, regular expressions, push-down automata
-   - Application: complexity of phonology & morphology VS syntax
+1.  Automata theory
+    - Topics: finite-state automata and transducers, regular expressions, push-down automata
+    - Application: complexity of phonology & morphology VS syntax
 
-1. Logic
-   - Topics: propositional logic and first-order logic
-   - Application: semantics, model-theoretic syntax, subregular linguistics
+1.  Logic
+    - Topics: propositional logic and first-order logic
+    - Application: semantics, model-theoretic syntax, subregular linguistics
 
-1. Probability theory
-   - Topics: calculating probabilities with addition and multiplication
-   - Application: weighted context-free grammars, corpus-based techniques
+1.  Probability theory
+    - Topics: calculating probabilities with addition and multiplication
+    - Application: weighted context-free grammars, corpus-based techniques
 
-1. Information theory
-   - Topics: entropy, cross-entropy
-   - Application: probabilistic machine learning
+1.  Information theory
+    - Topics: entropy, cross-entropy
+    - Application: probabilistic machine learning
 
 
 Teaching Goals
@@ -143,28 +143,28 @@ Grading
 This course can only be taken for 0 or 3 credits.
 Student grades are determined by 4 components:
 
-1. **Class participation (30%)**  
-   While physical attendance is mandatory only for exercise sessions, students are expected to participate actively in the class, both offline and online.
-   This includes:
+1.  **Class participation (30%)**  
+    While physical attendance is mandatory only for exercise sessions, students are expected to participate actively in the class, both offline and online.
+    This includes:
 
-   - providing feedback on lecture materials
-   - helping other students during exercise sessions
-   - asking questions on github, and helping other students with their questions
+    - providing feedback on lecture materials
+    - helping other students during exercise sessions
+    - asking questions on github, and helping other students with their questions
 
-1. **Presentation of homework solutions in exercise sessions (30%)**  
-   Students must present their solutions on the board during exercise sessions.
-   Performance is evaluated not on correctness but the student's ability to explain their thought process.
-   An incorrect answer that clearly outlines how the student proceeded, where they got stuck, and why, is worth more than a correct one where the student can't explain their path from the question to the answer.
+1.  **Presentation of homework solutions in exercise sessions (30%)**  
+    Students must present their solutions on the board during exercise sessions.
+    Performance is evaluated not on correctness but the student's ability to explain their thought process.
+    An incorrect answer that clearly outlines how the student proceeded, where they got stuck, and why, is worth more than a correct one where the student can't explain their path from the question to the answer.
 
-1. **Final oral exam (30%)**  
-   At the end of the semester students take an oral exam in groups of 2 or 3.
-   Each student gets a different exercise and must present their solution on the board while the other student asks clarification questions.
-   The format thus resembles that of exercise sessions.
-   Performance is evaluated based on the correctness of the solution, the clarity of presentation, and the questions asked during the other student's presentation.
+1.  **Final oral exam (30%)**  
+    At the end of the semester students take an oral exam in groups of 2 or 3.
+    Each student gets a different exercise and must present their solution on the board while the other student asks clarification questions.
+    The format thus resembles that of exercise sessions.
+    Performance is evaluated based on the correctness of the solution, the clarity of presentation, and the questions asked during the other student's presentation.
 
-1. **Taking the initial assessment (10%)**  
-   At the beginning of the semester, students are asked to take a survey to assess their mathematical aptitude.
-   Participation is worth 10 percentage points.
+1.  **Taking the initial assessment (10%)**  
+    At the beginning of the semester, students are asked to take a survey to assess their mathematical aptitude.
+    Participation is worth 10 percentage points.
 
 
 Policies
