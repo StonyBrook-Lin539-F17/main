@@ -1,5 +1,5 @@
-Computational Phonology
-=======================
+Mathematical Methods in Linguistics
+===================================
 
 
 | Course        | Info                          |
@@ -155,13 +155,13 @@ Student grades are determined by 4 components:
    Performance is evaluated not on correctness but the student's ability to explain their thought process.
    An incorrect answer that clearly outlines how the student proceeded, where they got stuck, and why, is worth more than a correct one where the student can't explain their path from the question to the answer.
 
-1. **Final oral exam (30%)**
+1. **Final oral exam (30%)**  
    At the end of the semester students take an oral exam in groups of 2 or 3.
    Each student gets a different exercise and must present their solution on the board while the other student asks clarification questions.
    The format thus resembles that of exercise sessions.
    Performance is evaluated based on the correctness of the solution, the clarity of presentation, and the questions asked during the other student's presentation.
 
-1. **Taking the initial assessment (10%)**
+1. **Taking the initial assessment (10%)**  
    At the beginning of the semester, students are asked to take a survey to assess their mathematical aptitude.
    Participation is worth 10 percentage points.
 
