@@ -1,0 +1,9 @@
+*Please run the cell below to load the custom layout for this notebook.*
+
+```python
+from IPython.core.display import HTML
+def css_styling():
+    styles = open("./custom.css", "r").read()
+    return HTML(styles)
+css_styling()
+```
