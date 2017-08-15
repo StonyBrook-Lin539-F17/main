@@ -4,6 +4,7 @@
 from pathlib import Path
 from typing import *
 import re
+import shutil
 import subprocess as sp
 
 # get current working directory
@@ -23,6 +24,10 @@ tex = (f for f in source.glob('**/*') if f.suffix in tex_exts)
 # generator for all mdown files
 mdown_exts = (".mdown", ".md")
 mdown = (f for f in source.glob('**/*') if f.suffix in mdown_exts)
+
+# list of all styling files (generator can only be processed once)
+style_exts = (".css")
+styles = [f for f in templates.glob('**/*') if f.suffix in style_exts]
 
 
 def change_subfolder(path: Path, subfolder: Path, with_file: bool=False) -> Path:
@@ -101,7 +106,9 @@ def process_mdfile(f: Path, header: List[str]=[], footer: List[str]=[]) -> None:
         sp.Popen(["notedown", str(preproc_path), '-o', str(target)],
                  stdout=sp.DEVNULL)
 
-        # fixme: copy css-stylesheets to notebook folder
+        # copy stylesheets to notebook folder
+        for style in styles:
+            shutil.copy2(str(style), str(target.parent))
 
 
 for f in tex:
