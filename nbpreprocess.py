@@ -15,8 +15,6 @@ build = Path("build")
 notebooks = Path("notebooks")
 templates = Path("templates")
 
-# load footer
-
 # generator for all standalone files
 tex_exts = (".tikz", ".forest")
 tex = (f for f in source.glob('**/*') if f.suffix in tex_exts)
@@ -26,7 +24,7 @@ mdown_exts = (".mdown", ".md")
 mdown = (f for f in source.glob('**/*') if f.suffix in mdown_exts)
 
 
-def change_subfolder(path, subfolder, with_file=False):
+def change_subfolder(path: Path, subfolder: Path, with_file: bool=False) -> Path:
     if with_file:
         new_path = subfolder / Path(*path.parts[1:])
     else:
@@ -34,12 +32,12 @@ def change_subfolder(path, subfolder, with_file=False):
     return new_path
 
 
-def mirror_subfolder_hierarchy(path, subfolder):
+def mirror_subfolder_hierarchy(path: Path, subfolder: Path) -> None:
     change_subfolder(path, subfolder).mkdir(
             mode=0o755, parents=True, exist_ok=True)
 
 
-def process_texfile(f):
+def process_texfile(f: Path) -> None:
     for folder in [build, notebooks]:
         mirror_subfolder_hierarchy(f, folder)
 
@@ -49,13 +47,13 @@ def process_texfile(f):
     svg = change_subfolder(f, notebooks, with_file=True).with_suffix('.svg')
 
     sp.call(["latexmk", "-pdf", "-quiet", str(f.absolute())],
-             cwd=str(pdf.parent),
-             stdout=sp.DEVNULL)
+            cwd=str(pdf.parent),
+            stdout=sp.DEVNULL)
     sp.Popen(["pdf2svg", str(pdf), str(svg)],
              stdout=sp.DEVNULL)
 
 
-def load_template(file_list, folder=templates):
+def load_template(file_list: List[str], folder: Path=templates) -> str:
     text = "\n"
     for f in file_list:
         path = folder / Path(f + '.mdown')
@@ -64,7 +62,8 @@ def load_template(file_list, folder=templates):
             text += "\n"
     return text
 
-def regexes(line):
+
+def regexes(line: str) -> str:
     # replace input tikz/forest by image link to svg
     line = re.sub(r"\\input{([^}]*).(tikz|forest)}",
                   r"![alt text](\1.svg)", line)
@@ -74,7 +73,7 @@ def regexes(line):
     return line
 
 
-def process_mdfile(f, header=[], footer=[]):
+def process_mdfile(f: Path, header: List[str]=[], footer: List[str]=[]) -> None:
     with f.open("r") as text:
         for folder in [build, notebooks]:
             mirror_subfolder_hierarchy(f, folder)
@@ -108,4 +107,4 @@ for f in tex:
     process_texfile(f)
 
 for f in mdown:
-    process_mdfile(f,header=['loadcss'])
+    process_mdfile(f, header=['loadcss'])
