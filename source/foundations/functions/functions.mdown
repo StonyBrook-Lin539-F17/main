@@ -6,8 +6,6 @@ Here $x$ is called *argument* and $y$ the *value*.
 This specific notation is motivated by the view of functions as a means of relating two values in a diagram.
 For example $f(x) = 2x$ is a function that doubles every number, which we can represent as the diagram below.
 
-(@) some test
-
 ```python
 # import plotting library as plt
 import matplotlib.pyplot as plt
@@ -27,8 +25,6 @@ plt.plot(x, f(x))
 # show the plotted diagram
 plt.show()
 ```
-
-(@) some other test
 
 I would also wager that you encountered more complex functions in your high school days, e.g. $f(x) = \frac{5x^3 + 17(x-1)^2}{x - 7} \cdot \sqrt{x}$.
 While this formula is more complicated, it still follows the idea of functions as a mechanism that takes a number $x$ as its argument and returns another number $y$ as the output value.
@@ -144,27 +140,27 @@ Here we have an example of a function that does not involve any numbers at all.
 
 ```python
 # import tree data structure from Natural Language ToolKit
-from nltk.tree import ParentedTree
-
-def daughter_of(subtree):
-    mother = subtree.parent().label()
-    return mother
-
-# define tree
-tree = ParentedTree.fromstring('(S (NP (PN John)) (VP (V slept)))'
-
-# show tree
-tree.draw()
-
-# compute mother of V
-node = parsed[1][0]
-print(node.label())
-print(daughter_of(node))
-
-# compute mother of NP
-node = parsed[0]
-print(node.label())
-print(daughter_of(node))
+#from nltk.tree import ParentedTree
+#
+#def daughter_of(subtree):
+#    mother = subtree.parent().label()
+#    return mother
+#
+## define tree
+#tree = ParentedTree.fromstring('(S (NP (PN John)) (VP (V slept)))'
+#
+## show tree
+#tree.draw()
+#
+## compute mother of V
+#node = parsed[1][0]
+#print(node.label())
+#print(daughter_of(node))
+#
+## compute mother of NP
+#node = parsed[0]
+#print(node.label())
+#print(daughter_of(node))
 ```
 
 And even more general functions can be imagined.
