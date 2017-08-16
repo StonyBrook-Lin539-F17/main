@@ -71,11 +71,21 @@ The lecture notes will be made available as [Jupyter notebooks](http://jupyter.o
 A Jupyter notebook is a mixture of text and Python code, which allows for a more interactive learning environment.
 There are multiple ways you can view the notebooks:
 
-1.  Use Stony Brook's [Virtual SINC site](https://it.stonybrook.edu/services/virtual-sinc-site), which already has Jupyter installed (go to the Windows start menu, then *Program & Development*, then *Anaconda3 (64-bit)*).
+1.  Use Stony Brook's [Virtual SINC site](https://it.stonybrook.edu/services/virtual-sinc-site), which already has Jupyter installed. 
 1.  Use our virtual machine image for VirtualBox, available at Stony Brook's [Softweb](https://softweb.cc.stonybrook.edu/).
-1.  Install [Anaconda](https://www.continuum.io/downloads), a Python distro that also install Jupyter.
+1.  Install [Anaconda](https://www.continuum.io/downloads), a Python distro that also installs Jupyter.
 1.  If you already have a working Python setup, install Jupyter separately.
 1.  If you can live without the interactive Python demonstrations, you can just read the notebooks directly on github.
+
+For all of them, you should use the supplied `start_jupyter.py` script to start the Jupyter server.
+Proceed as follows:
+
+1.  Clone or download the git repository (green button at the top of the page).
+1.  If you downloaded the repository as a zip archive, extract it.
+1.  Run the `start_jupyter.py` script.
+    The Jupyter notebook server will start and open a new tab in your browser.
+1.  Navigate to the notebook you want to read.
+    They are all in the notebooks folder.
 
 ### Prerequisites
 
