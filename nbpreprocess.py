@@ -94,24 +94,22 @@ def regexes(line: str) -> str:
     line = re.sub(r"\\input{([^}]*).(tikz|forest)}",
                   r"![alt text](\1.svg)", line)
     # replace math environments by div containers
-    line = re.sub(r"\\begin{([definition|theorem|lemma|proof|example|remark])}",
+    line = re.sub(r"\\begin{(definition|theorem|lemma|proof|example|remark)}",
                   r"<div class=\1>", line)
-    line = re.sub(r"\\end{[definition|theorem|lemma|proof|example|remark]}",
+    line = re.sub(r"\\end{(definition|theorem|lemma|proof|example|remark)}",
                   r"</div>", line)
     # wrap math environments between $$
     line = re.sub(r"(\\begin{(multline|array)\*?})",
                   r"$$\1", line)
     line = re.sub(r"(\\end{(multline|array)\*?})",
                   r"\1$$", line)
-    # replace tuple
-    line = re.sub(r"\\tuple{([^}]*)}",
-                  r"\\langle \1 \\rangle", line)
     return line
 
 
 def process_mdfile(f: Path,
                    header: List[str]=[],
-                   footer: List[str]=[]) -> None:
+                   footer: List[str]=[],
+                   copy_css: bool=False) -> None:
     """
     Convert markdown file to Jupyter notebook.
 
@@ -132,6 +130,8 @@ def process_mdfile(f: Path,
         list of header templates to prepend
     footer:
         list of footer templates to append
+    copy_css:
+        whether css files should be copied into each notebook folder
     """
     with f.open("r") as text:
         for folder in [build, notebooks]:
@@ -156,12 +156,22 @@ def process_mdfile(f: Path,
         # run conversion
         target = change_subfolder(
             f, notebooks, with_file=True).with_suffix('.ipynb')
-        sp.Popen(["notedown", str(preproc_path), '-o', str(target)],
+        # we use sp.call so that notedown finishes before nbconvert starts
+        sp.call(["notedown", str(preproc_path), '-o', str(target)],
                  stdout=sp.DEVNULL)
 
         # copy stylesheets to notebook folder
-        for style in styles:
-            shutil.copy2(str(style), str(target.parent))
+        if copy_css:
+            for style in styles:
+                shutil.copy2(str(style), str(target.parent))
+
+        # execute all cells
+        sp.Popen(["jupyter", "nbconvert",
+                 "--to", "notebook",
+                 "--execute",
+                 "--inplace",
+                 str(target)],
+                 stdout=sp.DEVNULL)
 
 
 # time for the actual processing
@@ -169,4 +179,4 @@ for f in tikz:
     process_tikzfile(f)
 
 for f in mdown:
-    process_mdfile(f, header=['loadcss'])
+    process_mdfile(f, header=['mycommands'])
