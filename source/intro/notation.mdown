@@ -13,10 +13,10 @@ This starts with formulas like $f(x) = kx + d$ and quickly develops into complex
 
 1.  Let $\mathcal{L}$ be a totally ordered collection of languages $L_1, \ldots, L_n$ ($n \geq 1$) such that for all $1 \leq i,j \leq n$ we have $L_j \not\subseteq L_i$ iff $i < j$.
 
-1.  For any given string $s$ and PCFG $G$, the probability of $s$ is $\sum_{d \in D_G(s)} \product_{r \in d} p_G(r)$ where $D_G(s)$ is the set of derivation trees of $G$ that yield $s$, $r$ is a tree bigram of a derivation tree, and $p(r)$ is the probability of $r$ according to $G$.
+1.  For any given string $s$ and PCFG $G$, the probability of $s$ is $\sum_{d \in D_G(s)} \prod_{r \in d} p_G(r)$ where $D_G(s)$ is the set of derivation trees of $G$ that yield $s$, $r$ is a tree bigram of a derivation tree, and $p(r)$ is the probability of $r$ according to $G$.
 
-1.  A \emph{$k$-interval}, or simply \emph{$k$-val}, is a $5$-tuple $\tuple{k,G_l, G_r, G_o, G_f}$ such that $k \geq 1$ and each $G$ is an SL-$1$ grammar that specifies, respectively, the left edge, right edge, open slots, and the fillers.
-    The corresponding \emph{$k$-val formula} (with free variables $x_1$, \ldots, $x_k$) is 
+1.  A *$k$-interval*, or simply *$k$-val*, is a $5$-tuple $\tuple{k,G_l, G_r, G_o, G_f}$ such that $k \geq 1$ and each $G$ is an SL-$1$ grammar that specifies, respectively, the left edge, right edge, open slots, and the fillers.
+    The corresponding *$k$-val formula* (with free variables $x_1$, $\ldots$, $x_k$) is 
     \begin{multline*}
         \exists l,r
         \bigg [
@@ -47,7 +47,6 @@ This starts with formulas like $f(x) = kx + d$ and quickly develops into complex
             \Big ]
         \bigg ]
     \end{multline*}
-    %
     For any empty $G$, $\bigwedge_{g \in G} \neg g(x)$ is always satisfied.
 
 Unless you've had previous mathematical training, these passages probably made your eyes glaze over and your brain freeze in horror:
