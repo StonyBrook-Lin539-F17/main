@@ -96,7 +96,16 @@ def regexes(line: str) -> str:
     # replace math environments by div containers
     line = re.sub(r"\\begin{([definition|theorem|lemma|proof|example|remark])}",
                   r"<div class=\1>", line)
-    line = re.sub(r"\\end{[^}]*}", r"</div>", line)
+    line = re.sub(r"\\end{[definition|theorem|lemma|proof|example|remark]}",
+                  r"</div>", line)
+    # wrap math environments between $$
+    line = re.sub(r"(\\begin{(multline|array)\*?})",
+                  r"$$\1", line)
+    line = re.sub(r"(\\end{(multline|array)\*?})",
+                  r"\1$$", line)
+    # replace tuple
+    line = re.sub(r"\\tuple{([^}]*)}",
+                  r"\\langle \1 \\rangle", line)
     return line
 
 
