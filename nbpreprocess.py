@@ -7,11 +7,7 @@ import re
 import shutil
 import subprocess as sp
 
-# get current working directory
-cwd = Path.cwd()
-# relative version
-
-# and set some subfolder names
+# set some subfolder names
 source = Path("source")
 build = Path("build")
 notebooks = Path("notebooks")
@@ -25,36 +21,35 @@ tex = (f for f in source.glob('**/*') if f.suffix in tex_exts)
 mdown_exts = (".mdown", ".md")
 mdown = (f for f in source.glob('**/*') if f.suffix in mdown_exts)
 
-# list of all styling files (generator can only be processed once)
+# list of all styling files (list because generator can only be processed once)
 style_exts = (".css")
 styles = [f for f in templates.glob('**/*') if f.suffix in style_exts]
 
 
-def change_subfolder(path: Path, subfolder: Path, with_file: bool=False) -> Path:
-    if with_file:
-        new_path = subfolder / Path(*path.parts[1:])
-    else:
-        new_path = subfolder / Path(*path.parts[1:-1])
-    return new_path
+def change_subfolder(path: Path, subfolder: Path,
+                     with_file: bool=False) -> Path:
+    return subfolder / Path(*path.parts[1:]) if with_file\
+      else subfolder / Path(*path.parts[1:-1])
 
 
-def mirror_subfolder_hierarchy(path: Path, subfolder: Path) -> None:
+def mirror_subfolders(path: Path, subfolder: Path) -> None:
     change_subfolder(path, subfolder).mkdir(
             mode=0o755, parents=True, exist_ok=True)
 
 
 def process_texfile(f: Path) -> None:
     for folder in [build, notebooks]:
-        mirror_subfolder_hierarchy(f, folder)
+        mirror_subfolders(f, folder)
 
     # where to save pdf, relative path
     pdf = change_subfolder(f, build, with_file=True).with_suffix('.pdf')
     # where to save svg, relative path
     svg = change_subfolder(f, notebooks, with_file=True).with_suffix('.svg')
 
+    # use sp.call so that latexmk gets to finish before we call pdf2svg
     sp.call(["latexmk", "-pdf", "-quiet", str(f.absolute())],
-            cwd=str(pdf.parent),
-            stdout=sp.DEVNULL)
+            cwd=str(pdf.parent),  # put compilation files in same subfolder
+            stdout=sp.DEVNULL)  # and don't print output to shell
     sp.Popen(["pdf2svg", str(pdf), str(svg)],
              stdout=sp.DEVNULL)
 
@@ -79,10 +74,12 @@ def regexes(line: str) -> str:
     return line
 
 
-def process_mdfile(f: Path, header: List[str]=[], footer: List[str]=[]) -> None:
+def process_mdfile(f: Path,
+                   header: List[str]=[],
+                   footer: List[str]=[]) -> None:
     with f.open("r") as text:
         for folder in [build, notebooks]:
-            mirror_subfolder_hierarchy(f, folder)
+            mirror_subfolders(f, folder)
         preproc_path = change_subfolder(f, build, with_file=True)
         preproc = open(str(preproc_path), "w")
         # add header
