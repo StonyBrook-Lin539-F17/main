@@ -1,0 +1,5 @@
+# Ignore everything in this directory
+*
+# except whatever is in the custom subfolder
+!custom
+!custom/**/

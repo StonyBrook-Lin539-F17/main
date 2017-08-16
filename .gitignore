@@ -14,12 +14,15 @@
 !*.sty
 !*.tex
 !*.tikz
+!jupyter/
+!jupyter/**/
 !notebooks/
 !notebooks/**/
 !pdf/
-!pdf/**/*.pdf
+!pdf/**/
 !source/
 !source/**/
 !templates/
 !templates/**/
 !build/
+!build/**/
