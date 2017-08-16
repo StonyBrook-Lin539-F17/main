@@ -75,6 +75,7 @@ There are multiple ways you can view the notebooks:
 1.  Use our virtual machine image for VirtualBox, available at Stony Brook's [Softweb](https://softweb.cc.stonybrook.edu/).
 1.  Install [Anaconda](https://www.continuum.io/downloads), a Python distro that also install Jupyter.
 1.  If you already have a working Python setup, install Jupyter separately.
+1.  If you can live without the interactive Python demonstrations, you can just read the notebooks directly on github.
 
 ### Prerequisites
 
