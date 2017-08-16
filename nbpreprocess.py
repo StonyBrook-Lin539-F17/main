@@ -94,7 +94,8 @@ def regexes(line: str) -> str:
     line = re.sub(r"\\input{([^}]*).(tikz|forest)}",
                   r"![alt text](\1.svg)", line)
     # replace math environments by div containers
-    line = re.sub(r"\\begin{([^}]*)}", r"<div class=\1>", line)
+    line = re.sub(r"\\begin{([definition|theorem|lemma|proof|example|remark])}",
+                  r"<div class=\1>", line)
     line = re.sub(r"\\end{[^}]*}", r"</div>", line)
     return line
 
