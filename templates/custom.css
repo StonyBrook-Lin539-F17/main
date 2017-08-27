@@ -227,6 +227,39 @@ h1, h2, h3 {
 
 }
 
+.advice {
+
+    display: block;
+
+    margin: 12px 0;
+
+    font-size: 12pt;
+
+    font-style: normal;
+
+    background: #ffb3ec;
+    
+    border-color: #b30086;
+
+    border-style: solid;
+
+    border-width: thin;
+
+    padding: .5%;
+
+    counter-increment: definition;
+}
+
+.advice:before {
+
+    content: "Advice.";
+
+    font-weight: bold;
+
+    font-style: normal;
+
+}
+
 .MathJax_Display,
 .MathJax nobr>span.math>span {
     border: 0 !important;
