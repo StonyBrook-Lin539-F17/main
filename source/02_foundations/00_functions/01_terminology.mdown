@@ -1,0 +1,112 @@
+# Functions: Terminology and Notation
+
+You are now familiar with the basic idea of functions as a mechanism that takes a certain number of inputs and maps each input configuration to a unique output.
+But our way of talking about functions is still pretty clumsy, we need some specialized terminology and notation to communicate more precisely and efficiently.
+
+## Other Names
+
+Functions are also called *maps*, or *mappings*.
+These terms are completely interchangeable, so we may call $f(x) = \frac{x}{2}$ a function, a map, or a mapping.
+We also say that $f$ *maps* $x$ to $\frac{x}{2}$.
+
+Functions are not the same thing as *relations*.
+We will talk about relations at a later point, for now you can think of them as a more general version of functions that does not need to satisfy the right uniqueness property.
+So all functions are relations, but not the other way round.
+
+The customary term for the inputs of a function is *arguments*, while the output is also called the *value*.
+
+\input_med{./function.tikz}
+
+An $n$-ary function has exactly $n$ arguments.
+A few special cases have dedicated terms:
+
+- $n=1$: *unary*,
+- $n=2$: *binary*,
+- $n=3$: *ternary*
+
+Addition, for instance, is defined as $\mathit{add}(x,y) = x + y$ and thus binary.
+The successor function $S(x) = x + 1$, on the other hand, is unary.
+The Pythagorean function from a previous unit is an example of a ternary function.
+
+## Domains and Co-Domains
+
+While functions are frequently specified with formulas like $f(x) = \frac{x}{2}$, this is somewhat imprecise.
+Strictly speaking, a function is defined in terms of
+
+1. a *domain*, which specifies what the inputs may look like, and
+1. a *co-domain*, which specifies what the outputs may look like, and
+1. a specification of how the inputs are mapped to outputs.
+
+Sometimes domain and co-domain are obvious from context, but often they really need to be specified.
+Take our example function $f(x) = \frac{x}{2}$.
+If we take our domain and co-domain to both be the *real numbers* $\mathbb{R}$, then $f(3) = \frac{3}{2} = 1.5$ (the real numbers are very large and include $0$, $-173$, $5.321$, $-0.3215$, $\sqrt{2}$, and $\pi$).
+But now suppose that the domain and co-domain of $f$ are limited to the natural numbers, which are $0$, $1$, $2$, $3$, and so on.
+Then $f(3)$ cannot be $1.5$ because that is not a natural number. 
+Instead, $f(3)$ is $1$, with a remainder of $1$.
+
+```python
+# define a real number division
+def real_div(a,b):
+    return a / b
+
+# define natural number division with remainder
+def nat_div(a,b):
+    result = a // b
+    remainder = a % b
+    if remainder:
+        return result, remainder
+    else:
+        return result
+
+# show results for 3/2 with different domains
+print("value for 3/2 over real numbers:", real_div(3,2))
+print("value for 3/2 over natural numbers:", nat_div(3,2))
+```
+
+This example shows that just writing $f(x) = \frac{x}{2}$ is not enough.
+A complete definition might look as follows:
+"Let $f: \mathbb{R} \rightarrow \mathbb{R}$ be a function from real numbers to real numbers such that $f(x) = \frac{x}{2}$."
+Here we use a special notation of the form $\text{function name}: \text{domain} \rightarrow \text{co-domain}$.
+The domain and co-domain do not need to use standard symbols like $\mathbb{R}$ as long as you make clear what the symbols you chose stand for.
+So it is perfectly fine to write the following:
+"We define a mapping $r: I \rightarrow S$ such that i) $I$ is the collection of all delicious ice cream flavors (vanilla, chocolate, oreo), and ii) $S$ is the corresponding set of milkshakes (vanilla+milk, chocolate+milk, oreo+milk), and iii) $r$ maps every ice cream flavor to the matching milkshake type."
+
+Note that the domain/co-domain specification already includes the name of the function, so it is a bit redundant to write $f(x) = \frac{x}{2}$ later in the definition.
+This is why some authors prefer to use a slightly different notation in this case: $x \mapsto \frac{x}{2}$.
+
+
+## Partial and Total Functions
+
+Let us look one more time at our example function $f$, with the natural numbers as domain and co-domain.
+In other words, we are interested in $f: \mathbb{N} \rightarrow \mathbb{N}$ with $x \mapsto \frac{x}{2}$.
+Earlier on, I claimed that for this function $f(3) = 1$.
+But this is not necessarily true.
+We can definitely stipulate that if $f(x)$ is not a value in the co-domain, we round down to closest value in the co-domain, but that is not what our current definition says.
+With the standard understanding of how fractions work, $\frac{3}{2} = 1.5$, end of story.
+Since $1.5$ is not a natural number, $f(3)$ is simply undefined.
+
+A function that fails to produce an output for every value in the domain is *partial*.
+For a linguistic example, consider plural marking.
+We can regard it as a function from uninflected words to words with plural marking.
+For example, $\mathit{tree} \mapsto \mathit{trees}$, $\mathit{goose} \mapsto \mathit{geese}$, and $\mathit{sheep} \mapsto \mathit{sheep}$.
+The plural marking function also works for verbs, e.g. $\mathit{be} \mapsto \mathit{are}$ and $\mathit{run} \mapsto \mathit{run}$.
+But plural marking only makes sense for words that have a singular/plural distinction in English, which excludes at least prepositions and adverbs.
+So the plural marking function cannot return a value for *on* or *quickly*, it is undefined for these values.
+Consequently, it is a partial function.
+
+A function that is not partial is *total*.
+Authors often do not make explicit whether they intend for a specific function to be partial or total.
+This is particularly unfortunate because there are different standards across fields: Mathematicians take functions to be partial unless explicitly stated otherwise, whereas in computer science functions are total by default and partial functions are explicitly said not to be total.
+While this is not a big issue in practice, it can cause serious problems.
+For example, you might have done something with your partial function relying on theorem X, only to find out that X only holds for total functions.
+Now all the work you did is on shaky grounds and might even turn out to be unsalvageable.
+
+
+## Range of a Function
+
+Another import concept is the *range* of a function.
+This refers to the collection of all the outputs that the function can produce from the inputs in its domain.
+For example, let $f: \mathbb{N} \rightarrow \mathbb{N}$ with $x \mapsto x+1$.
+Then the domain and co-domain each consist of $0$, $1$, $2$, ..., but the range is $1$ ($= f(0)$), $2$ ($= f(1)$), $3$ ($= (f2)$), and so on.
+In the special case where a function's range is identical to its co-domain, we call it *onto*.
+The *identity function* $x \mapsto x$, for instance, is onto.

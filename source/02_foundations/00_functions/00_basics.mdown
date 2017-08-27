@@ -1,0 +1,174 @@
+# Functions: The Basic Intuition
+
+We will encounter numerous concepts from very diverse areas of mathematics in this course, but they all share the same fundamental building block: *functions*.
+You probably remember functions from high school as formulas following the cryptic template $f(x) = y$.
+Here $x$ is called *argument* and $y$ the *value*.
+This specific notation is motivated by the view of functions as a means of relating two values in a diagram.
+For example $f(x) = 2x$ is a function that doubles every number, which we can represent as the diagram below.
+
+```python
+# import plotting library as plt
+import matplotlib.pyplot as plt
+import numpy as np
+
+# define the function f(x) = 2*x
+def f(x):
+    y = 2*x
+    return y
+
+# possible values for x: 0, 1, 2, 3, 4
+x = np.arange(5)
+
+# compute f(x) for every x
+plt.plot(x, f(x))
+
+# show the plotted diagram
+plt.show()
+```
+
+I would also wager that you encountered more complex functions in your high school days, e.g. $f(x) = \frac{5x^3 + 17(x-1)^2}{x - 7} \cdot \sqrt{x}$.
+While this formula is more complicated, it still follows the idea of functions as a mechanism that takes a number $x$ as its argument and returns another number $y$ as the output value.
+
+```python
+# import plotting library as plt
+import matplotlib.pyplot as plt
+# import special mathematics functions from numerical python library
+import numpy as np
+
+# define the function f(x) as given in the text above
+def f(x):
+    y = ((5 * x**3 + 17 * (x-1)**2) / (x+7)) * np.sqrt(x)
+    return y
+
+# possible values for x: 0, 1, 2, 3, 4
+x = np.arange(5)
+
+# compute f(x) for every x
+plt.plot(x, f(x))
+
+# show the plotted diagram
+plt.show()
+```
+
+But this is an overly narrow view of functions.
+First of all, functions are not limited to a single argument.
+The function $\max$, for instance, takes two numbers as its arguments and returns the larger one of the two.
+The function $\min$, on the other hand, returns the smaller.
+
+```python
+# import random number generator
+import random
+
+# randomly pick two numbers and show which is larger/smaller
+def max_min_test():
+    # randomly set x and y to numbers between 0 and 100
+    x = random.randint(0,100)
+    y = random.randint(0,100)
+
+    # print values to screen
+    print("x:", x)
+    print("y:", y)
+    print("larger:", max(x,y))
+    print("smaller:", min(x,y))
+    # function ends here
+
+# now go through 5 examples
+for _ in range(5):
+    max_min_test()
+    print("--------")
+```
+
+It is just as easy to define functions that take more than two arguments.
+One could imagine a function *linear* that takes three arguments $k$, $x$, and $d$, and returns $kx + d$.
+This function can be displayed as the usual 2D-diagram only if $k$ and $d$ are fixed in advance.
+
+```python
+# import random number generator
+import random
+
+# import plotting library as plt
+import matplotlib.pyplot as plt
+
+# define linear function
+def linear(k, x, d):
+    return k*x+d
+
+# possible values for x: 0, 1, 2, 3, 4
+x = np.arange(5)
+
+# randomly set k and d to numbers between 0 and 10
+k = random.randint(0,10)
+d = random.randint(0,10)
+
+plt.plot(x,linear(k, x, d))
+plt.show()
+```
+
+Quite generally, any desired number of arguments can be passed into a function as long as the number is finite.
+If you wanted to, you could define a function that takes 2 trillion arguments, although you will never need such a function in practice.
+
+But it is not just that the number of arguments is much freer than suggested by the $f(x) = y$ format, the arguments themselves can be chosen very freely.
+High school mathematics is all about calculating things, and as a result functions are generally presented as means for computing numerical values from numerical arguments.
+But functions are not limited to numbers, any object can be an argument or a value.
+
+Consider first the function *pythagorean*.
+This function takes three numbers $a$, $b$, and $c$ as its arguments and returns *True* if $a^2 + b^2 = c^2$.
+In all other cases it returns *False*.
+So this is a function that takes numbers as arguments but returns a truth value rather than another number.
+
+```python
+def pythagorean(a, b, c):
+    if a**2 + b**2 == c**2:
+        return True
+    else:
+        return False
+
+def pyth_print(a, b, c):
+    print("{}^2 + {}^2 = {}^2? {}".format(a, b, c, pythagorean(a, b, c,)))
+
+pyth_print(5,5,10)
+
+pyth_print(3,4,5)
+
+pyth_print(4,4,8)
+
+pyth_print(8,15,17)
+
+pyth_print(65,72,97)
+```
+
+But this is still just the tip of the iceberg.
+We could have a function that takes colored geometric shapes as input and maps them to their colors.
+So a blue circle would be mapped to blue.
+Another function might map every word to its mirror image, so that *linguistics* becomes *scitsiugnil*.
+Even something like a cooking recipe can be regarded as a function that takes several ingredients as its input and returns a (hopefully delicious) meal at its output.
+
+It is also possible to nest functions.
+So a formula like $a + b + c + d$ can be regarded as a convenient shorthand for $f(a,f(b,f(c,d)))$, where $f(x,y) = x + y$.
+Each function takes two arguments, but one of the arguments may be the output of another function.
+
+Is every kind of mapping from inputs to outputs a function, then?
+No.
+While functions are very flexible, they must always return the same output for a given input.
+For the numerical functions in this unit this is pretty obvious.
+If $f(x) = 2x$, then $5$ is always mapped to $10$ without exception.
+Similarly $\max(7,9)$ will always return $9$, never $7$, $11$, or True.
+The word reversal also obeys this requirement.
+Recipes are also functions: the output of a recipe for sauce hollandaise is sauce hollandaise, it can't sometimes produce asparagus cream soup instead (that said, a horrible cook may of course execute the recipe incorrectly and end up with something entirely different; but that's a property of the cook, not the recipe).
+Bottom line: if the same input allows for different outputs, you are not dealing with a function.
+
+In language, there are actually many things that may look like functions but do not have this kind of output stability.
+Suppose we want to determine for any given written word its part of speech (POS), e.g. verb or noun.
+You might think that this is a function: *tree* is mapped to noun and nothing else, while *complain* is mapped to verb and nothing else.
+But then there are also words like *water*, which may be either a noun (*The water is cold*) or a verb (*I have to water the plants*).
+So a single word in isolation could be mapped to multiple POSs.
+This problem occurs even when context is taken into account.
+In the phrase *human error*, we usually interpret *human* as an adjective, but it might also be a noun --- image an alien reporter calling their government's decision to contact humanity the human error.
+And in the sentence "Flying planes can be dangerous", *flying* can be analyzed as an adjective modifying *planes* (meaning *Planes that fly can be dangerous*) or the gerund form of a verb with *planes* as the object (meaning *It can be dangerous to fly planes*).
+This kind of value switching is exactly what functions never do.
+
+\begin{definition}
+A mapping from inputs to outputs is called a *function* iff the mapping is *right-unique*: every input has exactly one output value.
+\end{definition}
+
+The definition above is informal, but it will do for our purposes for now.

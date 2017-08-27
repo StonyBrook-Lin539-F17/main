@@ -1,0 +1,21 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{matrix,positioning}
+\begin{document}
+\begin{tikzpicture}
+    \matrix (m) at (0,0) [matrix of math nodes] {
+        f & ( & x_1 & , &  x_2 & , & \ldots & , & x_n & ) = & y\\
+    };
+    \node (name) [below=of m-1-1] {name};
+    \node (arg) [below=of m-1-6] {arguments};
+    \node (val) [below=of m-1-11] {value};
+
+    \foreach \Source/\Target in {%
+        name/1,
+        arg/3,
+        arg/5,
+        arg/7,
+        arg/9,
+        val/11}
+        \draw[->] (\Source) to (m-1-\Target);
+\end{tikzpicture}
+\end{document}
