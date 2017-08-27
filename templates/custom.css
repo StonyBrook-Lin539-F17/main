@@ -1,4 +1,8 @@
 <style>
+img[alt=small] { width: 200px; }
+img[alt=med]   { width: 400px; }
+img[alt=big]   { width: 800px; }
+
 body {
 
     counter-reset: theorem;
@@ -8,8 +12,6 @@ body {
     counter-reset: definition;
 
     counter-reset: example;
-
-    counter-reset: section;
 
 }
 
@@ -25,12 +27,18 @@ p {
 
 }
 
+h1 {
+
+    counter-reset: section;
+
+}
 
 h2 {
 
     counter-reset: subsection;
 
     counter-increment: section;
+
 }
 
 h2:before {
