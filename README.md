@@ -11,7 +11,9 @@ Mathematical Methods in Linguistics
 |               |                               |
 | Instructor    | Thomas Graf                   |
 | Email         | [coursenumber]@thomasgraf.net |
-| Office hours  | tba                           |
+| Office hours  | M 11:00-12:30 & 3:30-4:00     |
+|               | W 3:30-4:00                   |
+|               | F 11:15-11:45                 |
 | Office        | SBS N-249                     |
 
 **Attention:** To get access to the [private course repository][private], you must email me your github username. 
