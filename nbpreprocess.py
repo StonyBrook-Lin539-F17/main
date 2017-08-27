@@ -103,6 +103,8 @@ def regexes(line: str) -> str:
                   r"$$\1", line)
     line = re.sub(r"(\\end{(multline|array)\*?})",
                   r"\1$$", line)
+    # replace --- by - in markdown
+    line = re.sub(r" --- ", " - ", line)
     return line
 
 
