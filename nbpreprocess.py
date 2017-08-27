@@ -4,7 +4,7 @@
 from pathlib import Path
 from typing import *
 import re
-import shutil
+from shutil import copy2
 import subprocess as sp
 
 # set some subfolder names
@@ -163,7 +163,7 @@ def process_mdfile(f: Path,
         # copy stylesheets to notebook folder
         if copy_css:
             for style in styles:
-                shutil.copy2(str(style), str(target.parent))
+                copy2(str(style), str(target.parent))
 
         # execute all cells
         sp.Popen(["jupyter", "nbconvert",
