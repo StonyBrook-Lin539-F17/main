@@ -1,6 +1,0 @@
-\documentclass[tikz]{standalone}
-\begin{document}
-\begin{tikzpicture}
-    \node at (0,0) {$f(x_1, x_2, \ldots, x_n) = y$};
-\end{tikzpicture}
-\end{document}
