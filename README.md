@@ -17,7 +17,7 @@ In contrast to a proper mathematics course, we also focus more on techniques and
 This means that you will learn how to work with things like matrices, semirings, and lattices, but you won't have to prove things about them.
 So this is more like a CS methods course than a proper math class.
 
-For more information about the content, see the syllabus.
+For more information about the content, see the [syllabus].
 
 Using the Lecture Notes
 -----------------------
@@ -87,3 +87,4 @@ This way you can check some of your own calculations with Python or play around 
 
 
 [private]: ../../../private
+[syllabus]: ./notebooks/00_syllabus/syllabus.ipynb
