@@ -10,7 +10,7 @@ Course Outline
 --------------
 
 This course is an introduction to mathematics in linguistics.
-It aims to help students familiarize themselves with mathematical concepts and applications that are widely relevant to theoretical and\slash or computational linguistics. 
+It aims to help students familiarize themselves with mathematical concepts and applications that are widely relevant to theoretical and/or computational linguistics. 
 This covers a wide range of topics, mostly from *discrete mathematics*.
 The course is also very different from what you did in high school, there's precious few numbers here and we don't care much about integrals or calculating compound interest.
 In contrast to a proper mathematics course, we also focus more on techniques and tools rather than theorems and proofs.
