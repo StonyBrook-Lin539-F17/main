@@ -31,7 +31,30 @@ Using the functional $\mapsto$ notation for defining sets is rather cumbersome, 
 For instance, the Futurama set is $\{\mathit{Fry}, \mathit{Leela}, \mathit{Bender}\}$.
 We can also give it a name with the operator $\is$, e.g. $F \is \{\mathit{Fry}, \mathit{Leela}, \mathit{Bender}\}$.
 Note that the order of elements does not matter, so $\{\mathit{Fry}, \mathit{Leela}, \mathit{Bender}\} = \{\mathit{Leela}, \mathit{Bender}, \mathit{Fry}\}$.
-This makes perfect sense from the functional perspective: the notation above is just a shorthand for specifying which elements are mapped to $\top$ --- the order in which this is specified is immaterial for the function.
+And listing elements more than once does not change the set: $\{\mathit{Fry}, \mathit{Leela}, \mathit{Bender}\} = \{\mathit{Fry}, \mathit{Leela}, \mathit{Leela}, \mathit{Bender}, \mathit{Bender}, \mathit{Bender}\}$
+
+```python
+# function to compare two sets
+def set_comparison(A, B):
+    if A == B:
+        print("These two sets are identical")
+    else:
+        print("These two sets are not identical")
+
+# our example sets
+set1 = set(["Fry", "Leela", "Bender"])
+set2 = set(["Leela", "Bender", "Fry"])
+set3 = set(["Fry", "Leela", "Leela", "Bender", "Bender", "Bender"])
+
+# and the comparisons
+set_comparison(set1, set2)
+set_comparison(set1, set3)
+set_comparison(set2, set3)
+```
+
+Both properties make perfect sense from the functional perspective.
+The set notation is just a shorthand for specifying which elements are mapped to $\top$ --- the order in which this is specified is immaterial for the function.
+And saying multiple times that a given element is mapped to $\top$ does not change the defined function either.
 
 ## Set Membership
 
@@ -66,6 +89,32 @@ That such a function should exist is not too surprising.
 
 ## Set-Builder Notation
 
+The sets so far have been fairly simple, but there are already a few cases where our current set notation does not quite cut it.
+Consider again the set $\mathbb{N}_e$ of all even natural numbers.
+With our set notation we could write the set as $\setof{0, 2, 4, \ldots}$, but this is imprecise because there are many other sets that start out this way, for instance the range of the function which maps $0$ to itself and every natural number $x$ to $2^x$.
+In fact, any given finite sequence of numbers can be continued in infinitely many distinct ways (that is not a metaphorical claim, one can prove that there is no upper bound on the number of continuations).
+So in all but the most trivial cases it is preferable to define sets with a notation that does not rely on listing the elements of the set.
+
+This is accomplished with *set-builder notation*, which is very similar to defining the domain and range of a function.
+The general template is $\setof{ \mathit{range} \mid \mathit{domain} }$.
+For example, $\mathbb{N}_e \is \setof{ n \mid n \in \mathbb{N}\ \&\ n \mathit{\ is\ even}}$.
+This tells us that the domain consists of all $n$ that are natural numbers ($n \in \mathbb{N}$) and even, and each such $n$ is mapped to itself.
+But we could also define the set of odd natural numbers as $\setof{ n + 1 \mid n \in \mathbb{N}\ \&\ n \mathit{\ is\ even}}$.
+The domain is the same as before, but instead of $n \mapsto n$ we now have $n \mapsto n+1$.
+We can use this technique to also provide a simpler definition of the even natural numbers: $\mathbb{N}_e \is \setof{ 2n \mid n \in \mathbb{N} }$.
+
+```python
+# set-builder notation even exists in some programming languages like Python
+built_set = (2*n for n in [0, 1, 2, 3, 4, 5])
+list(built_set)
+```
+
+There is no limit on the complexity of set-builder notation.
+For example, one could nest multiple set definitions, as in $\setof{ \setof{ i \mid 0 \leq i \leq n } \mid n \in \mathbb{N}}$.
+This is a set that contains all initial intervals of the natural number: $\setof{ \setof{0}, \setof{0,1}, \setof{0,1,2}, \setof{0,1,2,3}, \ldots }$.
+However, such nested definitions are often cumbersome to read, so try to avoid this.
+Quite generally, definitions should not intimidate or dazzle the reader.
+A good definition is as complex as necessary and as simple as possible.
 
 
 ## So It's Functions all the Way Down?
