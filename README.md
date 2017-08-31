@@ -71,5 +71,5 @@ This way you can check some of your own calculations with Python or play around 
 
 
 [private]: ../../../private
-[syllabus]: ./notebooks/00_syllabus/syllabus.ipynb
-[instructions]: ./notebooks/00_syllabus/setup.ipynb
+[syllabus]: ./source/00_syllabus/syllabus.mdown
+[instructions]: ./source/00_syllabus/setup.mdown
