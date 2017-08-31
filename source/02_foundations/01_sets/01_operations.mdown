@@ -1,0 +1,13 @@
+# Comparing and Modifying Sets
+
+subset
+
+superset
+
+proper variants
+
+union
+
+intersection
+
+complement
