@@ -72,4 +72,4 @@ This way you can check some of your own calculations with Python or play around 
 
 [private]: ../../../private
 [syllabus]: ./notebooks/00_syllabus/syllabus.ipynb
-[instructions]: ./notebooks/00_syllabus/instructions.ipynb
+[instructions]: ./notebooks/00_syllabus/setup.ipynb
