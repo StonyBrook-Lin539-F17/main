@@ -22,26 +22,10 @@ For more information about the content, see the [syllabus].
 Using the Lecture Notes
 -----------------------
 
-The lecture notes are made available as [Jupyter notebooks](http://jupyter.org/) in the [main github repository](https://github.com/StonyBrook-Lin539-F17/main).
+The lecture notes are made available as [Jupyter notebooks](http://jupyter.org/) in the [notebooks folder](./tree/master/notebooks) of the [main github repository](https://github.com/StonyBrook-Lin539-F17/main). 
 A Jupyter notebook is a mixture of text and Python code, which allows for a more interactive learning environment.
-There are multiple ways you can view the notebooks:
-
-1.  Use Stony Brook's [Virtual SINC site](https://it.stonybrook.edu/services/virtual-sinc-site), which already has Jupyter installed. 
-1.  Use our virtual machine image for VirtualBox, available at Stony Brook's [Softweb](https://softweb.cc.stonybrook.edu/).
-1.  Install [Anaconda](https://www.continuum.io/downloads), a Python distro that also installs Jupyter.
-1.  If you already have a working Python setup, install Jupyter separately.
-1.  If you can live without the interactive Python demonstrations, you can just read the notebooks directly on github.
-
-For all options except the last one, you should use the supplied `start_jupyter.py` script to start the Jupyter server.
-Proceed as follows:
-
-1.  Clone or download the git repository (green button at the top of the page).
-1.  If you downloaded the repository as a zip archive, extract it.
-1.  Run the `start_jupyter.py` script.
-    The Jupyter notebook server will start and open a new tab in your browser.
-1.  Navigate to the notebook you want to read.
-    They are all in the notebooks folder.
-
+You can view the notebooks directly on github, but this does not work perfectly as github ignores some layout instructions and does not allow you to execute any of the Python code --- you'd be looking at a static, impoverished snapshot of the interactive notebook.
+I urge you to read the [instructions on how to get the Jupyter notebooks to work on your computer][instructions].
 
 Link List
 ---------
@@ -88,3 +72,4 @@ This way you can check some of your own calculations with Python or play around 
 
 [private]: ../../../private
 [syllabus]: ./notebooks/00_syllabus/syllabus.ipynb
+[instructions]: ./notebooks/00_syllabus/instructions.ipynb
