@@ -1,9 +1,6 @@
 Mathematical Methods in Linguistics
 ===================================
 
-
-**Attention:** To get access to the [private course repository][private], you must email me your github username. 
-
 **A friendly plug:** If you are interested in this class, also consider attending the department's [Mathematical Linguistics Reading Group](http://complab-stonybrook.github.io/mlrg/).
 
 Course Outline
