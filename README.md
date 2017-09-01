@@ -27,6 +27,13 @@ A Jupyter notebook is a mixture of text and Python code, which allows for a more
 You can view the notebooks directly on github, but this does not work perfectly as github ignores some layout instructions and does not allow you to execute any of the Python code --- you'd be looking at a static, impoverished snapshot of the interactive notebook.
 I urge you to read the [instructions on how to get the Jupyter notebooks to work on your computer][instructions].
 
+
+Assigned Units per Week
+--------------------------
+
+- 09-08: everything in `01_intro` and `02_foundations` that gets uploaded before Monday, 09-04, 23:59pm EST
+
+
 Link List
 ---------
 
