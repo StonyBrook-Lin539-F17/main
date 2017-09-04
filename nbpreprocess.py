@@ -54,7 +54,30 @@ def mirror_subfolders(path: Path, subfolder: Path) -> None:
         mode=0o755, parents=True, exist_ok=True)
 
 
-def process_tikzfile(f: Path) -> None:
+def create_mycommands(f: Path, build_dir: Path) -> None:
+    """
+    Convert mycommands.mdown to .sty file.
+
+    This function produces a sty file where line-initial and line-final $ have
+    been stripped out. The file is saved in the specified build directory.
+
+    Parameters
+    ----------
+    f: Path
+        path to mdown file
+    build_dir: Path
+        path to the build directory
+    """
+    with f.open("r") as mdown:
+        clean = [re.sub(r"(^\$)|(\$\n)", "", line)
+                 for line in mdown.readlines()]
+        stypath = build_dir / Path(f.name).with_suffix(".sty")
+        with stypath.open("w") as styfile:
+            styfile.write("\n".join(clean))
+
+
+def process_tikzfile(f: Path,
+                     mycommands: Path=Path("./templates/mycommands.mdown")) -> None:
     """
     Convert tikz file to svg image.
 
@@ -68,6 +91,10 @@ def process_tikzfile(f: Path) -> None:
     pdf = change_subfolder(f, build, with_file=True).with_suffix('.pdf')
     # where to save svg, relative path
     svg = change_subfolder(f, notebooks, with_file=True).with_suffix('.svg')
+
+    # create mycommands in build folder
+    build_dir = pdf.parent
+    create_mycommands(mycommands, build_dir)
 
     # use sp.call so that latexmk gets to finish before we call pdf2svg
     sp.call(["latexmk", "-pdf", "-quiet", str(f.absolute())],
@@ -87,6 +114,15 @@ def load_template(file_list: List[str], folder: Path=templates) -> str:
             text += "\n"
     return text
 
+
+def header_preprocess(line: str) -> str:
+    """
+    Rewrite some parts of header files.
+
+    Right now this only removes ensuremath commands, which aren't understood by
+    MathJax.
+    """
+    return re.sub(r"\\ensuremath{([^}]*)}", r"\1", line)
 
 def regexes(line: str) -> str:
     """Replace Latex code for processing with notedown."""
@@ -142,7 +178,7 @@ def process_mdfile(f: Path,
         preproc = open(str(preproc_path), "w")
         # add header
         if header:
-            preproc.write(load_template(header))
+            preproc.write(header_preprocess(load_template(header)))
 
         # replace latex by html or markdown
         for line in text:
@@ -174,7 +210,6 @@ def process_mdfile(f: Path,
                  "--inplace",
                  str(target)],
                  stdout=sp.DEVNULL)
-
 
 # time for the actual processing
 for f in tikz:
