@@ -283,6 +283,7 @@ h1, h2, h3 {
 
 <script>
     MathJax.Hub.Config({
+        jax: ["input/TeX", "output/SVG"],
         "HTML-CSS": {
             preferredFont: "TeX",
             availableFonts: ["TeX", "STIX"],
@@ -292,7 +293,8 @@ h1, h2, h3 {
                     "font-size": "100%",
                 }
             }
-        }
+        },
+        SVG: { linebreaks: { automatic: true } }
     });
 </script>
 
