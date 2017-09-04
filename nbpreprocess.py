@@ -124,15 +124,16 @@ def header_preprocess(line: str) -> str:
     """
     return re.sub(r"\\ensuremath{([^}]*)}", r"\1", line)
 
+
 def regexes(line: str) -> str:
     """Replace Latex code for processing with notedown."""
     # replace input tikz/forest by image link to svg, with size as alt text
     line = re.sub(r"\\input_([^{]*){([^}]*).(tikz|forest)}",
                   r"![\1](\2.svg)", line)
     # replace math environments by div containers
-    line = re.sub(r"\\begin{(definition|theorem|lemma|proof|example|remark)}",
+    line = re.sub(r"\\begin{(definition|theorem|lemma|proof|example|remark|advice)}",
                   r"<div class=\1>", line)
-    line = re.sub(r"\\end{(definition|theorem|lemma|proof|example|remark)}",
+    line = re.sub(r"\\end{(definition|theorem|lemma|proof|example|remark|advice)}",
                   r"</div>", line)
     # wrap math environments between $$
     line = re.sub(r"(\\begin{(multline|array)\*?})",
@@ -195,8 +196,10 @@ def process_mdfile(f: Path,
         target = change_subfolder(
             f, notebooks, with_file=True).with_suffix('.ipynb')
         # we use sp.call so that notedown finishes before nbconvert starts
-        sp.call(["notedown", str(preproc_path), '-o', str(target)],
-                 stdout=sp.DEVNULL)
+        sp.call(["notedown", "--match=python",
+                 str(preproc_path),
+                 '-o', str(target)],
+                stdout=sp.DEVNULL)
 
         # copy stylesheets to notebook folder
         if copy_css:
@@ -205,11 +208,12 @@ def process_mdfile(f: Path,
 
         # execute all cells
         sp.Popen(["jupyter", "nbconvert",
-                 "--to", "notebook",
-                 "--execute",
-                 "--inplace",
-                 str(target)],
+                  "--to", "notebook",
+                  "--execute",
+                  "--inplace",
+                  str(target)],
                  stdout=sp.DEVNULL)
+
 
 # time for the actual processing
 for f in tikz:
