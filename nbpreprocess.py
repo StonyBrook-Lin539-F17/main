@@ -196,8 +196,9 @@ def process_mdfile(f: Path,
         target = change_subfolder(
             f, notebooks, with_file=True).with_suffix('.ipynb')
         # we use sp.call so that notedown finishes before nbconvert starts
-        sp.call(["notedown", "--match=python",
+        sp.call(["notedown",
                  str(preproc_path),
+                 "--match=fenced",
                  '-o', str(target)],
                 stdout=sp.DEVNULL)
 
