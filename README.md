@@ -28,7 +28,7 @@ I urge you to read the [instructions on how to get the Jupyter notebooks to work
 Assigned Units per Week
 --------------------------
 
-- 09-08: everything in `01_intro` and `02_foundations` that gets uploaded before Monday, 09-04, 23:59pm EST
+- 09-08: everything in `01_intro` and `02_foundations` up to 04_app_grammars; exercises will be uploaded on Tuesday
 
 
 Link List
