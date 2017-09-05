@@ -1,0 +1,122 @@
+## Functions
+
+1.  For each one of the following, say whether it is a function.
+    1. addition
+    1. a set
+    1. "has parent" (as in has-parent(John) = true/false)
+    1. mapping from parents to children
+    1. a URL
+    1. mapping from utterances (as sequences of sounds) to their meanings
+    1. [pig latin](https://en.wikipedia.org/wiki/Pig_latin)
+    1. the function $f$ such that $f(x) = x$ if it is Tuesday and $-x$ otherwise
+
+1.  Give full definitions (including domain and co-domain) of the following functions:
+    1. addition over natural numbers (0, 1, 2, ...)
+    1. subtraction over natural numbers
+    1. the mapping from Scandinavian woman names to IKEA desks and chairs with the same name
+
+1.  Which of the following functions are onto? Explain why.
+    1. addition over natural numbers (0, 1, 2, ...)
+    1. multiplication over $\setof{ n \in \mathbb{N} \mid n \geq 2}$
+    1. the mapping from SSN numbers to US tax payers
+
+1.  For each one of the following functions, say whether it is total or partial.
+    1. addition over natural numbers
+    1. division over natural numbers
+    1. relative complement over $\wp(A)$ for an arbitrary set $A$
+    1. the mapping from SSN numbers to living US tax payers
+
+1.  For each one of the following functions, what is its range?
+    Is the function onto?
+    1. $f: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N}$,
+       $\tuple{x,y} \mapsto x-y$
+    1. $g: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N}$,
+       $\tuple{x,y} \mapsto x$
+    1. $h: \mathbb{N} \rightarrow \mathbb{N} \times \mathbb{N}$,
+       $x \mapsto \tuple{x,x}$
+    1. $j: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N} \times \mathbb{N}$,
+       $i(\tuple{x,y}) \mapsto g(f(\tuple{x,y}))$
+    1. $j: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N} \times \mathbb{N}$,
+       $i(\tuple{x,y}) \mapsto g(h(f(\tuple{x,y})))$
+
+
+## Sets
+
+1.  Represent the following characteristic functions as sets
+    1. $\text{John} \mapsto \top$,
+       $\text{Mary} \mapsto \top$,
+       $\text{Bill} \mapsto \bot$.
+    1. $x^2 \mapsto \top$ for all $x \in \mathbb{N}$
+    1. $x \mapsto \bot$ for all $x$
+    1. $S \mapsto \top$ for all $S \subseteq \mathbb{N}$ such that $\card{S} \geq 1$
+
+1.  Represent the following sets as their characteristic functions.
+    Specify domain and co-domain as you deem appropriate (there are usually infinitely many choices).
+    1. $\setof{\text{John}, \text{likes}, \text{Mary}}$
+    1. $\setof{\setof{\emptyset}}$
+    1. $\setof{a,b,c} \cup \setof{b,c,d}$
+
+1.  For each gap below, fill in $\in$ or $\notin$.
+    1. $a \_ \setof{a,b,c}$
+    1. $a \_ \setof{a,b,c} \cup (\setof{a,d,e} - \setof{a,f,g})$
+    1. $a \_ (\setof{a,b,c} \cup \setof{a,d,e}) - \setof{a,f,g}$
+    1. $\wp(\setof{a}) \_ \wp(\setof{a,b,c})$
+    1. $\wp(\setof{a}) \in \wp(\wp(\setof{a,b,c}))$
+    1. $\emptyset \in \setof{\emptyset}$
+    1. $\emptyset \in \wp(\setof{a,b,c})$
+    1. $\emptyset \in \wp(\wp(\emptyset)) \cap \setof{\emptyset}$
+
+1.  Define the following sets as succinctly as possible. 
+    You may use all the tools for defining sets that have been covered so far.
+    If no shorter version exists, say so.
+    1. $\setof{a,b,c} - (\setof{b,c} - \setof{a,b,c})$
+    1. $\wp(\setof{a,b,c}) - \wp(\setof{a,b})$
+    1. $\wp(\setof{a,b,c} - \setof{a,b})$
+    1. $\setof{ n \mid n \in \mathbb{N}} \cup \setof{ -n \mid n \in \mathbb{N}}$
+    1. $\setof{\emptyset, \setof{a}}$
+
+
+## Tuples
+
+1.  Suppose that we would like to extend the notions of union, intersection, and complement to tuples.
+    What problems would we run into?
+    Can they be fixed?
+
+1.  Compute the value of the following formula:
+    $$
+    \pi_3(\tuple{\text{Mary}} \tuplecat \pi_2(\tuple{\text{John}, \text{likes}, \text{Mary}}) \tuplecat \pi_1(\emptytuple \tuplecat \tuple{\text{Mary}, \text{slept}}))
+    $$
+
+1.  Which of the following tuples are not in $\setof{a,b}^2 \times \wp(\setof{0,1})$?
+    1. $\tuple{a,a,\setof{0}}$
+    1. $\tuple{a,a,\setof{0,0}}$
+    1. $\tuple{\emptyset, a, \emptyset}$
+    1. $\tuple{b,a, \emptyset}$
+    1. $\tuple{c, \setof{0,1}}$
+
+1.  Is the empty tuple the same object as the empty set? Justify your answer!
+
+
+## Bag of Words and Local Grammars
+
+1.  According to a bag of words unigram model that ignores stop words, what is the meaning of the following text: 
+    *John is a huge jerk. Only John could like John.*
+
+1.  According to a bag of words 4-gram model that ignores stop words, what is the meaning of the following text:
+    *If police police police police police, then police police police police police.*
+
+1.  List five strings over $\setof{a,b,c,d}$ that are permitted by the SL-$2$ grammar $\setof{ \String{aa}, \String{bb}, \String{ca}, \String{cb}, \String{\LeftEdge \RightEdge}}$.
+
+1.  Which of the following strings are licensed by the SL-$3$ grammar $\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b}, \String{\LeftEdge \LeftEdge \RightEdge}}$?
+    1. $\String{a}$
+    1. $\String{aababbab}$
+    1. $\String{aababcbacb}$
+    1. $\emptystring$
+    1. $\String{c}$
+
+1.  Which of the following strings are licensed by the TSL-$3$ grammar $\tuple{\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b}}, \setof{a, b}}$
+    1. $\String{a}$
+    1. $\String{aababbab}$
+    1. $\String{aababcbacb}$
+    1. $\emptystring$
+    1. $\String{c}$
