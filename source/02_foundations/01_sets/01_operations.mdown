@@ -1,19 +1,103 @@
 # Comparing and Modifying Sets
 
+Being able to define sets is certainly useful, but for actual work it is much more important to be able to compare and modify them.
 
+*Disclaimer:* This section is still work in progress and only contains the bare minimum.
 
-subset
+## Subsets and supersets
 
-superset
+\begin{definition}
+    Let $A$ and $B$ be arbitrary sets.
+    Then $A$ is a *subset* of $B$ ($A \subseteq B$) iff every member of $A$ is a member of $B$.
+    In this case, $B$ is a *superset* of $A$ ($B \supseteq A$).
+\end{definition}
 
-proper variants
+\begin{example}
+    A transitive verb is a verb that occurs with a subject and an object: *devour*, *contradict*, *wager*, *flummox*, and many more.
+    Not all verbs are transitive, e.g. *sleep* or *give*. 
+    Suppse $T$ is the set of all English transitive verbs, whereas $V$ is the set of all English verbs.
+    Since every transitive verb is a verb, but no the other way round, we have $T \subseteq V$.
+\end{example}
 
-powerset
+\begin{definition}
+    For $A$ and $B$ arbitrary sets, $A$ is a *proper subset* of $B$ ($A \subsetneq B$) iff $A \subseteq B$ and there is a $b \in B$ such that $b \notin A$.
+    Similarly, $B$ is a *proper superset* of $A$ ($B \supsetneq A$).
+\end{definition}
 
-mindbender: powerset of empty set
+\begin{example}
+    Given our previous discussion, it is clear that the set $T$ of transitive verbs is proper subset of the set $V$ of verbs.
+    Hence $T \subsetneq V$.
+\end{example}
 
-union
+If there are two sets $A$ and $B$ such that neither $A \subseteq B$ nor $B \subseteq A$, then there can be only two scenarios.
+One option is that $A$ and $B$ are *disjoint*, which means that there is no $x$ such that both $x \in A$ and $x \in B$ --- the two sets have absolutely no overlap.
+Or $A$ and $B$ might be *incomparable*.
+In this case the two sets have a limited overlap such that there is at least one $x$ with both $x \in A$ and $x \in B$, but there are also $a \in A$ and $b \in B$ such that $a \notin B$ and $b \notin A$.
 
-intersection
+\begin{example}
+    The set of English prepositions (*on*, *to*, *at*, ...) and the set of English determiners (*a*, *the*, *this*, ...) have not a single word in common and thus are disjoint.
+    The set of English verbs and the set of English nouns, on the other hand, are incomparable.
+    Many words like *water*, *cut*, *fall*, *love*, *try*, *judge*, *beat*, or *cross* can be used as nouns or verbs, but many other words are used only as nouns (*tree*, *waterfall*, *idea*, *Ferrari*) or only as verbs (*write*, *convince*, *admonish*, *clean*).
+\end{example}
 
-absolute and relative complement
+Note that it is possible for both $A \subseteq B$ and $B \subseteq A$ to be true --- in this case, $A = B$.
+But there can be no $A$ and $B$ such that $A \subsetneq B$ and $B \subsetneq A$.
+
+## The Powerset
+
+Sometimes it is useful to take a set and consider all sets one could build from its elements.
+For example, each one of the following sets can be built form the elements of $\setof{1,2,3}$: 
+
+1. $\emptyset$
+1. $\setof{1}$
+1. $\setof{2}$
+1. $\setof{3}$
+1. $\setof{1,2}$
+1. $\setof{1,3}$
+1. $\setof{2,3}$
+1. $\setof{1,2,3}$
+
+Note that each one of the sets in this list is a subset of $\setof{1,2,3}$, and every subset of $\setof{1,2,3}$ is on this list.
+So the above is the list of all subsets of $\setof{1,2,3}$.
+The set of all these sets is called the *powerset* of $\setof{1,2,3}$.
+
+\begin{definition}
+    For $A$ a set, the *powerset* of $A$ is $\wp(A) \is \setof{ S \mid S \subseteq A }$.
+\end{definition}
+
+There are many alternative notations for the powerset.
+A particularly common one is $2^A$ as it highlights two interesting aspects of the powerset.
+First, we define the *cardinality* of a set $A$ as the number of elements it contains, and we denote it by $\card{A}$.
+For example, $\card{\setof{1,2,3}} = 3$.
+Now we can state a universal truth for the cardinality of powersets.
+
+\begin{theorem}
+    For every set $A$ with $\card{A} = n$, it holds that $\card{\wp(A)} = \card{2^A} = 2^\card{A} = 2^n$.
+\end{theorem}
+
+This is witnessed by our example set $\setof{1,2,3}$, the powerset of which has $8$ members (see the list above).
+Feel free to compute the powerset of $\setof{1,2}$ and $\setof{1,2,3,4}$, you will see that they have $4$ and $16$ members, respectively.
+
+But the $2^A$ notation for powersets has a deeper meaning that goes beyond mere numbers.
+The notation $B^A$ is sometimes used to represent the set of all functions from $A$ to $B$.
+And $2$ can be construed not just as the number $2$, but as any set with cardinality $2$, including $\setof{\top, \bot}$.
+So $2^A$ can be taken to denote the set of all functions from $A$ to $\setof{\top, \bot}$.
+But since functions are sets, this is exactly the class of all subsets of $A$.
+
+In sum, the $2^A$ notation for powersets is very pleasing on a theoretical level.
+But humans are a practical bunch, and since superscripts are slightly strenuous to read, $\wp(A)$ is the preferred notation for powersets.
+
+## Union, Intersection, and Complement
+
+\begin{definition}
+    Let $A$ and $B$ be arbitrary sets.
+    <ol>
+    <li>The *union* of $A$ and $B$ is $A \cup B \is \setof{ x \mid x \in A \text{ or } x \in B}$.</li>
+    <li>The *intersection* of $A$ and $B$ is $A \cap B \is \setof{ x \mid x \in A \text{ and } x \in B}$.</li>
+    <li>The *relative complement* of $A$ and $B$ is $A - B \is \setof{ x \mid x \in A \text{ and } x \notin B}$.</li>
+    <li>If $A$ is clear from context, we just write $\overline{B}$ for $A - B$ and call it the *complement* of $B$.</li>
+    </ol>
+\end{definition}
+
+Note that order does not matter for union and intersection: $A \cup B = B \cup A$, and $A \cap B = B \cap A$.
+But in general $A - B \neq B - A$.

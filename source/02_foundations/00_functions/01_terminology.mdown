@@ -104,9 +104,9 @@ Now all the work you did is on shaky grounds and might even turn out to be unsal
 
 ## Range of a Function
 
-Another import concept is the *range* of a function.
+Another import concept is the *range* of a function, denoted by $\range(f)$.
 This refers to the collection of all the outputs that the function can produce from the inputs in its domain.
 For example, let $f: \mathbb{N} \rightarrow \mathbb{N}$ with $x \mapsto x+1$.
-Then the domain and co-domain each consist of $0$, $1$, $2$, ..., but the range is $1$ ($= f(0)$), $2$ ($= f(1)$), $3$ ($= (f2)$), and so on.
+Then the domain and co-domain each consist of $0$, $1$, $2$, ..., but the range is $1$ ($= f(0)$), $2$ ($= f(1)$), $3$ ($= f(2)$), and so on.
 In the special case where a function's range is identical to its co-domain, we call it *onto*.
 The *identity function* $x \mapsto x$, for instance, is onto.
