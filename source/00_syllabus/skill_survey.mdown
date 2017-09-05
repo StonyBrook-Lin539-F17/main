@@ -6,6 +6,7 @@ If you do not know an answer, just skip the question.
 Even skipping all questions is perfectly fine, this is **not** a test of your ability to pass the class.
 
 1.  For each of the following relations, say whether it is a weak partial order.
+
     1. set containment
     1. proper subset relation
     1. sister-of (kinship)
@@ -26,7 +27,7 @@ Even skipping all questions is perfectly fine, this is **not** a test of your ab
 1.  Resolve the lambda-term to its simplest form: $[\lambda x. \lambda f. f(x)]([\lambda f. \lambda g. g(f)](\lambda x. x \neq x)(\lambda x. x))$
 
 1.  Calculate the result of the matrix multiplication below (if this isn't possible, say so):
-    
+
     $$
     \begin{bmatrix}
     1 & 2 & 3\\
@@ -40,7 +41,7 @@ Even skipping all questions is perfectly fine, this is **not** a test of your ab
     $$
 
 1.  Calculate the result of the matrix multiplication below (if this isn't possible, say so):
-    
+
     $$
     \begin{bmatrix}
     1 & 2 & 3\\
@@ -69,15 +70,16 @@ Even skipping all questions is perfectly fine, this is **not** a test of your ab
 1.  Give a CCG analysis of the sentence *This cute boy, Mary really likes*.
 
 1.  Let $G$ be a PCFG with the following rules:
-    1. 1.0: S $\rightarrow$ NP VP
-    1. 0.8: NP $\rightarrow$ A N
-    1. 0.2: NP $\rightarrow$ V ing N
-    1. .4: VP $\rightarrow$ V
-    1. .4: VP $\rightarrow$ V NP
-    1. .2: VP $\rightarrow$ V A
+
+    - 1.0: S $\rightarrow$ NP VP
+    - 0.8: NP $\rightarrow$ A N
+    - 0.2: NP $\rightarrow$ V ing N
+    - 0.4: VP $\rightarrow$ V
+    - 0.4: VP $\rightarrow$ V NP
+    - 0.2: VP $\rightarrow$ V A
 
     Ignoring lexical frequency, calculate the probability for each one of the two readings of *Flying planes are dangerous*.
 
 1.  Give an example of a monoid.
 
-1.  Is $\langle \wp(\Sigma^n), \cup, - \rangle$ a semiring? Why (not)? 
+1.  Is $\langle \wp(\Sigma^n), \cup, -, \emptyset, \Sigma^n \rangle$ a semiring? Why (not)?
