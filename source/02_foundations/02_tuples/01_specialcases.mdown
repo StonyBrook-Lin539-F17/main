@@ -1,0 +1,94 @@
+# Some Special Cases of Tuples
+
+All examples of tuples we have seen so far were modeled after sentences, and thus they were very homogeneous.
+But in fact tuples can be much crazier than that.
+In fact, all of the following are tuples:
+
+- $\tuple{\text{John}, 2}$,
+- $\tuple{\mathbb{N}, \mathbb{N}}$,
+- $\tuple{\text{N}, \setof{\text{tree}, \text{ball}, \text{idea}}}$,
+- $\tuple{\setof{\tuple{\setof{\tuple{\emptyset}}}}}$,
+- $\tuple{}$
+
+Depending on the area of application, the shape of tuples one operates with can vary widely, and not much hinges on these differences.
+There are a few specific observations about the possible shapes of tuples, however, that are worth knowing about.
+
+## Strings as a Special Kind of Tuple
+
+Let $X$ be some finite set of objects of the same type, e.g. words, letters, or numbers.
+Tuples where each component is a member of $X$ is called a *string*.
+All the tuples we have seen so far are strings, but many tuples are not strings.
+For example, if $X = \setof{\text{John}, \text{Mary}, \text{slept}}$, then
+$\tuple{\text{John}, \text{slept}}$,
+$\tuple{\text{slept}}$, or
+$\tuple{\text{Mary}, \text{slept}, \text{slept}, \text{John}}$ are strings over $X$,
+but $\tuple{\setof{\text{John}, \text{Mary}}, \text{slept}}$ is not because the set $\setof{John, Mary}$ is not contained in $X$.
+
+Strings do not behave differently from tuples, so the distinction between tuples and strings is often immaterial in mathematics.
+For linguistics, however, strings are much more relevant than tuples in general, and thus it is a useful distinction for us to make. 
+
+## The Empty Tuple and The Empty String
+
+Recall that our definition of $n$-tuple requires a domain of the form
+$\setof{ i \mid i \in \mathbb{N} \text{ and } 1 \leq i \leq n}$.
+This allows for $1$-tuples (singletons), $2$-tuples (pairs), $3$-tuples (triples), $4$-tuples, and so on, for any fixed $n$.
+But could we also have a $0$-tuple?
+Well, let's see what happens if we try to produce one.
+According to the definition, the domain of the corresponding function would have to be $\setof{ i \mid i \in \mathbb{N} \text{ and } 1 \leq i \leq 0}$.
+But there is no natural number $i$ such that $1 \leq i $ and $i \leq 0$.
+So the domain would be empty, and the function does not map anything to anything.
+But this is perfectly alright for a function, so the answer is, yes, we can have a $0$-tuple, but it does not contain anything.
+
+The $0$-tuple is usually written $\emptytuple$.
+If we are only interested in tuples as strings then the $0$-tuple is called the *empty string* and is abbreviated $\emptystring$.
+But these are just different names for the same object.
+
+Note that the empty tuple can be concatenated just like any other tuple.
+But according to our definition, this will not change anything because the empty tuple has an empty domain.
+For any tuple $x$, we have $x \tuplecat \emptytuple = \emptytuple \tuplecat x = x$.
+That is pretty much what we would expect to happen: adding an empty tuple to $x$ is kind of like adding $0$ to a number, why should anything change?
+
+## Nested Tuples
+
+It is perfectly alright to put tuples inside other tuples, as in $\tuple{\tuple{1,2}, \tuple{3,4}}$.
+The motivation for doing so will depend on the application.
+For example, we may formalize a word as pair that consists of the word and its part of speech (POS): N for nouns, PN for proper names, V for verbs, A for adjectives, Adv for adverbs, P for prepositions, and so on.
+So the verb *devour* would be the pair $\tuple{\text{devour}, \text{V}}$, whereas the proper name *John* would be $\tuple{\text{John}, \text{PN}}$.
+Then a sentence would no longer be a tuple of words, but rather a tuple of word-POS pairs:
+$\tuple{\tuple{\text{John}, \text{PN}}, \tuple{\text{really}, \text{Adv}}, \tuple{\text{likes}, \text{V}}, \tuple{\text{John}, \text{PN}}}$.
+
+
+## Sets as Tuples, and Functions as Sets of Tuples
+
+I mentioned before that mathematicians usually take sets to be the primitives in terms of which all other objects are defined, including functions and tuples.
+But we are taking functions as primitives instead because they are in many respects more intuitive.
+However, it is a always good exercise to think about how one object can be defined in terms of another.
+This provides a novel perspective, and the more perspectives we have on one and the same object, the deeper our understanding.
+Let's see then, if we can use tuples as the basic building block for sets and functions.
+
+By now you know very well what distinguishes a set from a tuple: (lack of) order and idempotency, i.e. that no set occurs more than once in a set.
+We can easily define a subtype of tuples that also satisfies this kind of idempotency: an $n$-tuple $f:\setof{1,\ldots,n} \rightarrow X$ is idempotent iff there are no $i$ and $j$ such that $1 \leq i < j \leq n$ and $f(i) = f(j)$.
+In other words, no two numbers can have the same image under $f$.
+A function that satisfies this restriction is called *injective*, and one that violates it is *many-to-one*.
+In general, a tuple function may be many-to-one, that's why the same element can occur multiple times in a tuple.
+Let us call the special case where the tuple function is injective an *idempotent tuple*.
+
+Idempotent tuples resemble sets more closely, but they still have an internal ordering so that $\tuple{x,y} \neq \tuple{y,x}$ yet $\setof{x,y} = \setof{y,x}$.
+But there is a way to endow sets with internal order and thus turn them into tuples.
+The crucial aspect about sets is not that they lack internal order, but rather that the internal order does not matter for anything.
+The same behavior can be obtained by saying that a set has every possible internal order.
+This probably sounds very cryptic to you, but the idea is simple:
+Suppose that the set $\setof{x,y}$ is actually a collection of all possible tuples over this set.
+In other words, the collection contains $\tuple{x,y}$, $\tuple{y,x}$, and nothing else.
+The set $\setof{y,x}$ represents a collection consisting of $\tuple{y,x}$ and $\tuple{x,y}$, as those are the only tuples that can be built over this set.
+But this is exactly the same collection as that of $\setof{x,y}$, so obviously $\setof{x,y} = \setof{y,x}$.
+This shows that sets can be regarded as both unordered objects and as objects that are ordered in all possible ways.
+
+The view of sets as tuples runs into a similar infinite regress problem as the view of sets as functions: the collections of tuples must be formalized as sets, but those sets are just collections of tuples, but those collections are sets, but those sets are collections of tuples, and so on.
+To reiterate, the point is not to propose a different axiomatization of mathematics but to grow your intuitions about sets.
+
+Since we are already on the topic of axiomatization, it is worth mentioning that mathematicians usually use tuples to define functions.
+Given a function $f$, its *graph* is the set of all input-output tuples.
+For example, the graph of $f: \mathbb{N} \rightarrow \mathbb{N}$ with $x \mapsto 2x$ is $\setof{\tuple{0,0}, \tuple{1,2}, \tuple{2,4}, \tuple{3,6}, \ldots}$.
+And the graph of $\mathrm{add}: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N}$ with $x,y \mapsto x+y$ is $\setof{\tuple{0,0,0}, \tuple{0,1,1}, \tuple{0,2,2}, \ldots, \tuple{1,0,1}, \tuple{1,1,2}, \ldots}$.
+As every function is fully specified by its graph, $n$-ary functions are just sets of $n+1$-tuples.

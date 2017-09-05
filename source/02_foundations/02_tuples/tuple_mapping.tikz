@@ -1,0 +1,14 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{matrix,positioning}
+\usepackage{mycommands}
+\begin{document}
+\begin{tikzpicture}
+    \matrix (m) at (0,0) [matrix of nodes, row sep=2em] {
+        $\mathbf{[0,n]:}$ & 0 & 1 & 2 & 3\\
+        \textbf{Words:} & John & really & likes & John\\
+    };
+    %
+    \foreach \Pos in {2,3,4,5}
+        \draw[->,blue!75] (m-1-\Pos) to (m-2-\Pos);
+\end{tikzpicture}
+\end{document}

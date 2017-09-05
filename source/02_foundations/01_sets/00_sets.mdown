@@ -63,6 +63,7 @@ For example, we could define the set $V$ of English verbs (although listing all 
 We could express this as "For all $x \in V$, $x$ has at least two inflected present tense forms".
 Here the *set membership* symbol $\in$ is used to indicate that $x$ is contained in the set $V$.
 We also say that $x$ is a *member* or an *element* of $V$.
+The negative counterpart of $\in$ is $\notin$ --- $x \notin V$ signals that $x$ is not a member of $V$.
 
 In the same fashion, we could also define sets $N$ for nouns, $\mathit{A}$ for adjectives, and $P$ for prepositions. 
 And then we can collect them all in a set $S \is \{V, N, A, P, \ldots\}$.
@@ -84,7 +85,7 @@ Those are clearly different arguments, so the functions must have different doma
 
 Here is another aspect of sets that may be strange from an intuitive perspective but makes more sense once we view sets as functions: the *empty set*, usually written $\emptyset$ instead of $\setof{}$.
 The empty set does not contain anything at all.
-A collection of absolutely nothing is an odd concept, but mathematically $\emptyset$ is just the function that does not map anything to $\top$.
+A collection of absolutely nothing is an odd concept, but mathematically $\emptyset$ is just the function that maps everything to $\bot$.
 That such a function should exist is not too surprising.
 
 ## Set-Builder Notation
@@ -114,7 +115,10 @@ For example, one could nest multiple set definitions, as in $\setof{ \setof{ i \
 This is a set that contains all initial intervals of the natural number: $\setof{ \setof{0}, \setof{0,1}, \setof{0,1,2}, \setof{0,1,2,3}, \ldots }$.
 However, such nested definitions are often cumbersome to read, so try to avoid this.
 Quite generally, definitions should not intimidate or dazzle the reader.
+
+\begin{advice}
 A good definition is as complex as necessary and as simple as possible.
+\end{advice}
 
 
 ## So It's Functions all the Way Down?

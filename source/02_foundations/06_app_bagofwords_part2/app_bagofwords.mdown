@@ -1,0 +1,7 @@
+# Bag of Words Revisited
+
+## Keeping Track of Counts
+
+## Use for Probabilities
+
+## Handling Data Sparsity with Skip $n$-Grams

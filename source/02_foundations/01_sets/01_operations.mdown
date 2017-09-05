@@ -1,13 +1,19 @@
 # Comparing and Modifying Sets
 
+
+
 subset
 
 superset
 
 proper variants
 
+powerset
+
+mindbender: powerset of empty set
+
 union
 
 intersection
 
-complement
+absolute and relative complement

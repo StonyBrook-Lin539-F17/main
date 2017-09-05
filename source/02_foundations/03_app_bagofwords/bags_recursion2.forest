@@ -1,0 +1,29 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\usepackage{mycommands}
+\begin{document}
+\begin{forest}
+    [,phantom
+        [$b(\text{John obviously is John})$
+            [$b(\text{John})$]
+            [$b(\text{obviously is John})$
+                [$b(\text{obviously})$]
+                [$b(\text{is John})$
+                    [$b(\text{is})$]
+                    [$b(\text{John})$]
+                ]
+            ]
+        ]
+        [\setof{\text{is}, \text{John}, \text{obviously}}
+            [\setof{\text{John}}]
+            [\setof{\text{is}, \text{John}, \text{obviously}}
+                [\setof{\text{obviously}}]
+                [\setof{\text{is}, \text{John}}
+                    [\setof{\text{is}}]
+                    [\setof{\text{John}}]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

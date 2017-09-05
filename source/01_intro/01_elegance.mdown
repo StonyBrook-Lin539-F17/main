@@ -9,10 +9,12 @@ For a concrete example of a system that would not please mathematicians, conside
 It starts out very promising, as 1 is I, 2 is II, and 3 III.
 This would allow us give a nice, compact definition of the possible numbers.
 
-<div class=definition>
-1. I is a number.
-1. If $x$ is a number, then so is $x$I.
-</div>
+\begin{definition}
+<ol>
+<li>I is a number.</li>
+<li>If $x$ is a number, then so is $x$I.</li>
+</ol>
+\end{definition}
 
 Let us call this the I-system.
 The definition tells us that all of the following are numbers in the I-system: I, II, III, IIII, and all other sequences of the letter I, e.g. IIIIIIIIIIIIIIIIII.
@@ -49,9 +51,9 @@ Once the I-system is better understood, one extends the results to the Roman num
 The example above is slightly silly because mathematicians have more abstract ways of talking about numbers, ways where it no longer matters how numbers are actually written.
 But the general principle is very close to mathematical practice and will be with us for the entirety of this course:
 
-<div class=advice>
+\begin{advice}
 <ol>
 <li>Study simple systems.</li>
 <li>Reduce complex systems to simple systems.</li>
 </ol>
-</div>
+\end{advice}

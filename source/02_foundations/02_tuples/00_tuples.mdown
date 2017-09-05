@@ -1,0 +1,120 @@
+# Tuples
+
+Sets are functions with a co-domain of $\setof{\top, \bot}$.
+Among other things, this entails that sets are unordered and cannot contain an element more than once --- a property known as *idempotency*.
+But obviously there are many objects that one might want to model that are ordered or contain a word more than once.
+Language is full of such objects.
+A sentence, for example, is not just a set of words as the words must occur in a particular linear order and a sentence may contain a word multiple types.
+Hence *John really likes John* is a well-formed sentence of English, but *likes really John* is not.
+This split couldn't hold if sentences were just sets of words.
+Instead, it is more adequate to formalize sentences as *tuples*.
+
+## Tuples as Functions
+
+As we did for sets, we will define tuples in terms of functions because this makes it easier to understand some of their properties.
+
+\begin{definition}
+    A function $f$ is an *$n$-tuple* iff $f$ is total and its domain is $\setof{ i \mid i \in \mathbb{N} \text{ and } 1 \leq i \leq n}$. 
+    We say $x$ is a *component* of the $n$-tuple $f$ iff $x \in \range(f)$.
+\end{definition}
+
+This definition treats tuples as mappings from an initial subset of the positive natural numbers to some fixed co-domain.
+A tuple is ordered because the natural numbers can be taken to be ordered by the "strictly less than" relation $<$.
+And in contrast to sets, tuples can contain the same element multiple times because the objects of interest are now in the co-domain rather than the domain.
+
+As an example, consider the sentence *John really likes John* from before.
+We can view it as a function $s$ from $\setof{1,2,3,4}$ to the set of all English words such that
+$1 \mapsto \text{John}$,
+$2 \mapsto \text{really}$,
+$3 \mapsto \text{likes}$, and
+$4 \mapsto \text{John}$.
+
+\input_med{tuple_mapping.tikz}
+
+Pay close attention to how the natural numbers encode the linear order of the sentence.
+We also can have multiple instances of *John* simply because multiple natural numbers may have *John* as their image under $s$.
+In a set of words, on the other hand, the words are the domain so it is impossible for a set to contain *John* more than once.
+
+With sets, we quickly realized that the function notation was needlessly cumbersome and needed a more succinct replacement --- the same is true for tuples.
+Tuples are usually specified as comma-separated list with pointy brackets at each end.
+Hence an $n$-tuple with $1 \mapsto x_1$, $2 \mapsto x_2,$, ..., $n \mapsto x_n$ is represented as $\tuple{x_1, x_2, \ldots, x_n}$.
+So the sentence *John really likes John*, when viewed as a tuple, is written
+$\tuple{\text{John}, \text{really}, \text{likes}, \text{John}}$.
+
+A brief remark on terminology: $1$-tuples are often called *singleton tuples*, $2$-tuples are *pairs*, and $3$-tuples are triples.
+Sometimes you may also come across *quadtuple* and *quintuple*, but those terms are rarely used.
+
+## Identity of Sets versus Identity of Tuples
+
+Thanks to their intrinsic order and the ability to contain an object multiple times, tuples are a more fine-grained object than sets.
+You already know that $\setof{\text{John}, \text{is}} = \setof{\text{is}, \text{John}}$.
+This is necessarily the case because both sets describe the same function with $\text{John} \mapsto \top$, $\text{is} \mapsto \top$, and everything else maps to $\bot$.
+But with tuples we have $\tuple{\text{John}, \text{is}} = \tuple{\text{is}, \text{John}}$ because they describe very different functions.
+The first is a function $f: \setof{1,2} \rightarrow \setof{\text{John}, \text{is}}$ with $1 \mapsto \text{John}$ and $2 \mapsto \text{is}$.
+The second is a function $g$ with the same domain and co-domain, but $1 \mapsto \text{is}$ and $2 \mapsto \text{John}$.
+Clearly $f$ and $g$ are not identical.
+
+```python
+print("Sets identical?", set(['John', 'is']) == set(['is', 'John']))
+print("Tuples identical?", ['John', 'is'] == ['is', 'John'])
+```
+
+## Projection and Concatenation
+
+Sets have various operations that can apply to them, in particular union, intersection, and complement.
+Tuples have no direct counterparts of these operations as they would not make much sense for this kind of function.
+Instead, tuples have two very different operations: *projection* and *concatenation*.
+
+### Projection
+
+Given an $n$-tuple $\tuple{x_1, \ldots, x_n}$, the *$i$-th projection* ($\pi_i$) of the $n$-tuple is its $i$-th element. 
+Hence $\pi_3(\text{John really likes John}) = \text{likes}$.
+While the idea is simple, it is a good exercise to make the definition of $\pi_i$ as precise as possible.
+When the $n$-tuple is regarded as a function $f$, the definition can be shortened to $\pi_i(f) = f(i)$.
+Note that this treats $\pi_i$ as a function whose co-domain is the set of all functions that are tuples.
+For any $m$-tuple $f$ with $m < i$, $\pi_i(f)$ is undefined.
+So $\pi_i$ is a partial function over the set of all tuples.
+
+Sometimes the $i$-th projection is taken to be the tuple that consists only of the $i$-th element.
+So rather than *likes*, $\pi_3(\text{John really likes John})$ would return $\tuple{\text{likes}}$.
+In this case the formal definition is slightly more complex: $\pi_i$ is a function mapping each tuple $f$ to a tuple $g$ with co-domain $\setof{1}$ such that $g(1) = f(i)$.
+Now $\pi_i$ is a partial function from tuple functions to $1$-tuple functions.
+
+### Concatenation
+
+The other important operation for tuples is concatenation.
+Again the intuition is much simpler than the formal definition.
+Given an $m$-tuple $x \is \tuple{x_1, \ldots, x_m}$ and an $n$-tuple $y \is \tuple{y_1, \ldots, y_n}$, their concatenation $x \tuplecat y$ is $\tuple{x_1, \ldots, x_m, y_1 \ldots, y_n}$.
+Hence we might take the pair $\tuple{\text{I}, \text{believe}}$ and the $4$-tuple $\tuple{\text{John}, \text{really}, \text{likes}, \text{John}}$ and concatenate them to obtain the $6$-tuple $\tuple{\text{I}, \text{believe}, \text{John}, \text{really}, \text{likes}, \text{John}}$.
+
+The formal definition of concatenation reveals that there is a close connection to set union.
+Let $f: \setof{1, \ldots, m} \rightarrow A$ and $g: \setof{1, \ldots, n} \rightarrow B$ be an $m$-tuple over $A$ and an $n$-tuple over $B$, respectively.
+Then $f \tuplecat g: \setof{1, \ldots, m+n} \rightarrow A \cup B$ is an $m+n$-tuple such that
+$$
+f \tuplecat g(i) \is
+    \begin{cases}
+        f(i) & \text{if } i \leq m\\
+        g(i) & \text{otherwise.}
+    \end{cases}
+$$
+
+## Defining Sets of Tuples via Cross Product
+
+You might have noticed that our tuple notation apparently lacks an analogue to set comprehensions.
+So far, all tuples are defined by writing them out in full.
+However, this is clearly not feasible if one wants to define many tuples, or possibly even infinitely many.
+One can co-opt set comprehensions to handle such cases.
+For example, if we want all possible pairs of natural numbers, we could define this as the set $\setof{ \tuple{m, n} \mid m, n \in \mathbb{N} }$.
+Sometimes this is a useful way of doing it, for instance if the value of one component depends on the other as in $\setof{ \tuple{n, 2n} \mid n \in \mathbb{N} }$.
+But very often the set comprehensions are somewhat on the long side considering how simple the sets are that we want to define.
+Putting a long set comprehension into the middle of a definition isn't exactly nice to read, so if we can avoid that it would be advantageous.
+Fortunately, the *cross product* often offers a succinct alternative.
+
+\begin{definition}
+    Given sets $A_1$, $A_2$, ..., $A_n$ , their cross product $A_1 \times A_2 \times \cdots \times A_n$ is the set
+    $\setof{ \tuple{a_1, a_2, \ldots, a_n} \mid a_1 \in A_1, a_2 \in A_2, \ldots, a_n \in A_n}$.
+    We write $A^2$ as a shorthand for $A \times A$, and similarly for any $n \geq 2$.
+\end{definition}
+
+A brief example: Let $A \is \setof{1,2,3}$, $B \is \setof{4,5}$, and $C \is \setof{6}$.
+Then $A \times B \times C \is \setof{ \tuple{1,4,6}, \tuple{1,5,6}, \tuple{2,4,6}, \tuple{2,5,6}, \tuple{3,4,6}, \tuple{3,5,6} }$.
