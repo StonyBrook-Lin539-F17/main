@@ -8,7 +8,7 @@ But that requires a lot of time and skill, and may simply not be feasible in pra
 How does one adequately summarize, say, the 1130 pages of Robert Musil's *The Man Without Qualities*, or Grigori Perelman's proof of the Poincaré conjecture?
 Whatever the right answer, it probably isn't something that can be done quickly and automatically.
 And while one may be able to pay experts to work on these outstanding accomplishments, it's much harder to find somebody to summarize papers on cell biology because there are so many published every day.
-With internet pages, human summarization is completely impossible.
+With internet websites, human summarization is completely impossible given how often they are updated and how many new ones are created every minutes.
 So instead computers have to do the job, and since we haven't figured out a way yet to get computers to understand text, the models are necessarily simple and focussed on surface features.
 The *bag of words* model comes from this tradition --- it equates the meaning of a text with the words that occur in it.
 
@@ -33,27 +33,35 @@ bag_of_words("The man and the woman are husband and wife.")
 bag_of_words("Police police police police police.")
 ```
 
+A search engine, for instance, could use this model to convert any given website to a bag of words.
+When the user enters a query, e.g. *fed my Gremlin after midnight*, the search engine could convert the query to a bag of words, too, and then check which websites have a similar bag of words.
+
 The general idea of the model is simple enough, and as you can see even the implementation in a programming language is straight-forward.
 But let us look at how this model is defined in mathematically rigorous terms with the three concepts we know so far: functions, sets, and tuples.
 
 First, let us think about what the model does.
 It takes text as input and returns a bag of words as output.
-More than that, it is guaranteed that a given text is always converted into the same bag of words.
-So each input has at most one output, which means that we are dealing with a function.
+More than that, a given text is always converted to the same bag of words.
+Therefore each input has at most one output, which means that we are dealing with a function.
 We cannot tell yet whether the function is partial or total because we have not defined its domain yet --- that's the next step.
 
 The bag of words model is designed for texts, so it's reasonable to take the set of all texts as the domain of the function.
 But what does this mean, "the set of all texts"?
 What is a text?
 There is no single correct answer to this question, a programmer, a text linguist, and an English professor will all offer very different definitions.
-We will go with a very simple one: a text is a sequence of words.
-Now of course this raises the question how one defines a word, but we will sidestep this issue and simply assume that there is a fixed finite collection of words that is given to us in advance.
-Let us refer to this collection of words as $\Sigma$ (that's a capital sigma from the Greek alphabet).
-Then a text is a finite sequence of one or more elements of $\Sigma$.
-Let us denote the set of all such finite over $\Sigma$ by $\Sigma^+$.
+We will go with a very simple one: a text is a string of words.
+In other scenarios (e.g. machine learning) we might have defined a text as a sequence of strings of words, but this is more complex than necessary for the simple model here.
+So we stick with *text* as merely a shorthand for *string of words*.
+
+Now of course this raises the question how one defines a word, but we will sidestep this issue and simply assume that there is a fixed collection of words that is given to us in advance.
+For example, we may take an English word to be whatever is listed in the Oxford English dictionary, or we may follow a more liberal definition that a word is any random sequence of letters of the Latin alphabet (a-z, A-Z).
+The important thing is just that we have some agreed upon collection of words.
+Let us refer to this collection as $\Sigma$ (that's a capital sigma from the Greek alphabet).
+Then a text is a $\Sigma$-string, i.e. a finite sequence of one or more elements of $\Sigma$.
+Let us denote the set of all such strings over $\Sigma$ by $\Sigma^+$.
 Every text is hence a member of $\Sigma^+$.
 
-This only leaves the co-domain, the eponymous bag of words.
+We now know that we are dealing with a function with domain $\Sigma^+$, but we still have to nail down the co-domain, the eponymous bag of words.
 As we said before, no word occurs more than once in such a bag.
 In addition, there is no particular reason why we should care about the order of words in the bag, the important thing is which words are in the bag.
 So a bag of words is essentially a set of words, which means that it is a subset of $\Sigma$.
@@ -71,7 +79,7 @@ b(t)
 \is
 \begin{cases}
     \setof{t} & \text{if } t \in \Sigma\\
-    b(u) \cup b(v) & \text{if } t = uv \in \Sigma^+\\
+    b(u) \cup b(v) & \text{if } t = u \tuplecat v, \text{ where } u, v \in \Sigma^+\\
 \end{cases}
 $$
 
@@ -87,7 +95,7 @@ Consider first an example of the base case, where our text $t$ only consists of 
 In that case $b(t) = b(\text{John}) = \setof{\text{John}}$.
 With a longer text such as *John obviously is John*, the base step cannot apply and instead we need to split the text.
 We can pick the split freely, so we might compute $b(\text{John obviously is John})$ as $b(\text{John}) \cup b(\text{obviously is John})$.
-Now we have on instance of the base step, so that we can simply the formula to $\setof{John} \cup b(\text{obviously is John})$.
+Now we have on instance of the base step, so that we can simplify the formula to $\setof{John} \cup b(\text{obviously is John})$.
 Now there is once again no way to apply the base step, and we have to split the text *obviously is John*.
 Let's chop off the first word as before, so that we now have $\setof{\text{John}} \cup (b(\text{obviously}) \cup b(\text{is John})) = \setof{\text{John}} \cup (\setof{\text{obviously}} \cup b(\text{is John}))$.
 As you can see, we're still not done, another application of the recursion step is needed to split $b(\text{is John})$ into $b(\text{is}) \cup b(\text{John})$.
@@ -103,7 +111,7 @@ $$
 \end{align*}
 $$
 
-We can represent this chain of decompositions and evaluations more succinctly as a graph.
+We can represent this chain of decompositions and evaluations more succinctly in a picture.
 
 \input_big{bags_recursion2.forest}
 
@@ -115,3 +123,7 @@ So instead of always splitting off the first word of the text, we could have als
 This does not change the final result computed by $b$ because the function combines the partial results via set union.
 And set union is *associative*: for all sets $A$, $B$, $C$, $A \cup (B \cup C) = (A \cup B) \cup C$.
 In other words, the order of evaluation does not matter for union.
+
+So there we have it, a mathematical definition of the bag of words model as a function $b: \Sigma^+ \rightarrow \wp(\Sigma)$ such that $b(t) \is \setof{t}$ if $t \in \Sigma$ and $b(u) \cup b(v)$ for $t = u \tuplecat v$ otherwise.
+Defining the model in formal terms isn't just a mathematical vanity project or an opportunity to dazzle you with fancy symbols.
+In giving a formal definition, we get a more general view of the components of the model and how they interact, and this in turn will allow us to extend the model in various directions and to notice similarities with models that may seem entirely unrelated to the bag of words model.
