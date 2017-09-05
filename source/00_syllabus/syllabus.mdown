@@ -16,8 +16,6 @@ Mathematical Methods in Linguistics
 |               | F 11:15-11:45                 |
 | Office        | SBS N-249                     |
 
-**Attention:** To get access to the [private course repository][private], you must email me your github username. 
-
 **A friendly plug:** If you are interested in this class, also consider attending the department's [Mathematical Linguistics Reading Group](http://complab-stonybrook.github.io/mlrg/).
 
 Course Outline
@@ -106,11 +104,12 @@ A brief selection of the topics to be covered (though we will proceed in a diffe
     - Applications: bag of words model of text, n-gram models of grammaticality
 
 1.  Types of infinity
+    - Topics: bijections
     - Applications: is language infinite?
 
 1.  Relations and orders
     - Topics: properties of orders, posets, lattices, antimatroids
-    - Applications: mereology, string extension learners, OT, feature systems
+    - Applications: mereology, string extension learners, OT, feature systems, adjunct algebras
 
 1.  Linear algebra
     - Topics: vectors and vector spaces, matrices, tensor product
@@ -129,8 +128,8 @@ A brief selection of the topics to be covered (though we will proceed in a diffe
     - Application: complexity of phonology & morphology VS syntax
 
 1.  Logic
-    - Topics: propositional logic and first-order logic
-    - Application: semantics, model-theoretic syntax, subregular linguistics
+    - Topics: propositional logic and first-order logic, types, lambda calculus
+    - Application: semantics, model-theoretic syntax, subregular linguistics, CCG
 
 1.  Probability theory
     - Topics: calculating probabilities with addition and multiplication
