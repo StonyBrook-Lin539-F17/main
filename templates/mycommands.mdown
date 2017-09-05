@@ -1,6 +1,7 @@
 $\newcommand{\is}{\ensuremath{\mathrel{\mathop:}=}}$
 $\newcommand{\range}{\ensuremath{\mathop{ran}}}$
 $\newcommand{\setof}[1]{\ensuremath{\left \{ #1 \right \}}}$
+$\newcommand{\card}[1]{\ensuremath{\left | #1 \right |}}$
 $\newcommand{\tuple}[1]{\ensuremath{\left \langle #1 \right \rangle}}$
 $\newcommand{\emptytuple}{\ensuremath{\left \langle \right \rangle}}$
 $\newcommand{\tuplecat}{\ensuremath{\cdot}}$
