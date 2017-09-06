@@ -149,6 +149,7 @@ Determining whether a strictly $n$-local grammar $G$ licenses string $s$ then co
 If you are familiar with the programming language Python, you will see that this is also how the code above is designed.
 Also note that this complex function has as its co-domain $\setof{\top, \bot}$, so it defines a set --- the set of all strings that are well-formed with respect to a specific grammar.
 
+
 ## Isn't That a Tad Too Complicated?
 
 At this point you are probably wondering why we are jumping through all these hoops.
@@ -193,3 +194,57 @@ Models that only handle a few specific cases are often easy to define and figure
 But the abstractness and generality actually makes many things easier and faster in the long run.
 It's a bit like math itself: it comes with an above average buy-in cost, but it really pays off in the long run.
 Remember: math is for lazy people, and abstract math is for really lazy people.
+
+
+# Strictly Local Grammars with Deletion
+
+Remember that we augmented our bag-of-worlds model with a $\mathrm{del}_S$ whose job it was to remove all members of $S$ from a text before it gets fed into $b_n$.
+The purpose of this function was to deal with stop words, which make up a majority of every text but contribute little to no meaning.
+Now that we have seen how the ideas behind the bag-of-words model can be generalized to SL grammars, it is worth asking whether we can also find a new usage for $\mathrm{del}_S$.
+
+The original definition of $\mathrm{del}_S$ states that both its domain and its co-domain are $\Sigma^*$, and that $S$ is a subset of $\Sigma$.
+In the examples above the SL grammars regulated the distribution of sounds of words, so $\Sigma$ is a fixed set of sounds.
+Consequently, $S$ is a set of sounds that are to be removed.
+While removing sounds form words may sound pretty useless for natural language, it actually is not.
+
+Some languages put *long-distance* restrictions on the distribution of sounds.
+For example, in Samala and Navajo word may contain either *s* or *ʃ*, but not both (the ʃ symbol represents the *sh* sound in words like *shoe* or *wish*).
+It does no matter how far apart the two sounds are, it is simply not allowed for both of them to occur in the same word.
+However, it is fine to have multiple instances of the same sound.
+
+\begin{example}
+    In Samala, *haʃxintilawaʃ* is a well-formed word, but *hasxintilawaʃ* is not because of the mismatch between *s* and *ʃ*.
+\end{example}
+
+If we wanted to capture this rule with an SL grammar, we would need at least $11$-ngrams, possibly more than that if there are even longer words in Samala.
+An SL-$11$ grammar will be huge!
+Think about it, the grammar must at least contain all $11$-grams of the form $\text{s} u_1 u_2 u_3 u_4 u_5 u_6 u_7 u_8 u_9 \text{ʃ}$.
+Even if each intervening $u_i$ could only be instantiated as one of $3$ sounds (which is an preposterously low estimate) there would be $3^9 = 19,683$ instantiations of this template.
+But then of course we also need the mirror version $\text{ʃ} u_1 u_2 u_3 u_4 u_5 u_6 u_7 u_8 u_9 \text{s}$, as well as variants like $u_1 u_2 u_3 \text{s} u_4 u_5 u_6 u_7 u_8 u_9 \text{ʃ}$ or $u_1 \text{s} u_2 u_3 u_4 u_5 \text{ʃ} u_6 u_7 u_8 u_9$.
+In sum, the simple ban against *s* and *ʃ* in the same word would require $9 \cdot 8 \cdot 3^9 = 1,417,176$ distinct $11$-grams (and that's still assuming the unrealistic bound of at most three different sound values for each $u_i$).
+Needless to say, that's neither elegant nor practical.
+
+But suppose that we could just delete all sounds that are neither *s* nor *ʃ*.
+Then the ban is captured by the very succinct SL-$2$ grammar $G \is \setof{\text{sʃ}, \text{ʃs}}$.
+
+\begin{example}
+    Consider again the well-formed *haʃxintilawaʃ* and the ill-formed *hasxintilawaʃ*.
+    With all the irrelevant sounds removed, they become *ʃʃ* and *sʃ*, respectively.
+    In order to know whether these are licensed by $G$ we need to compute the bigrams of their 1-augmented counterparts.
+    The augmented strings are $\LeftEdge \text{*ʃʃ*} \RightEdge$ and $\LeftEdge \text{*sʃ*} \RightEdge$.
+    The bigrams of $\LeftEdge \text{*ʃʃ*} \RightEdge$ $\LeftEdge \text{ʃ}$, ʃʃ, and $\text{ʃ} \RightEdge$, none of which are members of the grammar $\setof{\text{sʃ}, \text{ʃs}}$.
+    Hence *haʃxintilawaʃ* is well-formed.
+    The bigrams of $\LeftEdge \text{*sʃ*} \RightEdge$, on the other hand, are $\LeftEdge \text{s}$, sʃ, and $\text{ʃ} \RightEdge$, and since one of them is contained by the grammar,  *hasxintilawaʃ* is ill-formed.
+\end{example}
+
+\begin{definition}
+    A *tier-based strictly $n$-local* (TSL-$n$) grammar $T$ over $\Sigma$-strings is a pair $\tuple{G, S}$ where $G$ is an SL-$n$ grammar and $S \subseteq \Sigma$ a set of symbols that should not be deleted.
+    A $\Sigma$-string $s$ is *well-formed with respect to $T$* iff $b_n(\mathrm{del}_{\Sigma - S}(\hat{s}^{n-1})) \cap G = \emptyset$.
+\end{definition}
+
+The name TSL is inspired by the resemblance between $\mathrm{del}_S$ and the so-called tier projection in a linguistic theory called *autosegmental phonology*.
+
+The usage of the tuple notation $\tuple{G, S}$ to define TSL grammars follows the standard convention that whenever some object consists of multiple interacting components, those are given as the components of a tuple.
+You should not attach too much meaning to this convention.
+That SL-grammars are sets and TSL-grammars are tuples is just an artefact of long-standing notational conventions.
+We will never treat TSL-grammars as if they were just a tuple, e.g. by concatenating multiple TSL grammars into a longer tuple.
