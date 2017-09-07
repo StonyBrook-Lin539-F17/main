@@ -116,7 +116,7 @@
     1. $\String{c}$
 
 1.  Which of the following strings are licensed by the TSL-$3$ grammar
-    $\tuple{\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b} \String{\LeftEdge \LeftEdge \RightEdge}}}, \setof{a, b}$?
+    $\tuple{\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b} \String{\LeftEdge \LeftEdge \RightEdge}}, \setof{a, b}}$?
     1. $\String{a}$
     1. $\String{aababbab}$
     1. $\String{aababcbacb}$
