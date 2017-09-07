@@ -61,10 +61,10 @@
     1. $a \_ \setof{a,b,c} \cup (\setof{a,d,e} - \setof{a,f,g})$
     1. $a \_ (\setof{a,b,c} \cup \setof{a,d,e}) - \setof{a,f,g}$
     1. $\wp(\setof{a}) \_ \wp(\setof{a,b,c})$
-    1. $\wp(\setof{a}) \in \wp(\wp(\setof{a,b,c}))$
-    1. $\emptyset \in \setof{\emptyset}$
-    1. $\emptyset \in \wp(\setof{a,b,c})$
-    1. $\emptyset \in \wp(\wp(\emptyset)) \cap \setof{\emptyset}$
+    1. $\wp(\setof{a}) \_ \wp(\wp(\setof{a,b,c}))$
+    1. $\emptyset \_ \setof{\emptyset}$
+    1. $\emptyset \_ \wp(\setof{a,b,c})$
+    1. $\emptyset \_ \wp(\wp(\emptyset)) \cap \setof{\emptyset}$
 
 1.  Define the following sets as succinctly as possible. 
     You may use all the tools for defining sets that have been covered so far.
@@ -107,14 +107,16 @@
 
 1.  List five strings over $\setof{a,b,c,d}$ that are permitted by the SL-$2$ grammar $\setof{ \String{aa}, \String{bb}, \String{ca}, \String{cb}, \String{\LeftEdge \RightEdge}}$.
 
-1.  Which of the following strings are licensed by the SL-$3$ grammar $\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b}, \String{\LeftEdge \LeftEdge \RightEdge}}$?
+1.  Which of the following strings are licensed by the SL-$3$ grammar
+    $\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b}, \String{\LeftEdge \LeftEdge \RightEdge}}$?
     1. $\String{a}$
     1. $\String{aababbab}$
     1. $\String{aababcbacb}$
     1. $\emptystring$
     1. $\String{c}$
 
-1.  Which of the following strings are licensed by the TSL-$3$ grammar $\tuple{\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b}}, \setof{a, b}, \String{\LeftEdge \LeftEdge \RightEdge}$?
+1.  Which of the following strings are licensed by the TSL-$3$ grammar
+    $\tuple{\setof{ \String{\LeftEdge a b}, \String{a b b}, \String{b a b} \String{\LeftEdge \LeftEdge \RightEdge}}}, \setof{a, b}$?
     1. $\String{a}$
     1. $\String{aababbab}$
     1. $\String{aababcbacb}$
