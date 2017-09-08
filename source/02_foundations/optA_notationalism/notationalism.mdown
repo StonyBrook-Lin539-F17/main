@@ -1,0 +1,52 @@
+# Interlude: Remarks on notation and simplicity
+
+## Why use different notations if everything is functions/sets?
+
+We now have three basic mathematical objects to work with:
+
+1. functions, which can be partial or total, and
+1. sets, which are functions with a co-domain of $\setof{\top, \bot}$, and
+1. tuples, which are functions whose domain is an initial subset of $\mathbb{N}$.
+
+As mentioned before, sets are actually sufficient to build up all of mathematics in a fully rigorous fashion.
+This is an instance of the mathematical principle to reduce complex objects to simple ones.
+But note that the notion of complexity here is a mathematical one, it does not correlate with what humans consider simple.
+To keep things easy to work with, we need conceptual shortcuts and a convenient notation.
+This is why we introduced separate notation for sets, even though we define them as just a special case for functions.
+Writing $\setof{1,2,3}$ is much more convenient than *$1 \mapsto \top$, $2$ \mapsto \top$, $3 \mapsto \top$, and everything else maps to $\bot$*.
+The notation we use for functions is too clunky to easily talk about sets.
+But it isn't just sets that need their own notation, each mathematical object benefits from handcrafted notation that allows us to express the essential properties as conveniently as possible.
+
+\begin{advice}
+    Reduce complex objects to simple objects, but do not express everything with the notation of simple objects.
+\end{advice}
+
+The use of convenient notation may be obvious to you.
+But within certain subareas of linguistics, great emphasis is put on notation, to the extent that the way a linguistic idea is expressed is taken to enjoy some degree of cognitive reality --- "this is how the grammar is specified in the brain, so we have to write our grammars in the same way".
+
+For example, SPE ("Sound Pattern of English") was the leading theory of phonology from the late 60s to the 80s, and it put great emphasis on how the rules of the analysis are written down.
+The idea was that phenomena that can be more easily expressed in the SPE notation are more natural.
+So a change to notation would amount to a different claim about linguistic naturalness.
+
+Another example comes from Minimalism, which has been the dominant theory of syntax since the mid 90s.
+Minimalism, as virtually all theories of syntax, assumes that sentences contain hidden structure that can be represented in a graphical fashion via *trees*.
+The sentence *I saw the man with the telescope* can have two distinct trees as its structure.
+In one, I used the telescope to see the man.
+In the other one, I saw the man who had a telescope with him.
+The corresponding trees are shown below.
+
+One of the central claims of Minimalism is that these structures should be thought of as sets.
+So instead of graph structures, syntax uses the fairly complex sets below:
+
+1. $\setof{saw, \setof{I, \setof{saw, \setof{saw, \setof{the, \setof{the, \setof{man, \setof{man, \setof{with, \setof{with, \setof{the, {the, telescope}}}}}}}}}}}}$
+1. $\setof{saw, \setof{I, \setof{saw, \setof{\setof{saw, \setof{the, \setof{the, man}}}, \setof{with, \setof{with, \setof{the, {the, telescope}}}}}}}}$
+
+You will probably agree that this is utterly illegible, in particular compared to the intuitive trees shown above.
+In principle that is not a big problem since we can posit sets as the cognitively real object but still use tree-based notation to represent them in an intuitive fashion.
+But in the wake of Minimalism, some syntacticians started to use set notation in their definitions, which made them very hard to understand.
+For a particularly egregious case, see the appendix of Juan Uriagereka's *Rhyme and Reason* textbook.
+Bottom line: even if you take some part of language to be grounded in sets, that does not mean you should set notation if there is a more convenient option.
+
+## There is no simplest object
+
+You might be wondering why Minimalism wants to ground syntactic structure in sets to begin with.
