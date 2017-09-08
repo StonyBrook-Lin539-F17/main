@@ -1,0 +1,318 @@
+# Sets with Counters: Multisets
+
+## Generalizing Sets to Multisets
+
+We have defined a set as a function with co-domain $\setof{\top, \bot}$.
+The choice of the symbols $\top$ and $\bot$ is motivated by their use in formal logic to denote True and False.
+True and False are also commonly represented by $1$ and $0$.
+So we could have also defined sets as a function with co-domain $\setof{1, 0}$.
+By pure analogy to the natural numbers, we might ask if there are also set-like functions that can also map objects to $2$, $17$, or $7,553,248,098$.
+The answer is yes --- these generalized sets are called *multiset*, and instead of indicating only whether an object belongs to a collection, it keeps track of how many occurrences of that object are part of the object.
+
+\begin{definition}
+    A *multiset* is a function with co-domain $\mathbb{N}$.
+    We indicate that a set $S$ is a multiset by subscripting it with $M$, as in $S_M$.
+    For all $s$ in the domain of $S_M$, $S_M(s) = 0$ iff $s \notin S_M$.
+\end{definition}
+
+The definition above uses the fact that multisets are functions to denote the count of $s$ in $S_M$ by $S_M(s)$.
+
+\begin{example}
+    The multiset $\setof{a,a,b}_M$ contains two occurrences of $a$ and one occurrence of $b$.
+    Hence $\setof{a,a,b}_M \neq \setof{a,b}_M$ even though $\setof{a,a,b} = \setof{a,b}$.
+    However, it still holds that order does not matter: $\setof{a,a,b}_M = \setof{a,b,a}_M = \setof{b, a, a}_M$, just like $\setof{a,b} = \setof{b,a}$.
+\end{example}
+
+The notation for multisets is much less standardized than that for sets, and not everybody follows the convention of subscripting multisets with $M$.
+If an author uses multisets, pay close attention to how they define their notation.
+Also, it is often convenient to explicitly list the count of each element rather than listing the element multiple times.
+
+\begin{example}
+    The multiset $A_M \is \setof{a,a,a,b,b,c}$ can be more conveniently written as $A_M \is \setof{a: 3, b: 2, c: 1}$.
+    Elements with a count of $0$ are usually omitted, but may be included if this is relevant information.
+\end{example}
+
+```python
+from collections import Counter
+
+def set_equals(A, B):
+    print("{} = {}?".format(A,B), set(A) == (B))
+
+def multiset_equals(A, B):
+    print("{} = {}?".format(A,B), Counter(A) == Counter(B))
+
+multiset_equals(["a", "a", "b", "b", "c"], ["a", "b", "c", "c", "d"])
+set_equals(["a", "a", "b", "b", "c"], ["a", "b", "c", "c", "d"])
+multiset_equals(["a", "a", "b", "b", "c"], ["a", "b", "c", "a", "b"])
+```
+
+With this kind of notation, it also becomes possible to define multisets with set-builder notation.
+For example, $\setof{n: 2n \mid n \in \mathbb{N}}$ is the set that contains $2n$ occurrences of every natural number $n$: $\setof{0:0, 1:2, 2:4, 3:6, \ldots}$.
+
+```python
+multiset = Counter({n: 2*n for n in range(10)})
+print(multiset)
+```
+
+Multisets can actually be defined in variety of ways.
+Instead of letting any function with co-domain $\mathbb{N}$ be a multi-sets, some authors define a multiset as a pair $\tuple{S, c}$ where $S$ is a set and $c: S \rightarrow \mathbb{N}$ is a counting function.
+Yet another definition treats multisets as subsets of $S \times \mathbb{N}$ such that for all $a, b \in S$ it holds that $\pi_1(a) \neq \pi_1(b)$.
+Under this definition, the multiset $\setof{a,a,b}_M$ would instead be written as $\setof{\tuple{a,2}, \tuple{b,1}}$, and $\setof{\tuple{a,2}, \tuple{a,1}}$ would not be a valid multiset.
+But these are all just minor differences in notation, all of which express the same idea of multisets as mappings from objects to natural numbers that encode each element's count.
+
+## Expanding Set Operations to Multisets
+
+The sets operations union, intersection and relative complement can also be generalized to multisets.
+
+\begin{definition}
+    Given two natural numbers $m$ and $n$ with $m \leq n$, let $\max(m,n) = n$ and $\min(m,n) = m$.
+    Then for any two multisets $A_M$ and $B_M$
+    <ul>
+        <li>the union $A_M \cup B_M$ maps every $a$ to $\max(A_M(a), B_M(a))$,</li>
+        <li>the intersection $A_M \cap B_M$ maps every $a$ to $\min(A_M(a), B_M(a))$</li>
+        <li>the relative complement $A_M - B_M$ maps every $a$ to $A_M(a) - B_M(a)$ (or $0$ if the value would be negative)</li>
+    </ul>
+\end{definition}
+
+\begin{example}
+    Let $A_M \is \setof{a:3, b:2, c:1}$ and $B_M \is \setof{a:1, b:1, c:2, d:1}$.
+    Then
+    <ul>
+        <li>$A_M \cup B_M = B_M \cup A_M = \setof{a:3, b:2, c:2, d:1}$</li>
+        <li>$A_M \cap B_M = B_M \cap A_M = \setof{a:1, b:1, c:1}$</li>
+        <li>$A_M - B_M = \setof{a:2, b:1, c:0}$</li>
+        <li>$B_M - A_M = \setof{c:1, d:1}$</li>
+    </ul>
+\end{example}
+
+```python
+A = Counter({"a": 3, "b": 2, "c": 1})
+B = Counter({"a": 1, "b": 1, "c": 2, "d": 1})
+
+def multiset_operator(A, B, function):
+    keys = set(A.keys()).union(set(B.keys()))
+    return Counter({key: function(A.get(key,0), B.get(key,0)) for key in keys})
+
+def multiset_union(A, B):
+    return multiset_operator(A, B, max)
+
+def multiset_intersection(A, B):
+    return multiset_operator(A, B, min)
+
+print("Union of\n{} and\n{} is\n{}\n".format(A, B, multiset_union(A, B)))
+print("Intersection of\n{} and\n{} is\n{}\n".format(A, B, multiset_intersection(A, B)))
+print("Relative complement of\n{} and\n{} is\n{}\n".format(A, B, A-B))
+print("Relative complement of\n{} and\n{} is\n{}\n".format(B, A, B-A))
+```
+
+The cardinality of a multiset with finitely many elements is the sum of all its counts.
+As a formula, this looks as follows:
+
+$$
+    \card{S_M} \is \sum_{s \in S_M} S_M(s)
+$$
+
+This formula uses the symbol $\sum$ as an abbreviation for addition.
+The subscript on $\sum$ tell us that $s$ should be substituted in all possible ways by elements of $S_M$.
+For multiset $S_M \is \setof{s_1: c_1, s_2: c_2, \ldots , s_n: c_n}$ the formula expands to $S_M(s_1) + S_M(s_2) + \cdots + S_M(s_n)$, which in turn reduces to $c_1 + c_2 + \cdots + c_n$.
+
+\begin{example}
+    Consider once more the multisets $A_M \is \setof{a:3, b:2, c:1}$ and $B_M \is \setof{a:1, b:1, c:2, d:1}$, for which the following hold:
+    $$
+    \begin{align*}
+        \card{A_M} &= \sum_{s \in A_M} A_M(s)\\
+                   &= A_M(a) + A_M(b) + A_M(c)\\
+                   &= 3 + 2 + 1\\
+                   &= 6\\
+        \card{B_M} &= \sum_{s \in B_M} B_M(s)\\
+                   &= B_M(a) + B_M(b) + B_M(c) + B_M(d)\\
+                   &= 1 + 1 + 2 + 1\\
+                   &= 5\\
+        \card{A_M \cup B_M} &= 8\\
+        \card{A_M \cap B_M} &= 3\\
+        \card{A_M - B_M} &= 3\\
+        \card{B_M - A_M} &= 2\\
+    \end{align*}
+    $$
+\end{example}
+
+```python
+def card(multiset):
+    return sum(multiset.values())
+
+print("|{}| = {}".format(A, card(A)))
+print("|{}| = {}".format(B, card(B)))
+print("Union of {} and {} is {}".format(A, B, multiset_union(A, B)))
+print("Intersection of {} and {} is {}".format(A, B, multiset_intersection(A, B)))
+print("Relative complement of {} and {} is {}".format(A, B, A-B))
+```
+
+Finally, the (proper) subset and superset relations can also be extended to multisets.
+
+\begin{definition}
+    Given two multisets $A_M$ and $B_M$, $A_M$ is a subset of $B_M$ ($A_M \subseteq B_M$) iff it holds for all $a \in A_M$ that $A_M(a) \leq B_M(a)$.
+    The subset relation is proper ($A_M \subsetneq B_M$) iff $A_M(a) < B_M(a)$ for all $a \in A_M$.
+    Superset and proper superset are defined in an analogous fashion.
+\end{definition}
+
+Note that this definition of subset entails that the powerset of a multiset can be much larger than that of a set.
+
+\begin{example}
+Returning once more to $A_M \is \setof{a:3, b:2, c:1}$ and $B_M \is \setof{a:1, b:1, c:2, d:1}$, we can see immediately that neither is a subset of the other.
+First, $A_M \not\subseteq B_M$ because $A_M(a) = 3 \not\leq 1 = B_M(a)$.
+In the other direction, $B_M \not\subseteq A_M$ because $B_M(d) = 1 \not\leq 0 = A_M(d)$.
+
+The powerset of $B_M$ contains every multiset that is a subset of $B_M$.
+These are
+<ol>
+    <li>$\setof{a:1, b:1, c:2, d:1}$</li>
+    <li>$\setof{a:1, b:1, c:2, d:0}$</li>
+    <li>$\setof{a:1, b:1, c:1, d:1}$</li>
+    <li>$\setof{a:1, b:1, c:1, d:0}$</li>
+    <li>$\setof{a:1, b:1, c:0, d:1}$</li>
+    <li>$\setof{a:1, b:1, c:0, d:0}$</li>
+    <li>$\setof{a:1, b:0, c:2, d:1}$</li>
+    <li>$\setof{a:1, b:0, c:2, d:0}$</li>
+    <li>$\setof{a:1, b:0, c:1, d:1}$</li>
+    <li>$\setof{a:1, b:0, c:1, d:0}$</li>
+    <li>$\setof{a:1, b:0, c:0, d:1}$</li>
+    <li>$\setof{a:1, b:0, c:0, d:0}$</li>
+    <li>$\setof{a:0, b:1, c:2, d:1}$</li>
+    <li>$\setof{a:0, b:1, c:2, d:0}$</li>
+    <li>$\setof{a:0, b:1, c:1, d:1}$</li>
+    <li>$\setof{a:0, b:1, c:1, d:0}$</li>
+    <li>$\setof{a:0, b:1, c:0, d:1}$</li>
+    <li>$\setof{a:0, b:1, c:0, d:0}$</li>
+    <li>$\setof{a:0, b:0, c:2, d:1}$</li>
+    <li>$\setof{a:0, b:0, c:2, d:0}$</li>
+    <li>$\setof{a:0, b:0, c:1, d:1}$</li>
+    <li>$\setof{a:0, b:0, c:1, d:0}$</li>
+    <li>$\setof{a:0, b:0, c:0, d:1}$</li>
+    <li>$\setof{a:0, b:0, c:0, d:0}$</li>
+</ol>
+The powerset of $B \is \setof{a,b,c,d}$, on the other hand, has only $2^{\card{B}} = 2^4 = 16$ members.
+
+The contrast is even more pronounced when we consider a multiset like $\setof{a:9}$.
+While $\wp(\setof{a})$ only consists of $\emptyset$ and $\setof{a}$, $\wp(\setof{a:9})$ has $10$ members.
+\end{example}
+
+```python
+def is_subset(A, B):
+    for a in A.elements():
+        if A[a] > A[b]:
+            return False
+    return True
+
+def powerset(A):
+    ps = [A]
+    for key in A.keys():
+        for val in range(A[key]):
+            buffer = []
+            for subset in ps:
+                subset = subset.copy()
+                subset[key] = val
+                if subset not in buffer:
+                    buffer.append(subset)
+            ps += buffer
+    return(ps)
+
+from pprint import pprint
+
+print("Powerset of {} is:".format(B))
+pprint(powerset(B))
+
+print()
+print("Powerset of {} is:".format(A))
+pprint(powerset(Counter(A)))
+```
+
+The cardinality of the powerset of a multiset is computed by adding 1 to each count and then multiplying all counts.
+Again we can express this more precisely and succinctly with a formula:
+
+$$
+    \card{\wp(S_M)} \is \prod_{s \in S_M} \left ( S_M(s) + 1 \right )
+$$
+
+The operator $\prod$ behaves exactly like $\sum$, except that it is a shorthand for multiplication rather than addition.
+So the formula above expands to $( S_M(s_1) + 1 ) \mult ( S_M(s_2) + 1 ) \mult \cdots \mult ( S_M(s_n) + 1 )$.
+
+\begin{example}
+We have already seen that $B_M \is \setof{a:1, b:1, c:2, d:1}$ has 24 subsets, so its powerset has cardinality 24.
+Our formula yields exactly the same value.
+
+$$
+\begin{align*}
+    \card{\wp(B_M)} &= \prod_{s \in B_M} \left ( B_M(s) + 1 \right )\\
+                    &= ( B_M(a) + 1 ) \mult ( B_M(b) + 1 ) \mult ( B_M(c) + 1 ) \mult (B_M (d) + 1 )\\
+                    &= ( 1 + 1 ) \mult ( 1 + 1 ) \mult ( 2 + 1 ) \mult ( 1 + 1 )\\
+                    &= 2 \mult 2 \mult 3 \mult 2\\
+                    &= 24\\
+\end{align*}
+$$
+\end{example}
+
+## Special Operations for Multisets
+
+Since multisets are a generalization of sets, they allow for certain operations that would not make much sense with sets.
+These are *multiset sum* ($\multisum$) and *scalar multiplication * ($\multimult$).
+
+\begin{definition}
+    Let $A_M$ and $B_M$ be two multisets and $n$ a natural number.
+    Then
+    <ul>
+        <li>the multiset sum $A_M \multisum B_M$ maps every $a$ to $A_M(a) + B_M(a)$,</li>
+        <li>the scalar multiplication $n \multimult A_M$ maps every $a$ to $n \mult A_M(a)$ (where $\mult$ denotes multiplication over natural numbers).</li>
+    </ul>
+\end{definition}
+
+\begin{example}
+    As in the previous examples, we will look at the multisets $A_M \is \setof{a:3, b:2, c:1}$ and $B_M \is \setof{a:1, b:1, c:2, d:1}$.
+    For those two sets, $A_M \multisum B_M \is \setof{a:4, b:3, c:3, d:1}$, which is identical to $B_M \multisum A_M$.
+    Furthermore, $3 \multimult A_M = \setof{a:9, b:6, c:3}$ whereas $3 \multimult B_M = \setof{a:3, b:3, c:6, d:3}$.
+\end{example}
+
+```python
+def scalar_multiplication(A, n):
+    return Counter({key: n * val for key, val in A.items()})
+
+print("{} + {} = {}".format(A, B, A+B))
+print("{} * {} = {}".format(3, A, scalar_multiplication(A, 3)))
+print("{} * {} = {}".format(3, B, scalar_multiplication(B, 3)))
+```
+
+## Sets as Instances of Multisets
+
+We said at the beginning that multisets are a generalization of sets.
+If this is true, then sets should fall out as just a special case of multisets.
+Let us see if this is true.
+
+First, every set $S$ can be regarded as a multiset with co-domain $\mathbb{N}$ but range $\setof{0,1}$.
+All the members of $S$ are mapped to $1$, everything else to $0$.
+So far so good.
+Now consider the set operations union, intersection, and relative complement.
+For multisets $A_M$ and $B_M$, $A_M \cup B_M$ maps every $a$ to $\max(A_M(a), B_M(a))$.
+For sets, the only two possible values for $A_M(a)$ and $B_M(a)$ are $0$ and $1$.
+Let's consider each scenario in turn with union:
+
+- $a \in A$, $a \in B$, so $a \in A \cup B$; then $A_M(a) = B_M(a) = 1$, and $\max(1,1) = 1$, whence $a \in A_M \cup B_M$.
+- $a \in A$, $a \notin B$, so $a \in A \cup B$; then $A_M(a) = 1$, $B_M(a) = 0$, and $\max(1,0) = 1$, whence $a \in A_M \cup B_M$.
+- $a \notin A$, $a \in B$, so $a \in A \cup B$; then $A_M(a) = 0$, $B_M(a) = 1$, and $\max(1,0) = 1$, whence $a \in A_M \cup B_M$.
+- $a \notin A$, $a \notin b$, so $a \notin A \cup B$; then $A_M(a) = 0$, $B_M(a) = 0$, and $\max(0,0) = 0$, whence $a \notin A_M \cup B_M$.
+
+Intersection and relative complement work in exactly the same fashion.
+
+Even the formula for cardinality works as expected: given a set $A$, $\card{A}$ is the number of elements it contains, whereas $\card{A_M}$ is the sum of the counts of each element.
+But since every $a \in A_M$ has a count of $1$, this sum is the same as $\card{A}$:
+$$
+\begin{align*}
+    \card{A_M}  & = \sum_{a \in A_M} A_M(a)\\
+                & = A_M(a_1) + \cdots + A_M(a_n)\\
+                & = 1 + \cdots + 1\\
+                & = \card{A}
+\end{align*}
+$$
+This shows that multisets are indeed a faithful generalization of sets.
+And it also gives us yet another instance of how one and the same object can be viewed in multiple ways.
+At this point, we have identified sets as special cases of functions, tuples, and multisets.
+
+Alright, now that we have a shiny new toy, let's see what we can do with it.
