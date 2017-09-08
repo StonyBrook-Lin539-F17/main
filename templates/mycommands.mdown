@@ -14,3 +14,5 @@ $\newcommand{\RightEdge}{\ensuremath{\RightEdgeSymbol}}$
 $\newcommand{\mult}{\ensuremath{\times}}$
 $\newcommand{\multisum}{\ensuremath{\uplus}}$
 $\newcommand{\multimult}{\ensuremath{\otimes}}$
+$\newcommand{\freqsymbol}{\ensuremath{\mathrm{freq}}}$
+$\newcommand{\freq}[1]{\ensuremath{\freqsymbol(#1)}}$
