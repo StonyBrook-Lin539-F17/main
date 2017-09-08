@@ -311,6 +311,17 @@ $$
                 & = \card{A}
 \end{align*}
 $$
+
+We can even confirm why the cardinality of the powerset of some set $S$ must be $2^\card{S}$.
+The formula for calculating the cardinality of the powerset of a multiset $S_M$ is $\prod_{s \in S_M} (S_M(s) + 1)$.
+Every member of a set has a count of $1$, for a set $S$ this formula expands to $\prod_{s \in S} (1 + 1) = \prod_s{ \in S}$.
+So if $S$ has $n$ members, the cardinality of $\wp(S)$ is
+$$
+\underbrace{2 \times \cdots \times 2}_{n \text{ times}}.
+$$
+But that is the same as $2^n$, which is the same as $2^\card{S}$.
+It all fits together exactly as it should.
+
 This shows that multisets are indeed a faithful generalization of sets.
 And it also gives us yet another instance of how one and the same object can be viewed in multiple ways.
 At this point, we have identified sets as special cases of functions, tuples, and multisets.
