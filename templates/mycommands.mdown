@@ -11,3 +11,6 @@ $\newcommand{\LeftEdgeSymbol}{\ensuremath{\rtimes}}$
 $\newcommand{\RightEdgeSymbol}{\ensuremath{\ltimes}}$
 $\newcommand{\LeftEdge}{\ensuremath{\LeftEdgeSymbol}}$
 $\newcommand{\RightEdge}{\ensuremath{\RightEdgeSymbol}}$
+$\newcommand{\mult}{\ensuremath{\times}}$
+$\newcommand{\multisum}{\ensuremath{\uplus}}$
+$\newcommand{\multimult}{\ensuremath{\otimes}}$
