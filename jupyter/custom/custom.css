@@ -13,6 +13,7 @@ body {
 
     counter-reset: example;
 
+    counter-reset: section;
 }
 
 div#notebook {
@@ -25,7 +26,6 @@ div#notebook {
 
 h1 {
 
-    counter-reset: section;
 
 }
 
