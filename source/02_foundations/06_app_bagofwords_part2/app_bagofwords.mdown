@@ -1,7 +1,178 @@
 # Bag of Words Revisited
 
+By now you are familiar with a rudimentary version of the bag-of-words model.
+I say rudimentary because, to be frank, we haven't looked at the actual bag-of-words model yet.
+Our version of the bag-of-words model maps texts (formalized as strings) to sets.
+But this isn't what is commonly understood as a bag-of-words model, most people would call it a "set-of-words" model.
+A bag-of-words isn't supposed to jut list the word types that occur in a text, it lists the word types and the respective number of tokens.
+So the true bag-of-words model maps strings to multisets.
+
 ## Keeping Track of Counts
 
-## Use for Probabilities
+As a reminder, here is our original definition of the bag-of-words model, now with a more appropriate name:
+
+\begin{definition}
+Let $\Sigma$ be some fixed finite set of words.
+A *set-of-words* model is a function $s: \Sigma^+ \rightarrow \wp(\Sigma)$ such that for all $t \in \Sigma^+$
+
+$$
+s(t)
+\is
+\begin{cases}
+    \setof{t} & \text{if } t \in \Sigma\\
+    s(u) \cup s(v) & \text{if } t = u \tuplecat v, \text{ where } u, v \in \Sigma^+\\
+\end{cases}
+$$
+\end{definition}
+
+Only a minor change is needed for a proper bag-of-words model that extracts counts for all word types.
+
+\begin{definition}
+Let $\Sigma$ be some fixed finite set of words.
+A *bag-of-words* model is a function $b: \Sigma^+ \rightarrow \Sigma \times \mathbb{N}$ such that for all $t \in \Sigma^+$
+
+$$
+b(t)
+\is
+\begin{cases}
+    \setof{t: 1} & \text{if } t \in \Sigma\\
+    b(u) + b(v) & \text{if } t = u \tuplecat v, \text{ where } u, v \in \Sigma^+\\
+\end{cases}
+$$
+\end{definition}
+
+\begin{example}
+The set-of-words model converts the mini-text *Only John could like John* (modulo capitalization) to the set $\setof{\text{only}, \text{john}, \text{could}, \text{like}}$.
+The sentence *If police police police police police, then police police police police police* it converts to $\setof{\text{if}, \text{police}, \text{then}}$.
+
+The bag-of-words model gives different results.
+The first sentence is mapped to the multiset $\setof{\text{only}: 1, \text{john}: 2, \text{could}: 1, \text{like}: 1}$.
+The second one yields $\setof{\text{if}: 1, \text{police}: 10, \text{then}: 1}$.
+\end{example}
+
+Note that we can still modify the model to remove stop words or use $n$-grams instead of unigrams.
+The function $\mathrm{del}_S$, which deletes all members of $S$ from the text, does not need to be altered at all, and the change in the $n$-gram variant $b_n$ of $b$ is almost unnoticeable.
+
+\begin{definition}
+An *$n$-gram set-of-word model* is a function $s_n: \Sigma^* \rightarrow \wp(\Sigma^n)$ such that $t \mapsto \setof{ g \mid t = u \tuplecat g \tuplecat v, \text{ where } g \in \Sigma^n \text{ and } u,v \in \Sigma^*}$.
+\end{definition}
+
+\begin{definition}
+An *$n$-gram bag-of-word model* is a function $b_n: \Sigma^* \rightarrow \Sigma^n \times \mathbb{N}$ such that $t \mapsto \setof{ g \mid t = u \tuplecat g \tuplecat v, \text{ where } g \in \Sigma^n \text{ and } u,v \in \Sigma^*}_M$.
+\end{definition}
+
+\begin{example}
+Consider once more the sentence *Only John could like John*.
+A bigram set-of-words model would map this to $\setof{\text{only john}, \text{john could}, \text{could like}, \text{like john}}$.
+The bigram bag-of-words model instead yields $\setof{\text{only john}: 1, \text{john could}: 1, \text{could like}: 1, \text{like john}: 1}$.
+How does this result come about according to the definition?
+
+For every bigram in the set-of-words, we have to calculate its count.
+Its count is equivalent the number of string pairs $\tuple{u,v}$ such that we can wrap $u$ and $v$ around the bigram to obtain the original text.
+For each bigram there is only one working fitting pair $\tuple{u,v}$ in this text.
+
+\begin{array}{rrl}
+    u                      & \text{bigram}     &  v\\
+    \emptystring           & \text{only john}  &  \text{could like john}\\
+    \text{only}            & \text{john could} &  \text{like john}\\
+    \text{only john}       & \text{could like} &  \text{john}\\
+    \text{only john could} & \text{like John}  &  \emptystring\\
+\end{array}
+
+Now let's look at *If police police police police police, then police police police police police*.
+The bigram set-of-words model returns $\setof{\text{if police}, \text{police police}, \text{police then}, \text{then police}}$.
+And with a bigram bag-of-words model we get the multiste $\setof{\text{if police}: 1, \text{police police}: 8, \text{police then}: 1, \text{then police}: 1}$.
+Again we have to look at the possible $\tuple{u,v}$ pairs for each bigram to determine its count.
+To avoid clutter, we write $\text{police}^n$ for $n$ instance of *police* in a row.
+
+\begin{array}{rcl}
+    u                                        & \text{bigram}        & v\\
+    \emptystring                             & \text{if police}     & \text{police}^4 \text{ then police}^5\\
+    \text{if}                                & \text{police police} & \text{police}^3 \text{ then police}^5\\
+    \text{if police}                         &                      & \text{police}^2 \text{ then police}^5\\
+    \text{if police}^2                       &                      & \text{police} \text{ then police}^5\\
+    \text{if police}^3                       &                      & \text{then police}^5\\
+    \text{if police}^5 \text{ then}          &                      & \text{police}^3\\
+    \text{if police}^5 \text{ then police}   &                      & \text{police}^2\\
+    \text{if police}^5 \text{ then police}^2 &                      & \text{police}\\
+    \text{if police}^5 \text{ then police}^3 &                      & \emptystring\\
+    \text{if police}^4                       & \text{police then}   & \text{police}^5\\
+    \text{if police}^5                       & \text{then police}   & \text{police}^4\\
+\end{array}
+\end{example}
+
+```python
+from collections import Counter
+
+def ngram_list(text, n):
+    return zip(*[text[pos:] for pos in range(n)])
+
+def ngram_set(text, n):
+    return set(ngram_list(text, n))
+
+def ngram_multiset(text, n):
+    return Counter(ngram_list(text, n))
+
+sentence1 = ["only", "john", "could", "like", "john"]
+sentence2 = ["if", "police", "police", "police", "police", "police",
+             "then", "police", "police", "police", "police", "police"]
+
+print("Set for {}: {}".format(" ".join(sentence1), ngram_set(sentence1, 2)))
+print("Multiset for {}: {}".format(" ".join(sentence1), ngram_multiset(sentence1, 2)))
+print()
+print("Set for {}: {}".format(" ".join(sentence2), ngram_set(sentence2, 2)))
+print("Multiset for {}: {}".format(" ".join(sentence2), ngram_multiset(sentence2, 2)))
+```
+
+## Counts for Frequencies and Probabilities
+
+One major advantage the proper bag-of-words model has over the set-of-words model is that the counts provide direct information about frequency, which can be used in various ways.
+Given a multiset $S_M$, the frequency of some $s \in S_M$ is the count of $s$ divided by the total of all counts.
+Since the latter is identical to the cardinality of $S_M$, we can calculate frequency with the general formula $\freq{s} \is \frac{S_M(s)}{\card{S_M}}$.
+We can extend the function to multisets such that $\freq{S_M} \is \setof{ \tuple{s, \freq{s}} \mid s \in S_M}$.
+Since $\tuple{s, \freq{s}}$ is a little cumbersome to right inside sets, we sometimes write $s: \freq{s}$ instead.
+However, do not let the notation fool you --- $\freq{S_M}$ is not a multiset because the frequencies range from $0$ to $1$ and thus aren't limited to natural numbers.
+
+\begin{example}
+Let's go back to the multiset 
+$S_M \is \setof{\text{if police}: 1, \text{police police}: 8, \text{police then}: 1, \text{then police}: 1}$.
+The cardinality of this set is $\sum_{s \in S_M} S_M(s) = 1 + 8 + 1 + 1 = 11$.
+Hence $\freq{S_M} =  \setof{\text{if police}: \frac{1}{11}, \text{police police}: \frac{8}{11}, \text{police then}: \frac{1}{11}, \text{then police}: \frac{1}{11}}$.
+\end{example}
+
+```python
+import matplotlib.pyplot as plt
+from pprint import pprint
+
+unigrams = ngram_multiset(sentence2, 1)
+bigrams = ngram_multiset(sentence2, 2)
+trigrams = ngram_multiset(sentence2, 3)
+
+for ngrams in [unigrams, bigrams, trigrams]:
+    total = sum(ngrams.values())
+    pprint({key: val/total for key, val in ngrams.items()})
+
+for ngrams in {1: unigrams, 2: bigrams, 3: trigrams}.items():
+    label = ngrams[0]
+    count = ngrams[1]
+    # plt.bar(list(count.keys()), count.values(), color='b')
+    # plt.txt(str(label)+"-gram")
+    # plt.show()
+```
+
+Counts and frequency information can be used in various ways.
+For example, we might measure the relevance of a text for a search query based on how much of the text consists of the words in the search query.
+In this case, it is particularly important to remove all stop words.
+
+\begin{example}
+The sentence *Only John thinks John thinks John likes John* corresponds to the multiset
+$S_M \is \setof{\text{only}: 1, \text{john}: 4, \text{thinks}: 2, \text{likes}: 1}$.
+With frequencies instead of counts this is
+$S_M \is \setof{\text{only}: 0.125, \text{john}: 0.5, \text{thinks}: 0.25, \text{likes}: 0.5}$.
+So the relevance score to the query *john* would be .5
+
+*I like John* blabla bla
+\end{example}
+
 
 ## Handling Data Sparsity with Skip $n$-Grams
