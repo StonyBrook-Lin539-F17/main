@@ -332,6 +332,20 @@ As you can see, these are the bigrams of those words in the sentence that are se
 The set of $2$-skip bigrams would contain *Aristotle on*, *put the*, and *metaphysics map*.
 \end{example}
 
+```python
+from pprint import pprint
+
+def kskip_ngrams(string, k, n):
+    if n < 1:
+        return []
+    offset = (n-1) * (k+1) + 1
+    return [string[i:i+offset:k+1] for i in range(len(string) - offset + 1)]
+
+example = "Aristotle put metaphysics on the map".split()
+for k in range(1,6):
+    pprint(kskip_ngrams(example, k, 2))
+```
+
 \begin{definition}
 Let $s \in \Sigma^*$ be a $\Sigma$-string.
 Then $g \is u_1 \tuplecat \cdots \tuplecat u_n \in \Sigma^n$ is a *$k$-skip $n$-gram* of $s$ iff there are $v_1, \ldots, v_{n-1} \in \Sigma^k$ and $x,y \in \Sigma^*$ such that $s = x \tuplecat u_1 \tuplecat v_1 \tuplecat u_2 \tuplecat v_2 \tuplecat \cdots \tuplecat u_{n-1} \tuplecat v_{n-1} \tuplecat {u_n} \tuplecat y$.
@@ -343,6 +357,10 @@ But remember that $\emptystring \tuplecat u_i = u_i \tuplecat \emptystring = u_i
 So $g$ is a $0$-skip $n$-gram of string $s$ iff there are $x,y \in \Sigma^*$ such that $s = x \tuplecat u_1 \tuplecat \emptystring \tuplecat u_2 \tuplecat \cdots \tuplecat u_{n-1} \tuplecat \emptystring \tuplecat u_n \tuplecat y = x \tuplecat u_1 \tuplecat u_2 \tuplecat \cdots \tuplecat u_{n-1} \tuplecat u_n \tuplecat y = x \tuplecat g \tuplecat y$.
 But this holds iff $g$ is an $n$-gram of $s$.
 So $0$-skip grams reduce to the familiar $n$-grams, showing that the latter are a special case of skip grams.
+
+```python
+pprint(kskip_ngrams(example, 0, 2))
+```
 
 With $k$-skip $n$-grams, we can extract additional information from websites without increasing the size of $n$-grams.
 For example, $1$-skip bigrams in combination with bigrams convey the same information as trigrams, but the storage cost is lower.
