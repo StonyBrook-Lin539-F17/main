@@ -241,9 +241,9 @@ h1, h2, h3 {
 
     font-style: normal;
 
-    background: #ffb3ec;
+    background: #ffe6f9;
     
-    border-color: #b30086;
+    border-color: #ffb3ec;
 
     border-style: solid;
 
@@ -257,6 +257,39 @@ h1, h2, h3 {
 .advice:before {
 
     content: "Advice.";
+
+    font-weight: bold;
+
+    font-style: normal;
+
+}
+
+.remark {
+
+    display: block;
+
+    margin: 12px 0;
+
+    font-size: 12pt;
+
+    font-style: normal;
+
+    background: #ffe6f9;
+    
+    border-color: #ffb3ec;
+
+    border-style: solid;
+
+    border-width: thin;
+
+    padding: .5%;
+
+    counter-increment: definition;
+}
+
+.remark:before {
+
+    content: "Remark.";
 
     font-weight: bold;
 
