@@ -1,0 +1,313 @@
+# Multisets for Local Grammars
+
+Not only the bag-of-words model becomes much more versatile once one moves from sets to multisets, the same holds for SL and TSL grammars.
+As you hopefully recall, these grammars deem a string well-formed or ill-formed based on whether it contains any forbidden $n$-grams.
+This is expressed mathematically by mapping a string to its **set** of $n$-grams, and the intersecting this set with the grammar.
+The string is well-formed iff the intersection is empty.
+
+Obviously we could also map a string to the **multiset** of all its $n$-grams, that's exactly what the bag-of-words model does.
+That said, many things can be done with math, the question is whether it is worth doing.
+
+## Adding Weights to Local Grammars
+
+With local grammars, the payoff of multisets is that they allow us to move from a categorical notion of well-formedness --- good or bad --- to a gradient one where some strings are better than others but not necessarily perfect.
+
+\begin{example}
+*fixme*: give a nice example from English here
+\end{example}
+
+A *weighted local grammar* can account for such variation.
+In such a grammar, each $n$-gram has a *weight* that expresses its relative importance.
+In principle we can pick our weights as we see fit: natural numbers, integers, thumbs up/middle/down, the grades A, B, C, D, F, and so on.
+Anything is game as long as there is a clear ordering between the individual weights.
+Usually, though, one uses probabilities for the weights because they can be equated with relative frequencies, which in turn can be computed automatically from texts.
+So in most cases a weighted local grammar is one where each $n$-gram has a certain probability value attached to it.
+To calculate the probability of a string according to the grammar, one simply multiplies the probability values of all $n$-gram tokens in the string.
+
+\begin{example}
+For the sake of simplicity we will use a grammar for sentence structure rather than sound structure.
+Consider the following SL-2 grammar where each trigram has a fixed probability:
+$$
+\begin{array}{lr}
+\text{$\LeftEdge$ the} & 1\\
+\text{the man} & 0.5\\
+\text{the men} & 0.5\\
+\text{man sleeps} & 0.7\\
+\text{man who} & 0.3\\
+\text{men sleep} & 1\\
+\text{who sleeps} & 1\\
+\text{sleep $\RightEdge$} & 1\\
+\text{sleeps sleeps} & 0.3\\
+\text{sleeps $\RightEdge$} & .7\\
+\end{array}
+$$
+This grammar no longer classifies sentences as well-formed or ill-formed but instead assigns each sentence a probability:
+$$
+\begin{align*}
+    \prob(\text{the men sleep}) &= \prob(\LeftEdge \text{the men sleep} \RightEdge)\\
+                            &= \prob(\LeftEdge \text{the}) \mult \prob(\text{the men}) \mult \prob(\text{men sleep}) \mult \prob(\text{sleep} \RightEdge)\\
+                            &= 1 \mult 0.5 \mult 1 \mult 1\\
+                            &= 0.5\\
+    \prob(\text{the man who sleeps sleeps}) &= \prob(\LeftEdge \text{the man who sleeps sleeps} \RightEdge)\\
+                            &= \prob(\LeftEdge \text{the}) \mult \prob(\text{the man}) \mult \prob(\text{man who}) \mult \prob(\text{who sleeps}) \mult \prob(\text{sleeps sleeps}) \mult \prob(\text{sleeps} \RightEdge)\\
+                            &= 1 \mult 0.5 \mult 0.3 \mult 1 \mult 0.3 \mult 0.7\\
+                            &= 0.0315\\
+\end{align*}
+$$
+Sentences with $n$-grams that aren't listed in the grammar automatically receive a score of $0$.
+\end{example}
+
+There are different ways one can interpret the scores a probabilistic grammar assigns to strings.
+Under a frequentist view, the probability of a sentence encodes how likely it is to occur in a text according to the grammar.
+A cognitivist view equates it with the acceptability of the sentence.
+And the neutral view simply treats them as scores assigned by the grammar that have no direct analogue in the real-world but instead provide an aggregate measure of various factors that play a role in human language.
+
+One can also try to relate these scores to the familiar ill-formed/well-formed distinction by establishing a *grammaticality threshold*.
+Then a string is ill-formed iff its score is below this threshold.
+
+\begin{example}
+Suppose we couple the grammar from the previous example with a grammaticality threshold of 1% ($= 0.01$).
+Then *The man who sleeps sleeps sleeps* is predicted to be ill-formed:
+$$
+\begin{align*}
+    \prob(\text{the man who sleeps sleeps sleeps}) &= \prob(\LeftEdge \text{the man who sleeps sleeps sleeps} \RightEdge)\\
+                            &= \prob(\LeftEdge \text{the}) \mult \prob(\text{the man}) \mult \prob(\text{man who}) \mult \prob(\text{who sleeps}) \mult \prob(\text{sleeps sleeps}) \mult \prob(\text{sleeps sleeps}) \mult \prob(\text{sleeps} \RightEdge)\\
+                            &= 1 \mult 0.5 \mult 0.3 \mult 1 \mult 0.3 \mult 0.3 \mult 0.7\\
+                            &= 0.00945\\
+\end{align*}
+$$
+\end{example}
+
+Note that if we are striving for a realistic grammar, the grammaticality threshold should not be compared against the actual score of the string, but one that has been normalized with respect to the string's length.
+Otherwise, strings that are well-formed will dip below the threshold as their length increases.
+
+\begin{example}
+Here is a minor modification of the earlier grammar that allows for coordination:
+$$
+\begin{array}{lr}
+\text{$\LeftEdge$ the} & 1\\
+\text{the man} & 0.5\\
+\text{the men} & 0.5\\
+\text{man sleeps} & 0.7\\
+\text{man who} & 0.3\\
+\text{men sleep} & 0.9\\
+\text{men and} & 0.1\\
+\text{and men} & 1\\
+\text{who sleeps} & 1\\
+\text{sleep $\RightEdge$} & 1\\
+\text{sleeps sleeps} & 0.3\\
+\text{sleeps $\RightEdge$} & .7\\
+\end{array}
+$$
+This grammar assigns scores to sentences of the form *the men (and men)$^n$ sleep* ($n \geq 0$).
+$$
+\begin{align*}
+    \prob(\text{the men sleep}) &= 1 \mult 0.5 \mult 0.9 \mult 1 &= 0.45\\
+    \prob(\text{the men and men sleep}) &= 1 \mult 0.5 \mult 0.1 \mult 1 \mult 0.9 \mult 1 &= 0.045\\
+    \prob(\text{the men and men and men sleep}) &= 1 \mult 0.5 \mult 0.1 \mult 1 \mult 0.1 \mult 1 \mult 0.9 \mult 1 &= 0.0045\\
+    \prob(\text{the men (and men)$^n$ sleep}) &= 1 \mult 0.5 \mult (0.1 \mult 1)^n \mult 0.9 \mult 1\ &= 0.45 \mult \frac{1}{10^n}\
+\end{align*}
+$$
+No matter to what value $t$ we set our grammaticality threshold, there is some $n \geq 0$ such that $\prob(\text{the men (and men)$^n$ and men}) < t$.
+\end{example}
+
+## A Formal Definition With Multisets
+
+At an intuitive level probabilistic local grammars are easy enough to handle.
+Next we will see that the definition is also straight-forward if we use multisets.
+Without multisets, things are more convoluted.
+
+\begin{definition}
+A *probabilistic SL-$n$ grammar* is a pair $G \is \tuple{S, \prob}$ such that $S \subseteq \Sigma^n$ is an SL-$n$ grammar over some fixed $\Sigma$ and $\prob: \Sigma^n \rightarrow [0,1]$ is a total mapping from $n$-grams to real numbers between $0$ and $1$.
+For every $n$-gram $g \in \Sigma^n - S$, it holds that $\prob(g) = 0$.
+We extend $P$ from $n$-grams to strings such that
+$$
+\prob(s) \is
+\begin{cases}
+    \prob(s) & \text{if } s \in \Sigma^n\\
+    \prob(s_1 \cdots s_n) \mult \prob(s_2 \cdots s_n \tuplecat u) & \text{if } s = s_1 \cdots s_n \tuplecat u, u \in \Sigma^*, s_i \in \Sigma\ (1 \leq i \leq n) 
+\end{cases}
+$$
+\end{definition}
+
+This definition isn't too difficult, but the extension of $P$ from $n$-grams to strings is fairly convoluted.
+With multisets, we have a more elegant solution.
+
+\begin{definition}
+For any $\Sigma$-string $s$ and $n$-gram $g$, we write $\count{s}{g}$ to denote $(b_n(s))(g)$, the number of instances of $g$ in $s$.
+Then
+$$
+\prob(s) = \prod_{g \in S} \prob(g)^{\count{s}{g}}
+$$
+\end{definition}
+
+\begin{example}
+Consider once more the grammar with coordination:
+$$
+\begin{array}{lr}
+\text{$\LeftEdge$ the} & 1\\
+\text{the man} & 0.5\\
+\text{the men} & 0.5\\
+\text{man sleeps} & 0.7\\
+\text{man who} & 0.3\\
+\text{men sleep} & 0.9\\
+\text{men and} & 0.1\\
+\text{and men} & 1\\
+\text{who sleeps} & 1\\
+\text{sleep $\RightEdge$} & 1\\
+\text{sleeps sleeps} & 0.3\\
+\text{sleeps $\RightEdge$} & .7\\
+\end{array}
+$$
+The score for *the men and men and men sleep* is $0.0045$ according to the formula below.
+$$
+\prob(\text{the men and men and men sleep}) = 1 \mult 0.5 \mult 0.1 \mult 1 \mult 0.1 \mult 1 \mult 0.9 \mult 1 = 0.0045\\
+$$
+This formula calculates the score exactly as described in the first definition.
+But we can do it with multisets instead.
+
+First, we take the 1-augmented counterpart of the string (i.e. we add left and right edge markers) and compute the multiset of bigrams with $b_n$.
+$$
+\begin{array}{rl}
+    \{  &\\
+        & \LeftEdge \text{the}: 1\\
+        & \text{the men}: 1\\
+        & \text{men and}: 2\\
+        & \text{and men}: 2\\
+        & \text{men sleep}: 1\\
+        & \text{sleep} \RightEdge: 1\\
+    \}  &\\
+\end{array}
+$$
+Now we use the product formula for $P$ in the second definition: 
+$$
+\begin{align*}
+\prod_{g \in S} \prob(g)^{\count{s}{g}}
+    &
+    = 
+        \prob(\text{$\LeftEdge$ the})^{\count{s}{\text{$\LeftEdge$ the}}}
+        \mult
+        \prob(\text{the man})^{\count{s}{\text{the man}}}
+        \mult
+        \prob(\text{the men})^{\count{s}{\text{the men}}}
+        \mult
+        \prob(\text{man sleeps})^{\count{s}{\text{man sleeps}}}
+    \\
+    &
+        \mult
+        \prob(\text{man who})^{\count{s}{\text{man who}}}
+        \mult
+        \prob(\text{men sleep})^{\count{s}{\text{men sleep}}}
+        \mult
+        \prob(\text{men and})^{\count{s}{\text{men and}}}
+        \mult
+        \prob(\text{and men})^{\count{s}{\text{and men}}}
+    \\
+    &
+        \mult
+        \prob(\text{who sleeps})^{\count{s}{\text{who sleeps}}}
+        \mult
+        \prob(\text{sleep $\RightEdge$})^{\count{s}{\text{sleep $\RightEdge$}}}
+        \mult
+        \prob(\text{sleeps sleeps})^{\count{s}{\text{sleeps sleeps}}}
+        \mult
+        \prob(\text{sleeps $\RightEdge$})^{\count{s}{\text{sleeps $\RightEdge$}}}\\
+    \\
+    &
+    =
+    1^1 \mult
+    0.5^0 \mult
+    0.5^1 \mult
+    0.7^0 \mult
+    0.3^0 \mult
+    0.9^1 \mult
+    0.1^2 \mult
+    1^2 \mult
+    1^0 \mult
+    1^1 \mult
+    0.3^0 \mult
+    0.7^0
+    \\
+    &
+    =
+    1 \mult
+    1 \mult
+    0.5 \mult
+    1 \mult
+    1 \mult
+    0.9 \mult
+    0.01 \mult
+    1 \mult
+    1 \mult
+    1 \mult
+    1 \mult
+    1
+    \\
+    &
+    =
+    0.0045
+\end{align*}
+$$
+We did indeed end up with the same value.
+\end{example}
+
+\begin{remark}
+As you can see the product formula with multisets works because for any number $x$, it holds that $x^0 = 1$ rather than $x^0 = 0$.
+Otherwise an $n$-gram that does not occur in the string would cause us to multiply by $0$, which of course yields $0$.
+But why is $x^0 = 1$?
+The answer is actually fairly simple.
+
+First, note that we can rewrite $x^0$ as $x^{n-n}$ for any number $n$.
+We could pick, say $n = 2$ and have $x^{2-2}$.
+Second, we observe that subtraction of exponents corresponds to division.
+For example, $3^{4-2} = \frac{3^4}{3^2} = \frac{81}{9} = 9 = 3^2 = 3^{4-2}$.
+Hence we may rewrite $x^{2-2}$ as $\frac{x^2}{x^2}$.
+But $\frac{n}{n} = 1$ for any number $n$, so $\frac{x^2}{x^2} = 1$, and consequently $1 = x^{2-2} = x^0$.
+And that is why any number to the power of $0$ equals $1$, not $0$.
+\end{remark}
+
+## Categorical Local Grammars as a Special Case of Probabilistic Ones
+
+By now you know our routine whenever we generalize a familiar concept to a new one --- we want to see how the old one is a special case of the former.
+For local grammars that only distinguish between well-formed and ill-formed, this realization comes in two steps.
+
+Step 1 is simple: the definition of probabilistic grammars does not preclude grammars that map all the $n$-grams they contain to $1$, and all other $n$-grams to 0.
+No $n$-gram receives a value between the two.
+Such grammars only recognize two classes of strings, well-formed and ill-formed, just like our original definition of local grammars.
+But this subtype of probablistic grammars because the $n$-grams listed by the grammar are those that a string may contain, rather than those it may not contain.
+
+\begin{example}
+    Remember that word-final devoicing in German can be described by the SL-$2$ grammar $G \is \setof{\String{z\RightEdge}, \String{v\RightEdge}}$.
+    This grammar lists the forbidden bigrams --- if one of them occurs in a word, it is not a licit word of German.
+    We can convert this into a probabilistic grammar $G_P \is \tuple{ \setof{\String{z\RightEdge}, \String{v\RightEdge}}, \prob}$ with $\prob(\String{z\RightEdge}) = \prob(\String{v\RightEdge}) = 1$.
+    But this grammar would only $1$ to strings that consist only of these two bigrams.
+    This is impossible because every string must contain some bigram that starts with $\LeftEdge$.
+    So rather than blocking certain illicit strings of German, $G_P$ assigns all strings a score of $0$, effectively forbidding them.
+    $$
+    \begin{align*}
+        \prob(\text{li:z}) &= \prob(\LeftEdge \text{l}) \mult \prob(\text{li:}) \mult \prob(\text{i:z}) \mult \prob(\text{z}\RightEdge)\\
+                           &= 0 \mult 0 \mult 1 \mult 0\\
+                           &= 0\\
+        \prob(\text{li:s}) &= \prob(\LeftEdge \text{l}) \mult \prob(\text{li:}) \mult \prob(\text{i:s}) \mult \prob(\text{z}\RightEdge)\\
+                           &= 0 \mult 0 \mult 0 \mult 0\\
+                           &= 0
+    \end{align*}
+    $$
+    If we want a probabilistic grammar $G_P$ that behaves the same as the devoicing grammar $G$, we have to assign a score of $1$ to every bigram except those listed in the grammar.
+    There is only one way to do so: $G_P$ must contain all bigrams **except** those that are ill-formed.
+    So $G_P \is \tuple{ \overline{G}, P }$ such that $\overline{G} = \Sigma^2 - G$ and $P$ maps every $g \in \overline{G}$ to $1$.
+    Only then do we get the desired scores.
+    $$
+    \begin{align*}
+        \prob(\text{li:z}) &= \prob(\LeftEdge \text{l}) \mult \prob(\text{li:}) \mult \prob(\text{i:z}) \mult \prob(\text{z}\RightEdge)\\
+                           &= 1 \mult 1 \mult 0 \mult 1\\
+                           &= 1\\
+        \prob(\text{li:s}) &= \prob(\LeftEdge \text{l}) \mult \prob(\text{li:}) \mult \prob(\text{i:s}) \mult \prob(\text{z}\RightEdge)\\
+                           &= 1 \mult 1 \mult 1 \mult 1\\
+                           &= 1
+    \end{align*}
+    $$
+\end{example}
+
+In order to subsume SL-$n$ grammars as a special case of probabilistic local grammars, we have to view each SL-$n$ grammar $G$ as a shorthand for specifying the set $\Sigma^n-G$ of well-formed $n$-grams.
+When $\Sigma^n-G$ is combined with a probability function $\prob$ such that $\prob(g) = 1$ iff $g \in \Sigma^n - G$, we get a probabilistic grammar that behaves exactly like $G$.

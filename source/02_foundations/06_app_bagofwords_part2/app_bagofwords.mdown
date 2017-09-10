@@ -367,7 +367,7 @@ pprint(kskip_ngrams(example.split(), 0, 2))
 With $k$-skip $n$-grams, we can extract additional information from websites without increasing the size of $n$-grams.
 For example, $1$-skip bigrams in combination with bigrams convey the same information as trigrams, but the storage cost is lower.
 Given a fixed $\Sigma$ of size $n$, the set of all trigrams has cardinality $\card{\Sigma \times \Sigma \times \Sigma} = \card{\Sigma^3} = \card{\Sigma}^3 = n^3$.
-Set set of all bigrams and all $1$-skip bigrams, on the other hand, each have cardinality $n^2$, so their combined storage cost is $2 n^2$.
+The set of all bigrams and all $1$-skip bigrams, on the other hand, each have cardinality $n^2$, so their combined storage cost is $2 n^2$.
 For any $\Sigma$ with size $n > 2$, a multisets listing counts for all trigrams will be larger than two multisets listing counts for all bigrams and $1$-skip bigrams (ignoring the storage requirements for the actual counts, as the counts for bigrams will be larger than those for trigrams).
 
 Skip grams extend the locality domain of $n$-grams models, an idea that we have already encountered with TSL grammars.
