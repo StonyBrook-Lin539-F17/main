@@ -160,7 +160,7 @@ for ngrams in [unigrams, bigrams, trigrams]:
     labels = ngrams[0]
     data = ngrams[1]
     plt.figure(figsize=(4,4), dpi=100)
-    plt.bar(range(len(data)), data, color='b')
+    plt.bar(range(len(data)), data, color='#336699')
     plt.ylim((0,1))
     plt.xticks(range(len(data)), labels, rotation=80)
     plt.tick_params(axis='both', which='major', labelsize=12)
@@ -341,9 +341,11 @@ def kskip_ngrams(string, k, n):
     offset = (n-1) * (k+1) + 1
     return [string[i:i+offset:k+1] for i in range(len(string) - offset + 1)]
 
-example = "Aristotle put metaphysics on the map".split()
+example = "Aristotle put metaphysics on the map"
 for k in range(1,6):
-    pprint(kskip_ngrams(example, k, 2))
+    print("{}-skip bigrams of \"{}\":".format(k, example))
+    pprint(kskip_ngrams(example.split(), k, 2))
+    print()
 ```
 
 \begin{definition}
@@ -359,7 +361,7 @@ But this holds iff $g$ is an $n$-gram of $s$.
 So $0$-skip grams reduce to the familiar $n$-grams, showing that the latter are a special case of skip grams.
 
 ```python
-pprint(kskip_ngrams(example, 0, 2))
+pprint(kskip_ngrams(example.split(), 0, 2))
 ```
 
 With $k$-skip $n$-grams, we can extract additional information from websites without increasing the size of $n$-grams.
