@@ -1,5 +1,7 @@
 # Interlude: Remarks on notation and simplicity
 
+**This section is still work in progress!**
+
 ## Why use different notations if everything is functions/sets?
 
 We now have three basic mathematical objects to work with:
