@@ -122,3 +122,73 @@
     1. $\String{aababcbacb}$
     1. $\emptystring$
     1. $\String{c}$
+
+## Multisets
+
+1.  For each one of the following, say whether it is best modeled as a set, a multiset, or a tuple.
+    Justify your answer (there's many possible answers, the point is that you should be able to defend yours).
+    1. the group of students in the room
+    1. a record of when each students entered the classroom
+    1. a record of how many seconds after the beginning of the class each student showed up
+    1. an address book with names and phone numbers (and nothing else)
+    1. a quantitative record of publications in the department, sorted by journal
+    1. the collection of mappings from some fixed $\Sigma$ to $\mathbb{N}$
+    1. a ranking of faculty members by publication output
+
+1.  Consider the function $f: \mathbb{N} \rightarrow \mathbb{N}$ such that $n \mapsto n - 1$ if $n$ is odd and $n \mapsto n$ otherwise.
+    Describe $\setof{ f(n) \mid n \in \mathbb{N}}_M$ with the $\text{item}: \text{count}$ notation.
+
+1.  For each one of the following, fill the gap with $=$ or $\neq$.
+    1. $\setof{a,b} \_ \setof{b,b,b,b,b,b,b,b,a}$
+    1. $\setof{a,b}_M \_ \setof{b,b,b,b,b,b,b,b,a}_M$
+    1. $\setof{a,b} \_ \setof{a,b}_M$
+    1. $\tuple{a,a,b} \_ \tuple{a,b,a}$
+    1. $\setof{a,a,b}_M \_ \setof{a,b,a}_M$
+
+1.  Compute the result of the following formulas:
+    1. $\setof{a:3, b:3, c:3, d:3}_M - (\setof{a:2, b:1, c:3}_M \cap \setof{a:1, b:2, d:3}_M)$
+    1. $\setof{a:3, b:3, c:3, d:3}_M - (\setof{a:2, b:1, c:3}_M \cup \setof{a:1, b:2, d:3}_M)$
+    1. $\setof{a:3, b:3, c:3, d:3}_M - (\setof{a:2, b:1, c:3}_M \multisum \setof{a:1, b:2, d:3}_M)$
+    1. $\card{\wp(2 \multimult \setof{a:1, b:2}_M)}$
+
+## Bag of Words with Multisets
+
+1.  According to a bag of words unigram model that ignores stop words, what is the meaning of the following text: 
+    *John is a huge jerk. Only John could like John.*
+
+1.  According to a bag of words 4-gram model that ignores stop words, what is the meaning of the following text:
+    *If police police police police police, then police police police police police.*
+
+1.  Redo the calculations from the previous two exercises with frequencies instead of counts.
+
+1.  List all the $2$-skip trigrams of *If police police police police police, then police police police police police*.
+
+1.  Let $G$ be a probabilistic SL-$2$ grammar $\tuple{S, P}$ with the bigrams given below.
+    What are the scores for all 9 possible combinations of *John/Mary/the company quickly destroyed himself/herself/itself*?
+    What do you make of this?
+$$
+\begin{array}{rl}
+    \{  &\\
+        & \LeftEdge \text{Bill}: .25\\
+        & \LeftEdge \text{John}: .25\\
+        & \LeftEdge \text{Mary}: .25\\
+        & \LeftEdge \text{the}: .25\\
+        & \text{the company}: 1\\
+        & \text{company destroyed}: .7\\
+        & \text{company quickly}: .3\\
+        & \text{Bill destroyed}: .7\\
+        & \text{Bill quickly}: .3\\
+        & \text{John destroyed}: .7\\
+        & \text{John quickly}: .3\\
+        & \text{Mary destroyed}: .7\\
+        & \text{Mary quickly}: .3\\
+        & \text{quickly destroyed}: 1\\
+        & \text{destroyed himself}: .5\\
+        & \text{destroyed herself}: .25\\
+        & \text{destroyed itself}: .25\\
+        & \text{himself}\RightEdge: 1\\
+        & \text{herself}\RightEdge: 1\\
+        & \text{itself}\RightEdge: 1\\
+    \}  &\\
+\end{array}
+$$
