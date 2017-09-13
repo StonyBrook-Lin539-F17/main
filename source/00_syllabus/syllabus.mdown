@@ -100,28 +100,20 @@ Selected Topics
 A brief selection of the topics to be covered (though we will proceed in a different order):
 
 1.  Basics of mathematics
-    - Topics: sets, multisets, tuples, functions, relations
+    - Topics: sets, multisets, tuples, functions
     - Applications: bag of words model of text, n-gram models of grammaticality
 
 1.  Types of infinity
-    - Topics: bijections
+    - Topics: bijections, function inverse
     - Applications: is language infinite?
 
 1.  Relations and orders
     - Topics: properties of orders, posets, lattices, antimatroids
-    - Applications: mereology, string extension learners, OT, feature systems, adjunct algebras
-
-1.  Linear algebra
-    - Topics: vectors and vector spaces, matrices, tensor product
-    - Application: vector space semantics, spatial semantics, inflectional morphology
-
-1.  Abstract algebra
-    - Topics: monoids, groups, semirings
-    - Application: violation semirings in OT, semiring parsing
+    - Applications: mereology, string extension learners, OT, feature systems, adjunct algebras, syntactic relations
 
 1.  Graph theory
     - Topics: (un)directed graphs, connectedness, components
-    - Application: morphological paradigms, parse forest representation, autosegmental phonology
+    - Application: morphological paradigms, parse forest representation, autosegmental phonology, AVMs, unification grammars
 
 1.  Automata theory
     - Topics: finite-state automata and transducers, regular expressions, push-down automata
@@ -131,13 +123,21 @@ A brief selection of the topics to be covered (though we will proceed in a diffe
     - Topics: propositional logic and first-order logic, types, lambda calculus
     - Application: semantics, model-theoretic syntax, subregular linguistics, CCG
 
+1.  Linear algebra
+    - Topics: vectors and vector spaces, matrices, tensor product
+    - Application: vector space semantics, spatial semantics, inflectional morphology
+
+1.  Abstract algebra
+    - Topics: monoids, groups, semirings
+    - Application: violation semirings in OT, semiring parsing
+
 1.  Probability theory
     - Topics: calculating probabilities with addition and multiplication
     - Application: weighted context-free grammars, corpus-based techniques
 
 1.  Information theory
     - Topics: entropy, cross-entropy
-    - Application: probabilistic machine learning
+    - Application: probabilistic machine learning, surprisal for processing
 
 
 Teaching Goals
