@@ -1,0 +1,52 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{matrix,positioning}
+\usepackage{pgffor,pgfmath}
+\begin{document}
+\begin{tikzpicture}
+    % draw basic grid
+    \draw[step=1em, gray, very thin] (-3.95em,-3.95em) grid (3.95em,3.95em);
+
+    % draw axes
+    \draw[<->, black] (-4.5em,0) to (4.5em,0);
+    \draw[<->, black] (0,-4.5em) to (0,4.5em);
+
+    % add ticks
+    \foreach \x in {1,2,3,4}
+        {
+        \draw (\x em,.1em) to (\x em, -.1em) node[below=-.2em] {\scriptsize$\x$};
+        \draw (-\x em,.1em) to (-\x em, -.1em) node[below=-.2em] {\scriptsize$-\x$};
+        \draw (-.1em, \x em) to (.1em, \x em) node[left=.2em] {\scriptsize$\phantom{-}\x$};
+        \draw (-.1em, -\x em) to (.1em, -\x em) node[left=.2em] {\scriptsize$-\x$};
+        }
+
+    % draw spiral
+    \foreach \x/\y [remember=\x as \lastx (initially 0), remember=\y as \lasty (initially 0)] in {%
+        1/0,
+        1/-1,
+        0/-1,
+        -1/-1,
+        -1/0,
+        -1/1,
+        0/1,
+        1/1,
+        2/1,
+        2/0,
+        2/-1,
+        2/-2,
+        1/-2,
+        0/-2,
+        -1/-2,
+        -2/-2,
+        -2/-1,
+        -2/0,
+        -2/1,
+        -2/2,
+        -1/2,
+        0/2,
+        1/2,
+        2/2,
+        3/2,
+        3/1}
+        \draw[thick,purple,opacity=.5] (\lastx em, \lasty em) to (\x em, \y em);
+\end{tikzpicture}
+\end{document}
