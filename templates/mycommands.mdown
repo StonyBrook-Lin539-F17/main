@@ -18,3 +18,4 @@ $\newcommand{\freqsymbol}{\ensuremath{\mathrm{freq}}}$
 $\newcommand{\freq}[1]{\ensuremath{\freqsymbol(#1)}}$
 $\newcommand{\prob}{\ensuremath{P}}$
 $\newcommand{\count}[2]{\ensuremath{\card{#2}}_{#1}}$
+$\newcommand{\inv}[1]{\ensuremath{#1^{-1}}}$
