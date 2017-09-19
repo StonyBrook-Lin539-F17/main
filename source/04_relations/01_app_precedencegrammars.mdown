@@ -37,6 +37,22 @@ Note that $\emptystring$ and *undo* counts as both prefixes and suffixes.
 As is clear from this example, the notion of prefix and suffix for strings have little to do with the eponymous linguistic terms. 
 \end{example}
 
+```python
+def prefixes(string):
+    return set(string[:n] for n in range(len(string) + 1))
+
+def suffixes(string):
+    return set(string[n:] for n in range(len(string) + 1))
+
+def substrings(string):
+    return set(string[m:n] for m in range(len(string)) for n in range(m, len(string)+1))
+
+string = "undo"
+print("Substrings of {}: {}".format(string, substrings(string)))
+print("Prefixes of {}: {}".format(string, prefixes(string)))
+print("Suffixes of {}: {}".format(string, suffixes(string)))
+```
+
 The definition is very closely related to the one we saw for $n$-grams, which states that $g$ is an $n$-gram of $s$ iff $g \in \Sigma^n$ and there are $u, v \in \Sigma^*$ such that $s = u \tuplecat g \tuplecat v$.
 From that perspective, an $n$-gram is just a substring of length $n$.
 And in the other direction, the set of substrings for a given string $s$ is just the collection of all $n$-grams such that $n$ does not exceed the length of $s$.
@@ -80,6 +96,16 @@ $$
 $$
 \end{example}
 
+```python
+def ngrams(string, n):
+    return set(string[i:i+n] for i in range(len(string) + 1 - n))
+
+def ngrams_union(string, n):
+    return set(ngram for i in range(n + 1) for ngram in ngrams(string, i))
+
+print(substrings(string) == ngrams_union(string, len(string)))
+```
+
 So the close connection between substrings and $n$-grams does indeed hold.
 
 ## Successor, Precedence, and Subsequences
@@ -118,6 +144,28 @@ $$
 $$
 \end{example}
 
+```python
+def pos_symbol(string, pos):
+    return (pos, string[pos])
+
+def precedes(string, pos):
+    return (pos_symbol(string, pos), [pos_symbol(string, i) for i in range(pos, len(string))])
+
+def precedence_table(string):
+    return [precedes(string, pos) for pos in range(len(string))]
+
+def precedence_print(string):
+    for row in precedence_table(string):
+        pos = row[0][0]
+        symbol = row[0][1]
+        print("Symbol {} at position {} precedes:".format(symbol, pos))
+        for col in row[1]:
+            print("\tSymbol {} at position {}".format(col[1], col[0]))
+            
+string = "undo"
+precedence_print(string)
+```
+
 In contrast to $\succ$, $\sprec$ is a relation, not a function.
 That is because $\sprec$ is not right unique --- one symbol may precede many others in a string.
 But $\sprec$ is just as useful as $\succ$ for talking about strings.
@@ -147,6 +195,28 @@ $$
 $$
 \end{example}
 
+```python
+from itertools import chain, combinations
+
+def k_vectors(string, k):
+    return combinations(range(len(string)), k)
+
+def subsequence(string, vector):
+    stringlist = list(string)
+    return "".join([stringlist[pos] for pos in vector])
+
+def subsequences(string):
+    vectors = chain.from_iterable(k_vectors(string, k) for k in range(len(string) + 1))
+    return set(subsequence(string, vector) for vector in vectors)
+
+def print_subsequences(string):
+    print(sorted(list(subsequences(string)), key=lambda x: len(x)))
+    
+
+string = "undo"
+print_subsequences(string)
+```
+
 Note that every substring is also a subsequence, so the number of substrings can never exceed the number of subsequences.
 In general, the number of distinct substrings for a string $s$ is at most
 $$
@@ -172,6 +242,14 @@ A *strictly $k$-piecewise* (SP-$k$) grammar $G$ is a finite set of $k$-grams.
 A string $s$ is licensed by $G$ iff $s_k^\sprec(\hat{s}^{k-1}) \cap G = \emptyset$.
 \end{definition}
 
+```python
+def kgrams_precedence(string, k):
+    return set(subsequence(string, vector) for vector in k_vectors(string, k))
+
+def sp_eval(grammar, k, string):
+    return kgrams_precedence(string, k).intersection(grammar)
+```
+
 Note how the definition for SP is identical to the one for SL, except that we replaced $s_k^\succ$ by $s_k^\sprec$.
 
 \begin{example}
@@ -184,9 +262,9 @@ $$
 \left \{
 \begin{matrix}
     \LeftEdge \text{b} & \LeftEdge \text{'} & \LeftEdge \text{a} & \LeftEdge \text{n} & \LeftEdge \RightEdge\\
-    \text{ba} & \text{b'} & \text{bn} & \text{b} \RightEdge\\
-    \text{a'} & \text{an} & \text{aa} & \text{a} \RightEdge\\
-    \text{'n} & \text{'a} & \text{'} \RightEdge\\
+    \text{ba} & \text{b}' & \text{bn} & \text{b} \RightEdge\\
+    \text{a}' & \text{an} & \text{aa} & \text{a} \RightEdge\\
+    '\text{n} & '\text{a} & ' \RightEdge\\
     \text{na} & \text{nn} & \text{n} \RightEdge\\
 \end{matrix}
 \right \}
@@ -198,16 +276,27 @@ Next we calculate $s_2^\sprec(\LeftEdge \text{'bana'na} \RightEdge)$:
 $$
 \left \{
 \begin{matrix}
-    \LeftEdge \text{'} & \LeftEdge \text{b} & \LeftEdge \text{a} & \LeftEdge \text{n} & \LeftEdge \RightEdge\\
-    \text{'b} & \text{'a} & \text{'n} & \text{''} & \text{'} \RightEdge\\
-    \text{ba} & \text{bn} & \text{b'} & \text{b} \RightEdge\\
-    \text{an} & \text{aa} & \text{a'} & \text{a} \RightEdge\\
-    \text{na} & \text{n'} & \text{nn} & \text{n} \RightEdge\\
+    \LeftEdge ' & \LeftEdge \text{b} & \LeftEdge \text{a} & \LeftEdge \text{n} & \LeftEdge \RightEdge\\
+    '\text{b} & '\text{a} & '\text{n} & '' & ' \RightEdge\\
+    \text{ba} & \text{bn} & \text{b}' & \text{b} \RightEdge\\
+    \text{an} & \text{aa} & \text{a}' & \text{a} \RightEdge\\
+    \text{na} & \text{n}' & \text{nn} & \text{n} \RightEdge\\
 \end{matrix}
 \right \}
 $$
 Intersecting this set with the grammar yields $\setof{''}$, which means that the string is ill-formed.
 \end{example}
+
+```python
+grammar = {"''"}
+
+for string in ["ba'nana", "'bana'na"]:
+    result = sp_eval(grammar, 2, string)
+    if result:
+        print("{} is ill-formed, contains {}".format(string, ", ".join(result)))
+    else:
+        print("{} is well-formed".format(string))
+```
 
 The previous pattern could also be accounted for by a TSL grammar (can you explain how?).
 But there are some phonological dependencies in natural language that cannot be captured by TSL grammars but are expressible with SP grammars.
@@ -220,6 +309,17 @@ On the other hand, all of the following are well-formed: HHHH, L, HLLLL, LLLLH, 
 This split is captured by the SP-$3$ grammar $\setof{\text{HLH}}$.
 You are invited to do the calculations yourself.
 \end{example}
+
+```python
+grammar = {"HLH"}
+
+for string in ["HLH", "LHLLLHL", "LLLHLLLLHLLLHLLL", "HHHH", "L", "HLLLL", "LLLLH", "LLLHHHHLLL"]:
+    result = sp_eval(grammar, 3, string)
+    if result:
+        print("{} is ill-formed, contains {}".format(string, ", ".join(result)))
+    else:
+        print("{} is well-formed".format(string))
+```
 
 ## Probabilistic Versions
 
