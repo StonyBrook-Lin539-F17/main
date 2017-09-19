@@ -1,0 +1,29 @@
+# Order Relations
+
+reflexive
+irreflexive
+non-reflexive
+
+symmetric
+asymmetric
+non-symmetric
+antisymmetric
+
+transitive
+
+Some imply others:
+asymmetric -> antisymmetric
+
+otherwise largely independent
+
+reflexive & asymmetric
+irreflexive & symmetric
+symmetric & transitive & not reflexive
+
+closure
+
+pre-order
+equivalence relation
+weak partial order
+strict partial order
+total order
