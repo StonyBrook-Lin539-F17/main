@@ -20,3 +20,6 @@ $\newcommand{\prob}{\ensuremath{P}}$
 $\newcommand{\count}[2]{\ensuremath{\card{#2}}_{#1}}$
 $\newcommand{\inv}[1]{\ensuremath{#1^{-1}}}$
 $\newcommand{\Lex}{\ensuremath{\mathit{Lex}}}$
+$\newcommand{\length}[1]{\ensuremath{\left | #1 \right |}}$
+$\newcommand{\succ}{\ensuremath{S}}$
+$\newcommand{\sprec}{\ensuremath{<}}$
