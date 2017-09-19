@@ -1,0 +1,6 @@
+# Working with Infinities
+
+1. Define a bijection that proves that there are as many rationals as there are rationals between 0 and 1.
+
+1. Suppose that the set of English sentences without coordination has cardinality $\aleph_0$.
+   Show in a formal manner that closing this set under sentence coordination ("sentence1 and sentence2") does not increase the cardinality of the set.
