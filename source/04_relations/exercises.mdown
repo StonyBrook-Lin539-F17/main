@@ -1,0 +1,53 @@
+## Relations
+
+1.  Define the following relations as functions and as sets of tuples:
+    \input_med{./relation1.tikz}
+    \input_med{./relation2.tikz}
+
+1.  Given the relations above, calculate
+    - $R \cap S$
+    - $R \cup S$
+    - $R - S$
+    - $\inv{(S - R)}$
+
+
+## Substrings and Subsequences
+
+1.  For each one of the following, say whether it is a prefix, a suffix, both, or neither:
+    1. *ana* in *banana*
+    1. *anan* in *banana*
+    1. *downt* in *downtrodden*
+    1. *trod* in *downtroden*
+    1. *trod* in *banana*
+    1. $\emptystring$ in $\emptystring$
+
+1.  For each one of the following, say whether it is a substring or just a subsequence of *aardvark*:
+    1. *aa*
+    1. *aaa*
+    1. *ar*
+    1. *arar*
+
+1.  List all subsequences of *aaaa*.
+
+
+## SP Grammars
+
+1.  Let $\Sigma \is \setof{a,b,c,d}$.
+    For each one of the following, say whether it is licensed if $\setof{\text{aaa}, \text{aab}, \text{aba}}$ is interpreted as an SL grammar, an SP grammar, both, or neither.
+    1. *aacaa*
+    1. *aabaa*
+    1. *dddacccbcccaddd*
+    1. *acadaabdc*
+
+1.  Say whether the following is true, and justify your answer: if $s$ is illicit according to an SL-$k$ grammar $G_\succ$, then it is also illicit according to the SP-$k$ grammar $G_\sprec$ that consists of exactly the same $k$-grams.
+
+1.  Say whether the following is true, and justify your answer: if $s$ is licit according to an SL-$k$ grammar $G_\succ$, then it is also licit according to the SP-$k$ grammar $G_\sprec$ that consists of exactly the same $k$-grams.
+
+1.  Does it make sense to define an analogue of TSL with precedence instead of successor?
+    Justify your answer.
+
+1.  Give a TSL grammar that limits the number of primary stresses per word to at most.
+
+1.  Explain why tone plateauing cannot be expressed with a TSL grammar.
+
+1.  Give another example of a phonological phenomenon that can be modeled with an SP grammar.

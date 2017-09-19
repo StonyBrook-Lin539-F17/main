@@ -1,0 +1,9 @@
+sibling
+mother-of / parent-of
+dominance -> closure
+precedence
+string precedence
+c-command
+m-command
+generalized command
+

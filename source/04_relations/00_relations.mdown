@@ -1,0 +1,69 @@
+# The Last Basic Data Type: Relations
+
+At the very beginning, we looked at functions and noted that they are mappings that are right-unique: every input gets mapped to exactly one output.
+But we can think of many things that feel like a function but do not fit this requirement because there are multiple outputs for a single input.
+
+\begin{example}
+The question *Is $x$ a child of $y$* is a function because it maps any two $x$ and $y$ to either true or false, but never both.
+But if we slightly change the question to just *Name a child of $y$*, we are no longer dealing with a function because multiple answers are possible if $y$ has more than one child.
+\end{example}
+
+This kind of generalized function is called a *relation*.
+And at this point it probably won't come as a surprise to you that relations can be defined as a special type of function.
+
+## Defining Relations
+
+Suppose that we have some input $i$ from which one can produce the outputs $o$, $p$, and $q$.
+This cannot be a function because it is not a right-unique mapping.
+But we could make it right-unique by mapping $i$ directly to $\setof{o, p, q}$ and interpreting this as *every member of this set is a valid output for $i$*.
+Whenever a function maps elements of some fixed set $A$ to subsets of some fixed set $B$, we are dealing with a relation.
+
+\begin{definition}
+    A *relation* $R$ from set $A$ to set $B$ is a function $f_R: A \rightarrow \wp(B)$.
+    We also write $\tuple{R,A,B}$ to indicate the domain $A$ and co-domain $B$ of $R$.
+\end{definition}
+
+Alternatively, a relation can be regarded as a set of pairs.
+In this case one defines a relation $R$ over domain $A$ and co-domain $B$ as $R \subseteq A \times B$.
+
+Just like sets, multisets, and tuples can be regarded as functions but still come with their own unique notation to simplify discussion, relations have a few convenient shorthands:
+
+- $a R = f_R(a) = \setof{ b \mid \tuple{a,b} \in R}$, and
+- $a \mathrel{R} b$ iff $b \in aR$ iff $\tuple{a,b} \in R$.
+
+\begin{example}
+Consider the mapping from parts of speech to words.
+This is not a function because some (in fact, every) POS can be mapped to more than one word.
+But we can regard it as a relatio from the set of POS to the set of English words such that $f_R$ maps every POS to the words that can have this POS.
+For example, $f_R(V) \is \setof{ \text{admire}, \text{eat}, \text{assemble}, \ldots }$, whereas $f_R(N) \is \setof{ \text{mathematics}, \text{food}, \text{cat}, \text{inspiration}, \ldots }$.
+Equivalently, we can define $R$ as a set of pairs:
+$$
+\left \{
+\begin{matrix}
+    \tuple{V, \text{admire}} &
+    \tuple{V, \text{eat}} &
+    \tuple{V, \text{assemble}} &
+    \cdots\\
+    \tuple{R, \text{mathematics}} &
+    \tuple{R, \text{food}} &
+    \tuple{R, \text{cat}} &
+    \cdots\\
+    \vdots\\
+\end{matrix}
+\right \}
+$$
+\end{example}
+
+## Operations on Relations
+
+There are several operations that can be applied to relations to modify them.
+All of them are easier to define with the view of relations as sets of tuples.
+
+Arguably the most important operation is inverse, which as in the case of functions flips the direction of the mapping.
+
+\begin{definition}
+    Let $R \subseteq A \times B$.
+    Then the *inverse of $R$* is defined as $\inv{R} \is \setof{ \tuple{b,a} \mid \tuple{a,b} \in R}$.
+\end{definition}
+
+In addition, the set-theoretic operations union, intersection, and (relative) complement can be applied to relations in the standard fashion because relations are just sets of tuples.
