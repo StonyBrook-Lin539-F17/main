@@ -30,6 +30,7 @@ Assigned Units per Week
 
 - 09-08: everything in `01_intro` and `02_foundations` up to `04_app_grammars`; exercises and missing units will be uploaded on Tuesday
 - 09-15: folders `05` and `06` in `02_foundations`; exercises have been added to the existing file
+- 09-22: `03_infinity` and `04_relations` up to `01_app_precedencegrammars`
 
 
 Link List
