@@ -29,6 +29,7 @@
 
 1.  List all subsequences of *aaaa*.
 
+1.  Explain why for every string $s$ the number of distinct subsequences is bounded by $2^s$.
 
 ## SP Grammars
 
