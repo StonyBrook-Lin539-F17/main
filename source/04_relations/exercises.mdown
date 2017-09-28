@@ -52,3 +52,26 @@
 1.  Explain why tone plateauing cannot be expressed with a TSL grammar.
 
 1.  Give another example of a phonological phenomenon that can be modeled with an SP grammar.
+
+## Trees
+
+Whenever an exercise mentions "the tree", assume the following:
+
+\input_mid{./tree_exercise.forest}
+
+1.  Annotate each node in the tree below with its Gorn address.
+
+1.  List all the nodes that $111$:
+    - properly dominates
+    - reflexively dominates
+    - c-commands (using the definition from the literature, not the mathematical one with composition)
+
+1.  Define the sibling relation in terms of Gorn addresses rather than the parent-of relation.
+
+1.  Define c-command in terms of Gorn addresses (assuming our definition of c-command as the composition of the sibling relation and reflexive dominance).
+
+1.  Give a function that takes as input a Gorn tree domain $D$ and a Gorn address $a$ and returns the set of all $d \in D$ that c-command $a$ (assuming again our definition of c-command).
+    Looking at this function, would you say it is particularly complex or difficult to compute?
+
+1.  Using Gorn addresses, define a relation $S'$ such that $\Rcomp{S'}{\rdom}$ is c-command as defined in the literature (where we look up for nodes without siblings).
+    
