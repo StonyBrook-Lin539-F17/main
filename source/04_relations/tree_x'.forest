@@ -1,0 +1,44 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\begin{document}
+\begin{forest}
+    [IP
+        [DP
+            [D'
+                [D [the]]
+                [NP
+                    [AP [A' [A [old]]]]
+                    [NP [N' [N [man]]]]
+                ]
+            ]
+        ]
+        [I'
+            [I [\emph{past}]]
+            [VP
+                [VP
+                    [V'
+                        [V [meet]]
+                        [DP
+                            [D'
+                                [D [this]]
+                                [NP [N' [N [girl]]]]
+                            ]
+                        ]
+                    ]
+                ]
+                [PP
+                    [P'
+                        [P [at]]
+                        [DP
+                            [D'
+                                [D [a]]
+                                [NP [N' [N [party]]]]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

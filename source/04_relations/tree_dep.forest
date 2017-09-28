@@ -1,0 +1,14 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\begin{document}
+\begin{forest}
+    [met
+        [man
+            [the]
+            [old]
+        ]
+        [girl [this]]
+        [at [party [a]]]
+    ]
+\end{forest}
+\end{document}

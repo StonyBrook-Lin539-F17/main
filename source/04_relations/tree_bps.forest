@@ -1,0 +1,49 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\begin{document}
+\begin{forest}
+    [C
+        [C]
+        [\emph{past}
+            [the
+                [the]
+                [$\langle$man,man$\rangle$
+                    [old]
+                    [man]
+                ]
+            ]
+            [\emph{past}
+                [\emph{past}]
+                [$\mathit{v}$
+                    [the
+                        [the]
+                        [$\langle$man\,man$\rangle$
+                            [old]
+                            [man]
+                        ]
+                    ]
+                    [$\mathit{v}$
+                        [$\mathit{v}$]
+                        [$\langle$meet\,meet$\rangle$
+                            [meet
+                                [meet]
+                                [this
+                                    [this]
+                                    [girl]
+                                ]
+                            ]
+                            [at
+                                [at]
+                                [a
+                                    [a]
+                                    [party]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}
