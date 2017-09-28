@@ -23,3 +23,8 @@ $\newcommand{\Lex}{\ensuremath{\mathit{Lex}}}$
 $\newcommand{\length}[1]{\ensuremath{\left | #1 \right |}}$
 $\newcommand{\succ}{\ensuremath{S}}$
 $\newcommand{\sprec}{\ensuremath{<}}$
+$\newcommand{\Rcomp}[2]{\ensuremath{#1 \circ #2}}$
+$\newcommand{\domsymbol}{\ensuremath{\triangleleft}}$
+$\newcommand{\idom}{\ensuremath{\domsymbol}}$
+$\newcommand{\pdom}{\ensuremath{\domsymbol^+}}$
+$\newcommand{\rdom}{\ensuremath{\domsymbol^*}}$
