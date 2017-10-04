@@ -32,6 +32,7 @@ Assigned Units per Week
 - 09-15: folders `05` and `06` in `02_foundations`; exercises have been added to the existing file
 - 09-22: `03_infinity` and `04_relations` up to `01_app_precedencegrammars`
 - 09-29: `04_relations` on tree relations; exercises have been added to the existing file
+- 10-06: everything in `05_orderings`
 
 
 Link List
