@@ -1,0 +1,211 @@
+# Properties of Relations
+
+Relations can be classified according to whether they satisfy various properties.
+Mathematical papers usually presuppose familiarity with these notions, so it is important that you know them. 
+
+## Transitivity
+
+Suppose you have some set of objects with a relation defined over them.
+For example, we may have a set of Gorn addresses with the proper dominance relation defined over them.
+Or a set of natural numbers with the *strictly less than* relation $<$.
+We can think of these as structures where the set specifies the collection of building blocks and the relation connects these building blocks, putting them into a particular structural configuration.
+This is why we can draw a tree as a tree: the unstructured set of Gorn addresses is given a vertical order via the dominance relation.
+
+Suppose we have some structure along those lines, consisting of a set $D$ and a relation $R \subseteq D \times D$.
+We can move through this structure with $R$: if we are at $a \in D$, we can move to any $b$ such that $a R b$.
+And from $b$, we can move on to any $c$ such that $b R c$, and so on.
+
+\begin{example}
+Consider the tree below, where nodes are represented by their Gorn addresses in the familiar fashion.
+
+\input_mid{./tree_psg_gorn.forest}
+
+Here we can use the immediate dominance relation to move from $1$ to $10$, and from there to $101$.
+\end{example}
+
+Some relations are such that whatever can be reached in two steps can also be reached in one step.
+So $a R b$ and $b R c$ entail that we also have $a R c$ --- the ability to move from $a$ to $c$ via $b$ implies that we can move directly from $a$ to $c$ without a stop at $b$.
+Such relations are called *transitive*.
+
+\begin{definition}
+A relation $R \subseteq D \times D$ is *transitive* iff for all $a,b,c \in D$ it holds that $a R b$ and $b R c$ jointly imply $a R c$.
+\end{definition}
+
+\begin{example}
+The proper dominance relation is transitive: if $a$ properly dominates $b$ and $b$ properly dominates $c$, then $a$ properly dominates $c$.
+Another example is $<$ over natural numbers: if $x < y$ and $y < z$, then $x < z$.
+The left-sibling relation is also transitive because the right sibling of a right sibling of $a$ is also a right sibling of $a$.
+However, the sibling relation $S$ is not transitive.
+That's because when $a$ and $b$ are siblings, then we have $a S b$ and $b S a$, but we do not have $a S a$ because no node can be its own sibling.
+
+Many other relations are not transitive, either.
+The parent-of relation is not transitive, because there can be $a$, $b$, and $c$ such that $a$ is the parent of $b$, $b$ is the parent of $c$, and $a$ is the parent of $c$.
+Similarly, the successor relation is not transitive because the successor of the successor of $a$ is not the successor of $a$.
+
+Sometimes a relation may partially meet the requirements of transitivity, but not for all elements of the domain.
+For example, you may love your parents, your parents love their parents, and you love your grandparents.
+So this is a case where we have $a R b$, $b R c$, and $a R c$.
+But obviously love is not a transitive relation --- it is perfectly possible for a person you love to love somebody that you do not love at all.
+This shows that a relation is transitive only if there isn't a single counterexample to transitivity.
+\end{example}
+
+Note that transitivity also implies the stronger property that if a node can be reached in finitely many steps, it can also be reached in one step.
+This follows by iterated invocation of transitivity.
+Suppose that $a R b$, $b R c$, and $c R d$.
+This is shown pictorially below.
+
+\input_mid{./transitivity1.tikz}
+
+Then by transitivity, we also have $a R c$.
+
+\input_mid{./transitivity2.tikz}
+
+But then, again by transitivity, we must also have $a R d$ because of $a R c$ and $c R d$.
+
+\input_mid{./transitivity3.tikz}
+
+Since we can apply the same argument over and over again, anything that can be reached with a finite number of steps can also be reached in a single step.
+
+It is also important to keep in mind that some relations can be trivially transitive, such as the relation below.
+Here there are no $a$, $b$, and $c$ such that we have both $a R b$ and $b R c$, so transitivity holds trivially because we cannot produce any counterexample to the claim that the relation is transitive.
+
+\input_large{./transitivity_trivial.tikz}
+
+Nor does transitivity imply that we can reach every node from every other node with a single step.
+Nodes may still be unreachable from certain positions.
+In a tree, for example, it is impossible to move from one sibling to the next by using the parent-of relation to move from a node to one of its children.
+
+
+## Degrees of Reflexivity
+
+Another important property is reflexivity, i.e. whether each node is related to itself.
+In pictorial terms, this means whether there is a loop from a node back to itself.
+If every node has such a loop, the relation is *reflexive*.
+If no node has such a loop, the relation is *irreflexive*.
+And in all other cases it is *non-reflexive*.
+
+\begin{definition}
+Let $R \subseteq D \times D$. 
+Then $R$ is
+
+<ul>
+<li>*reflexive* iff $a R a$ for all $a \in D$,</li>
+<li>*irreflexive* iff $a R a$ for no $a \in D$,</li>
+<li>*non-reflexive* otherwise.</li>
+</ul>
+\end{definition}
+
+\begin{example}
+The parent-of relation, proper dominance, the sibling relation, the left-sibling relation, and the successor relation are all irreflexive because no node can be its own parent.
+On the other hand, every node reflexively dominates itself, so this relation is reflexive (rather unsurprisingly, given the name).
+
+As an example of a non-reflexive relation, consider again love as a relation.
+It is certainly possible to love oneself, but not everybody does.
+So in general, the relation is neither reflexive nor irreflexive.
+\end{example}
+
+## Degrees of Symmetry
+
+A relation is symmetric iff directionality does not matter and every step in one direction from $a$ to $b$ can also be taken in the other direction from $b$ to $a$.
+If we draw the relation, every arrow has to have a matching arrow in the other direction.
+Asymmetry captures the very opposite: no step in one direction has a matching counterpart in the other direction.
+
+\begin{definition}
+Let $R \subseteq D \times D$. 
+Then $R$ is
+
+<ul>
+<li>*symmetric* iff $a R b$ implies $b R a$ for all $a, b \in D$,
+<li>*asymmetric* iff $a R b$ implies $b \not R a$ for all $a, b \in D$,
+</ul>
+\end{definition}
+
+\begin{example}
+The sibling relation is symmetric, whereas the left-sibling relation is asymmetric.
+The parent-of relation and proper dominance are also asymmetric, as is precedence.
+\end{example}
+
+Symmetry and asymmetry are the extreme points of a spectrum.
+Note that the latter precludes reflexivity, as $a R a$ would imply $a \not R a$ for any asymmetric relation $R$.
+But clearly it can't be the case that both $a R a$ and $a \not R a$ are both true, so no asymmetric relation can be reflexive.
+When asymmetry is weakened to allow for reflexivity, one obtains *antisymmetry*.
+
+\begin{definition}
+Let $R \subseteq D \times D$. 
+Then $R$ is *antisymmetric* iff $a R b$ and $b R a$ implies $a = b$ for all $a, b \in D$.
+\end{definition}
+
+Intuitively, a relation is antisymmetric if it as asymmetric as possible without losing reflexivity.
+
+\begin{example}
+Reflexive dominance is antisymmetric.
+For any two distinct nodes, asymmetry holds, and the only violation of asymmetry is limited to the case of a node reflexively dominating itself.
+\end{example}
+
+If a relation is neither symmetric nor antisymmetric or asymmetric, it is *non-symmetric*.
+
+## Totality and Trichotomy
+
+A relation is *total* iff all nodes are related to each other.
+Pictorially, there has to be some line between any two given nodes. 
+This also requires every node to have a loop from itself to itself.
+So totality implies reflexivity.
+A weaker version is trichotomy, which limits totality to distinct nodes.
+
+\begin{definition}
+For $R \subseteq D \times D$, we call $R$
+
+<ul>
+<li>*total* iff $a R b$ or $b R a$ for all $a, b \in D$</li>
+<li>*trichotomous* iff $a R b$ or $b R a$ or $a = b$ for all $a, b \in D$</li>
+</ul>
+\end{definition}
+
+\begin{definition}
+String precedence is irreflexive and hence not a total relation.
+But it is trichotomous.
+\end{definition}
+
+
+## Overview of Properties for Tree Relations
+
+The table below lists relevant properties from important tree relations and contrasts them with relations over natural numbers and sets.
+
+**Relation** | Transitivity | Reflexivity | Symmetry | Totality
+--:          | :--          | :--         | :--      | :--
+parent-of | | irreflexive | asymmetric |
+proper dominance | transitive | irreflexive | asymmetric |
+reflexive dominance | transitive | reflexive | antisymmetric |
+sibling |  | irreflexive | symmetric |
+left-sibling | transitive | irreflexive | asymmetric |
+precedence | transitive | irreflexive | asymmetric |
+c-command | | irreflexive | |
+$\leq$ over $\mathbb{N}$ | transitive | reflexive | antisymmetric | total
+$<$ over $\mathbb{N}$ | transitive | irreflexive | asymmetric | total
+$\subseteq$ over $\wp(\mathbb{N})$ | transitive | reflexive | antisymmetric |
+
+
+## Entailments Between Properties
+
+The properties we discussed are largely independent of each other.
+However, there are some entailments:
+
+1.  **Asymmetry implies antisymmetry.**
+    This is intuitively obvious since antisymmetry is a weaker version of asymmetry.
+    Formally, asymmetry tells us that we can never have both $a R b$ and $b R a$, so antisymmetry is trivially satisfied because the relevant condition never arises.
+
+1.  **Asymmetry precludes reflexivity.**
+    As discussed earlier, a relation cannot be both asymmetric and reflexive because the latter requires $a R a$, but the former would then require $a \not R a$.
+
+1.  **Totality implies reflexivity.**
+    Totality requires $a R b$ or $b R a$, which reduces to $a R a$ whenever $a = b$.
+    So every total relation must be reflexive.
+    With irreflexive relations, totality weakens to trichotomy.
+
+## Why do Those Properties Matter?
+
+Classifying relations is all nice and dandy, but why does it matter?
+Because it makes it easier to reason about specific relations.
+There are certain useful properties that are shared by all relations of a specific class.
+If we know that our newly defined and fairly complex relation $R$ belongs to some class $C$, then we can rely on existing algorithms or theorems for class $C$ to work with $R$.
+We will see some of that in the next few units, where we will learn that all relations that are reflexive, transitive, and antisymmetric create very similar kinds of structures that can be studied in a unified fashion.

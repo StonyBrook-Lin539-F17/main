@@ -1,0 +1,145 @@
+# Semilattices and the Adjunct Island Constraint
+
+A long-standing distinction in linguistics is that between *arguments* and *adjuncts*.
+An argument is a phrase that is introduced and required by some other word in the sentence.
+For example, in *John devoured twelve pounds of pasta yesterday*, both *John* and *twelve pounds of pasta* are arguments of the verb *devour*.
+Neither one can be easily removed --- neither *devoured twelve pounds of pasta yesterday* nor *John devoured yesterday* is a well-formed sentence of English.
+So the arguments of the verb are a necessary part of the sentence.
+In the same vein, we also can't freely throw in additional arguments: *John devoured Mary twelve pounds of paste yesterday the whole bowl* is not a good sentence of English.
+
+Adjuncts, on the other hand, are much less tightly controlled than arguments.
+They can be removed and added without problem.
+The adverb *yesterday* in *John devoured twelve pounds of pasta yesterday* is an adjunct, and indeed it can be removed without reducing the well-formedess of the string.
+We can also add additional adverbs, e.g. the adverb *quickly* or the adjective *delicious*.
+
+1. John quickly devoured twelve pounds of pasta yesterday.
+1. John devoured twelve pounds of delicious pasta yesterday.
+1. John quickly devoured twelve pounds of delicious pasta yesterday.
+
+Note that we can establish an order between the sentences above based on whether one can be obtained from the other by adding adjuncts.
+Let us denote this relation by $\leq_A$.
+Then
+
+- *John devoured twelve pounds of pasta* $\leq_A$ *John (quickly) devoured twelve (delicious) pounds of pasta (yesterday)*,
+- *John quickly devoured twelve pounds of pasta* $\leq_A$ *John quickly devoured twelve (delicious) pounds of pasta (yesterday)*,
+- *John devoured twelve pounds of pasta yesterday* $\leq_A$ *John (quickly) devoured twelve (delicious) pounds of pasta yesterday*,
+- and so on.
+
+As we will see next, this relation is a weak partial order that interacts with well-formedness in particular way.
+Understanding this interaction will allow us to explain some peculiar properties of adjuncts.
+
+## The Adjunct Extension Semilattice
+
+For the sake of simplicity, we will assume that sentences are strings rather than trees.
+And rather than developing a linguistically informed theory of adjuncts, we will just assume that we are given some fixed $A \subseteq \Sigma^*$ of adjunct phrases.
+Given a string $s \is s_1 \cdots s_n \in \Sigma*$ and $t \in \Sigma*$, it holds that $s \leq_A t$ iff there are $a_1, \ldots, a_{n+1} \in A^*$ such that $t = a_1 \tuplecat s_1 \tuplecat \cdots a_n \tuplecat s_n \tuplecat a_{n+1}$.
+In other words, $s$ is a subsequence of $t$ and $t$ can be obtained by adding finitely many adjunct phrases from $A$ to $s$.
+
+The definition of $\leq_A$ makes it clear that the relation is transitive.
+Reflexivity holds because each $a_i$ may be $\emptystring$.
+Finally, $\leq_A$ is antisymmetric because the only case where $s \leq_A t$ and $t \leq_A s$ is when $s = t$.
+This holds because it is impossible for distinct strings to be subsequences of each other.
+So $\leq_A$ is transitive, reflexive, and antisymmetric, which makes it a weak partial order.
+
+Now let $A(s) \subseteq \Sigma^*$ be the set of all strings that can be contained from $s$ by adding finitely many elements of $A^*$.
+In other words, $A(s)$ is the closure of $\setof{s}$ under unconstrained insertion of $A$-strings.
+When $A(s)$ is ordered by $\leq_A$, it holds for any two strings $u, v \in A(s)$ that there is some $t \in A(s)$ such that $t \leq_A u$ and $t \leq_A v$.
+In other words, any two randomly chosen strings of $A(s)$ have a greatest lower bound $u \wedge t$ with respect to $\leq_A$.
+For example, the greatest lower bound of *John slept well yesterday* and *John really slept well* is *John really slept*.
+And the greatest lower bound of *Really John really slept really* and *John slept really really* is *John slept really* --- note that we do not care at this point whether the strings are well-formed sentences of English, we are merely defining specific subsets of $\Sigma^*$ and ordering them with respect to some fixed set $A$.
+At this point, we know that $A(s)$ is a partially ordered set where any two elements have a defined greatest lower bound, which means that $\tuple{A(s), \leq_A}$ is a meet semilattice.
+
+One might also think that any two strings in $A(s)$ have a least upper bound, but this is in general not well-defined.
+For *John slept well* and *John slept really well*, it would be easy to define the least upper bound as *John slept really well*.
+But in many cases, there is no unique least upper bound.
+For example, the least upper bound of *John slept yesterday* and *John slept indeed* could be chosen to be *John slept indeed yesterday* or *John slept yesterday indeed*.
+In general, then, $\leq_A$ does not yield a unique least upper bound, so that $\tuple{A(s), \leq_A}$ is just a semilattice rather than a lattice.
+
+From here on out, we will take $A(s)$ to refer both to the closure of $\setof{s}$ under insertion of $A$-strings and the semilattice structure induced by $\leq_A$ over $A(s)$.
+We call this semilattice an *adjunct extension structure*, and we say that $u$ is an *adjunct extension* of $v$ iff $u \leq_A v$.
+
+## Optionality and Well-Formedness Entailments
+
+So far $A(s)$ has merely been a mathematical object, a fairly randomly chosen set of $\Sigma$-strings.
+Now let us try to relate this to actual natural language or, more precisely, English.
+We still assume that $A \subseteq \Sigma*$ is the set of well-formed adjunct phrases of English.
+This includes single words like *yesterday*, *quickly*, *old*, and *alleged*, but also multi-word phrases like *without a doubt*, *in the nick of time*, and *while reading*.
+The interesting thing is that once $A$ has been fixed, the well-formedness of elements in $A(s)$ informs the well-formedness of certain other elements in $A(s)$.
+
+At the beginning of this section, we said that adjuncts are optional.
+So removing an adjunct from a well-formed sentence does not make it ill-formed.
+In the other direction, adding an adjunct cannot make an ill-formed sentence grammatical.
+This means that well-formedness is partially predictable over $A(s)$.
+Let $u$ be some random string in $A(s)$.
+If $u$ is well-formed, then so is every $v$ with $v \leq_A u$.
+If $u$ is ill-formed, then so is every $v$ with $u \leq_A v$.
+In other words, well-formedness travels downward in $A(s)$, ill-formedness travels upward.
+
+Another way of saying this is that well-formedness evaluation is *monotonic* over $A(s)$.
+
+\begin{definition}
+Let $\tuple{S, \leq_S}$ and $\tuple{T, \leq_T}$ be two partially ordered structures.
+Then the function $f: S \rightarrow T$ is *monotonic* iff it holds for all $a,b \in S$ that $a \leq_S b$ implies $f(a) \leq_T f(b)$.
+\end{definition}
+
+In the case at hand, we can take the dual of the Boolean algebra $\mathbf{2}$ as our well-formedness lattice.
+So well-formedness is encoded by the structure $\tuple{\setof{0,1}, \geq}$.
+The function $f: A(s) \rightarrow \mathbf{2}$ is monotonic.
+Pick some $u$ and $v$ with $u \leq_A v$.
+If $u$ is ungrammatical, then so is $v$, hence we have $f(u) = f(v) = 0$, wherefore $f(u) \geq f(v)$.
+If $v$ is grammatical, then so is $u$, hence we have $f(u) = f(v) = 1$, and once again $f(u) \geq f(v)$.
+If, on the other hand, $u$ is grammatical, then $v$ may or may not be grammatical.
+So we have $f(u) = 1$ and $f(v) = 0$ or $f(u) = 1$.
+But either way $f(u) \geq f(v)$ still holds.
+This shows that $f$ is indeed monotonic.
+
+The fact that the well-formedness mapping for $A(s)$ is monotonic guarentees that we can mechanically calculate well-formedness for certain choices of $u$ and $v$ in $A(s)$.
+And this is the key to solving a long-standing linguistic puzzle: the Adjunct Island Constraint.
+
+## Explaining the Adjunct Island Constraint
+
+Syntactician have known for a long time that adjuncts are more finicky than arguments in certain respects.
+Arguments are usually fine with having parts of them moved to a different position in the sentence.
+
+1. John invited the supervisor of this girl.
+1. This girl, John invited the supervisor of.
+
+But adjuncts do not seem to be happy with this arrangement.
+
+1. John invited Mary without preparing the dinner.
+1. $^*$The dinner, John invited Mary without preparing.
+
+This is known as the *adjunct island constraint* because it seems that adjuncts want to form an island of their own, rather than having parts moved across the sentence.
+
+Many solutions have been offered over the years, and the jury is still out on what exactly is going on.
+We will not be able to completely solve the mystery, but we can offer an intriguing new perspective to the mix.
+
+Remember that well-formedness is monotonic over adjunct extension structures.
+So a sentence containing an adjunct can be well-formed only if the result of removing the adjunct is a well-formed sentence.
+Let us try this with the ill-formed *the supervisor, John invited Mary without telling*.
+This is an adjunct extension of *the dinner, John invited Mary* (we cannot treat *the dinner without preparing* as a discontinuous adjunct phrase because each adjunct must form a substring).
+But *the dinner, John invited Mary* is not a well-formed sentence of English.
+This necessarily entails that *the dinner, John invited Mary without preparing* is not well-formed either.
+Hence the adjunct island constraint follows immediately from the monotonicity of well-formedness over adjunct extension structures, which is a consequence of adjuncts being optional.
+
+As you can see, the adjunct island constraint is exactly what we expect to see given our initial assumptions about the properties of adjuncts.
+But there is also another thing we expect to see: if removing the adjunct still yields a well-formed sentence, then the adjunct island constraint does not necessarily apply anymore.
+It can, but it does not have to.
+This is exactly what we find in English with so-called *parasitic gaps*.
+
+1. This book, John reviewed without reading.
+
+Here it seems like the phrase *this book* was originally both the object of the verb *review* and the gerund *reading* inside the adjunct.
+Such parasitic gap constructions are allowed in English, but not in certain other languages like German.
+This is pretty much what we expect in our system.
+Removing the adjunct phrase *without reading* leaves the sentence *this book, John reviewed*, which is well-formed.
+Since the well-formedness of $u$ does not tell us anything about the well-formedness of any adjunct extension $v$ of $u$, $v$ may be well-formed or not, it depends on the language at hand.
+
+## A Final Note on Tree Structures
+
+If you have already had some linguistic training, then you will object that the presentation above is a gross oversimplification.
+Sentences are trees, not strings, and treating *the dinner, John invited Mary* as the basis for *the dinner, John invited Mary without preparing* goes completely against current linguistic thinking.
+You are correct.
+The material in this section was deliberately simplified to deal with strings instead of trees since the general idea surfaces more clearly without all the additional syntactic assumptions.
+But the account works just as well in the more accurate and detailed setting.
+Check out [the full paper](http://thomasgraf.net/graf13cls.html) for details.

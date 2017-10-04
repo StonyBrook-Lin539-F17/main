@@ -1,0 +1,77 @@
+# Types of Order Relations
+
+As we just learned, relations can possess a variety of properties.
+An *order relation* is one of a select few types of relations that display several of those properties at the same time.
+
+## Overview of Order Relations
+
+All standard order relations are transitive, and all are reflexive except the ones whose name contains the term *strict*; those are *irreflexive*.
+
+**Order** | **Transitivity** | **Reflexivity** | **Symmmetry** | **Totality**
+--:       | :--              | :--             | :--
+pre-order | transitive       | reflexive       |
+equivalence relation | transitive | reflexive | symmetric |
+weak partial order | transitive | reflexive | antisymmetric |
+strict partial order | transitive | irreflexive | asymmetric |
+total order | transitive | reflexive | antisymmetric | total
+strict total order | transitive | irreflexive | asymmetric | trichotomous
+
+\input_mid{order_hierarchy.forest}
+
+## Equivalence Relations
+
+Equivalence relations are transitive, reflexive, and symmetric.
+The prototypical example is $=$ over natural numbers, but this is also the least interesting example.
+A slightly more interesting one is equivalence modulo $n$.
+Two natural numbers $a$ and $b$ are equivalent modulo $n$ iff they have the same remainder when divided by $n$.
+For example, $7$ and $13$ are equivalent modulo $3$ because both have a remainder of $1$ when divided by $3$.
+In fact, we can even regard English as an equivalence relation $=_E$ over members of $\Sigma^*$ such that $a =_E b$ iff both $a$ and $b$ are both well-formed or both ill-formed (you are invited to verify that $=_E$ is transitive, reflexive, and symmetric).
+
+Another well-known equivalence relation is $\equiv_L$, the *right congruence* relation with respect to some $L \subseteq \Sigma^*$.
+For every string $a$, let $aL \is \setof{ u \mid a \tuplecat u \in L }$ be the set of *good continuations* of $a$ with respect to $L$.
+Then $a \equiv_L b$ iff $aL = bL$.
+
+\begin{example}
+Suppose $L$ consists only of $\emptystring$, $ab$, $abab$, $ababab$, and so on.
+Then $\emptystring L = abL = ababL = \setof{\emptystring, ab, abab, \ldots}$, whereas $aL = abaL = ababaL = \setof{b, bab, babab, \ldots}$.
+Hence $\emptystring \equiv_L ab \equiv_L abab$ and $a \equiv_L aba \equiv_L ababa$, but $a \not\equiv_L ab$.
+\end{example}
+
+The right congruence relation is a very important one and forms the mathematical backbone of finite-state automata, which we will encounter at a later point.
+It illustrates why equivalence relations are so important for computational applications: if multiple elements are equivalent in some respect, then it suffices to do all relevant computations with the simplest one of all the equivalent elements, saving lots of time and memory.
+Even more abstractly, one can often do computations just with *equivalence classes*.
+
+\begin{definition}
+Let $\equiv$ be some equivalence relation over $A$.
+Then for every $a \in A$, $[a] \is \setof{ b \mid a \equiv b}$ is the *equivalence class* of $a$.
+Note that $[a] = [b]$ whenever $a \equiv b$.
+The set $\setof{[a] \mid a \in A}$ is called a *partitioning* of $A$, and we say that $\equiv$ *partitions* $A$.
+\end{definition}
+
+It is often possible to lift operations from members of a set directly to partitions of that set, producing what is called a *quotient structure*.
+Computing with quotient structures is often much more efficient.
+We will hear more about this in later units.
+
+## Partial and Total Orders
+
+Partial orders form the natural counterpart to equivalence relations.
+Whereas the latter are symmetric, partial orders are antisymmetric or asymmetric depending on whether they are reflexive or irreflexive.
+Weak partial orders are transitive, reflexive, and antisymmetric, whereas strict partial orders are transitive, irreflexive, and asymmetric.
+
+\begin{example}
+Reflexive dominance is a weak partial order, whereas proper dominance is a strict partial order.
+Left-sibling and precedence are also strict partial orders.
+
+On the mathematical side, $\leq$ over natural numbers and $\subseteq$ over sets are weak partial orders, whereas $<$ and $\subsetneq$ are their strict counterparts.
+\end{example}
+
+Weak partial orders are very common in all of mathematics, and we will spend quite some time on them in the next few units.
+
+When a weak partial order is total, it is called a total order.
+A strict total order is a strict partial order that is trichotomous (remember that irreflexive relations can at most be trichotomous, but never total).
+
+\begin{example}
+Over natural numbers, $\leq$ is a total order and $<$ a strict total order.
+The subset relation $\subseteq$ is not total, nor are reflexive dominance or proper dominance over trees.
+However, string precedence is a strict total order.
+\end{example}

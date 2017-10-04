@@ -1,0 +1,25 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node (abc) at (0,0) {$abc$};
+    \node (ab) [below left=2em and 2em of abc] {$ab$};
+    \node (bc) [below right=2em and 2em of abc] {$bc$};
+    \node (a) [below=2em of ab] {$a$};
+    \node (c) [below=2em of bc] {$c$};
+    \node (b) at ($(a) !.5! (c)$) {$b$};
+    \node (e) [below=2em of b] {$\varepsilon$};
+
+    \foreach \Source/\Target in {%
+        e/a,
+        e/b,
+        e/c,
+        a/ab,
+        b/ab,
+        b/bc,
+        c/bc,
+        ab/abc,
+        bc/abc}
+        \draw (\Source) to (\Target);
+\end{tikzpicture}
+\end{document}

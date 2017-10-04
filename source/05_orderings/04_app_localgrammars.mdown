@@ -1,0 +1,70 @@
+# The Lattice Space of $n$-Gram Grammars
+
+*Disclaimer*: this section is still work in progress
+
+Recall that a strictly $k$-local (SL-$k$) grammar is a finite set of $k$-grams such that a string is well-formed iff its $k-1$-augmented counterpart does not contain any of those $k$-grams as a substring.
+A strictly $k$-piecewise (SP-$k$) grammar works exactly the same, except that the $k$-grams must not appear among the strings subsequences.
+Finally, a tier-based strictly $k$-local (TSL-$k$) grammar is an SL-$k$ grammar that ignores all symbols in the tier alphabet $T$.
+In this unit, we will look at these grammars from the perspective of lattices.
+
+## String Evaluation over Lattices
+
+We begin by reconsidering how the grammars determine the well-formedness of a string.
+We already know that ordering a string's set of substrings by the substring relation yields a lattice structure, as in the example below.
+
+\input_mid{substringorder.tikz}
+
+The same is true if one instead orders the set of subsequences by the subsequence relation.
+
+\input_mid{subsequenceorder.tikz}
+
+In addition, when we number the "layers" of the lattices from bottom to top, starting at 0, then the $n$-th level lists all the substrings or subsequences of length $n$.
+Hence we can regard an SL-$k$ grammar as a device that searches the $k$-th layer of the substring lattice for specific $k$-grams, whereas an SP-$k$ grammar looks at the subsequence lattice instead.
+
+This idea can be made precise in terms of a function.
+The Boolean lattice $\mathbf{2}$ consists of the set $\setof{0,1}$ ordered by $\leq$.
+Given an SL-$k$/SP-$k$ grammar $G$ and the corresponding lattice $\tuple{S, \leq}$ over substrings or subsequences, we regard $G$ as a function from $S$ to $\mathbf{2}$ such that $G(s) = 1$ unless $s \in G$ or there is some $s' \in G$ with $s' \leq s$.
+In other words, ungrammaticality is upward entailing in $\tuple{S, \leq}$.
+Hence a string is ungrammatical as soon as one of its substrings or subsequences is illicit.
+
+The lattice-based perspective does not make for an efficient implementation, but it is pleasing in that it clearly shows the parallel between SL and SP, which do not differ in how they map lattices to $\mathbf{2}$ but only in what lattices they operate over.
+
+
+## The Lattice of Grammars
+
+Since SL and SP grammars are sets, they can be put into a lattice structure, too.
+Every SL-$k$ or SP-$k$ grammar is a subset of $\Sigma^k$, i.e. a member of $\wp(\Sigma^k)$.
+Now consider the lattice $\tuple{\wp(\Sigma^k), \subseteq}$.
+Each element of the lattice corresponds to a specific grammar.
+As each grammar is a collection of forbidden $k$-grams, there is an inverse relation between the subset relation over grammars and the subset relation over the languages these grammars generate: $G \subseteq G'$ iff $L(G) \supseteq L(G')$.
+
+\begin{example}
+Consider the SL-$2$ grammar $\setof{aa}$.
+Its language contains all strings that do not contain any instances of $aa$.
+Now suppose that we also add the bigram $bb$ to the grammar.
+This means that all strings with an instance of $bb$ are removed from the language.
+Any additional bigram in the grammar may further shrink the set of licensed strings.
+\end{example}
+
+Let us again make this more precise.
+We already have the lattice $\tuple{\wp(\Sigma^k), \subseteq}$ for grammars, but we can also define a lattice $\tuple{\wp(\Sigma^*), \supseteq}$ where all string languages are ordered by the superset relation.
+We defined a mapping $f$ from the former to the latter such that $f(G) = L(G)$.
+Thanks to our previous observation, we can be sure that $f$ is monotonic: $G \subseteq G'$ implies $f(G) \supseteq f(G')$.
+
+The monotonicity of $f$ is crucial in the learning algorithm for SL and SP grammars.
+We start at the root of the lattice $\tuple{\wp(\Sigma^k), \subseteq}$, which consists of all $k$-grams over $\Sigma$.
+This node is mapped to the empty language by $f$.
+Given a set $I$ of input sentences, we search $\tuple{\wp(\Sigma^*), \supseteq}$ for the smallest language $L$ in the range of $f$ such that $I \subseteq L$.
+Then $\inv{f}(L)$ is the most restrictive grammar $G$ that generates all strings from $I$.
+
+In this case, the difference between SL and SP grammars is just how the mapping $f$ relates grammars to languages.
+
+## The Lattice of TSL Grammars
+
+A TSL grammar has two components, each one of which can be placed in a lattice.
+The first component is the SL grammar, we is an element of the lattice $\tuple{\wp(\Sigma^k), \subseteq}$ that we just discussed.
+The tier just specifies a subset of \Sigma that should be ignored in the string.
+Tiers can be regarded as elements of another lattice $\tuple{\wp(\Sigma), \supseteq}$.
+We can combine these two lattices into a single lattice $\tuple{\wp(\Sigma^k) \times \wp(\Sigma), \leq}$ such that $\tuple{x,a} \leq \tuple{y,b}$ iff $x \subseteq y$ and $a \supseteq b$.
+At this point, we can once again use a mapping $f$ from this lattice into $\tuple{\wp(\Sigma^*), \supseteq}$.
+This function is once again monotonic, and we can use the same general learning algorithm as before.

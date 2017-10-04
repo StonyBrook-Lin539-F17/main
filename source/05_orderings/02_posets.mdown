@@ -1,0 +1,84 @@
+# Partially Ordered Sets and Lattices
+
+Partial orders are particularly common and useful.
+Not just in mathematics, but also in linguistics, e.g. in semantics.
+Whenever we take a set and define a partial order over its elements, we get a *poset*.
+
+\begin{definition}
+A *partially ordered set* or simply *poset* is a pair $\tuple{S, \leq}$ where $S$ is a set and $\leq$ a weak partial order over $S$.
+\end{definition}
+
+\begin{example}
+Both $\tuple{\mathbb{N}, \leq}$ and $\tuple{\wp(\mathbb{N}), \subseteq}$ are posets.
+And so is $\tuple{\Sigma^*, \sqsubseteq}$, where $\sqsubseteq$ denotes the substring relation ($s \sqsubseteq t$) iff $s$ is a substring of $t$).
+\end{example}
+
+Posets are common mathematical structures, but they only become really interesting once a few additional properties are satisfied, turning them into *semilattices* or *lattices*.
+Let us establish the intuitions first before we cover the formal definitions.
+
+The graph below shows the set consisting of the string $abc$ and all its substrings, ordered by $\sqsubseteq$.
+
+\input_mid{substringorder.tikz}
+
+For any two nodes $x$ and $y$ in this structure, there is at least one $z$ such that $x \sqsubseteq z$ and $y \sqsubseteq z$.
+Each such $z$ is an *upper bound* for $x$ and $y$.
+Visually we can identify as any node in a "layer" above $x$ and $y$ that can be reached from $x$ as well as $y$.
+Whenever $x$ and $y$ have multiple upper bounds, one of them is lower than all the others.
+This is the *least upper bound* (lub).
+
+\begin{example}
+The upper bounds of $a$ and $b$ are $ab$ and $abc$.
+The least upper bound is $ab$.
+
+The upper bounds of $a$ and $\emptystring$ are $a$, $ab$, and $abc$.
+The least upper bound is $a$.
+\end{example}
+
+In the other direction, we can also identify for all $x$ and $y$ some $z$ such that $z \sqsubseteq x$ and $z \sqsubseteq y$.
+Such a $z$ is called a *lower bound*, and the highest one among them is the *greatest lower bound* (glb).
+
+\begin{example}
+The only lower bound of $a$ and $b$ is $\emptystring$, which is also the greatest lower bound.
+
+The lower bounds of $ab$ and $bc$ are $b$ and $\emptystring$, with $b$ being the greatest lower bound.
+\end{example}
+
+The lub and glb of $x$ and $y$ are also called their *meet* $x \wedge y$ and *join* $x \vee y$, respectively.
+A poset where all $x$ and $y$ have a defined meet is a *meet semilattice*.
+If all $x$ and $y$ instead have a defined join, the poset is a *join semilattice*.
+A poset that is both a meet semilattice and a join semilattice is called a *lattice*.
+
+\begin{example}
+In the structure above, both $x \wedge y$ and $x \vee y$ are defined for every choice of $x$ and $y$.
+So the structure is a lattice.
+
+Now consider a Gorn tree domain $D$ ordered by the reflexive dominance relation $\rdom$.
+For any two nodes $x$ and $y$, there is some $z$ such that $z \rdom x$ and $z \rdom y$.
+In other words, $x \wedge y$ is always defined and corresponds to the lowest node $z$ that reflexively dominates $x$ and $y$.
+The join $x \vee y$, on the other hand, refers to the highest node $z$ such that $x \rdom z$ and $y \rdom z$.
+Such a $z$ does not exist unless $x \rdom y$ (in which case $z = y$) or $y \rdom x$ (in which case $z = x$).
+Therefore $\tuple{G, \rdom}$ is a meet semilattice, but not a join semilattice.
+\end{example}
+
+\begin{definition}
+Let $\tuple{D,\leq}$ be a poset.
+For all $x, y \in D$, their *lower bounds* and *upper bounds* are $\mathrm{lb}(x,y) \is \setof{z \mid z \leq x \& z \leq y}$ and $\mathrm{ub} \is \setof{z \mid x \leq z \& y \leq z}$, respectively.
+Their *meet* or *greatest lower bound* (glb) is $x \wedge y \is z$ such that $z \in \mathrm{lb}(x,y)$ and for all $z' \in \mathrm{lb}(x,y)$, it holds that $z' \leq z$.
+Their *join* or *least upper bound* (lub) is $x \vee y \is z$ such that $z \in \mathrm{ub}(x,y)$ and for all $z' \in \mathrm{ub}(x,y)$, it holds that $z \leq z'$.
+\end{definition}
+
+\begin{definition}
+Let $\tuple{D,\leq}$ be a poset.
+Then it is
+<ul>
+<li>a *meet semilattice* iff $x \wedge y \in D$ for all $x,y \in D$,</li>
+<li>a *join semilattice* iff $x \vee y \in D$ for all $x,y \in D$,</li>
+<li>a *lattice* iff both conditions are met.</li>
+</ul>
+\end{definition}
+
+Again you might be wondering why we care about whether a structure is a lattice or not.
+The central advantage is once again the ability to generalize.
+There are existing algorithms and techniques for working with lattices, so if a given problem can be described in terms of lattices, we are halfway toward a solution.
+In addition, it becomes easier to generalize results from one application to a completely new one if it can be shown that both are rotted in lattice structures.
+The ability to generalize specific objects into more abstract ones is tremendously useful for devising general solutions that apply to many different problems --- whether you are a scientist or an engineer.
