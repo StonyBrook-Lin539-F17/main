@@ -1,0 +1,29 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node (abc) at (0,0) {$\{1,2,3\}$};
+    \node (ab) [below left=2em and 2em of abc] {$\{1,2\}$};
+    \node (bc) [below right=2em and 2em of abc] {$\{2,3\}$};
+    \node (ac) at ($(ab) !.5! (bc)$) {$\{1,3\}$};
+    \node (a) [below=2em of ab] {$\{1\}$};
+    \node (c) [below=2em of bc] {$\{3\}$};
+    \node (b) at ($(a) !.5! (c)$) {$\{3\}$};
+    \node (e) [below=2em of b] {$\emptyset$};
+
+    \foreach \Source/\Target in {%
+        e/a,
+        e/b,
+        e/c,
+        a/ab,
+        a/ac,
+        b/ab,
+        b/bc,
+        c/bc,
+        c/ac,
+        ab/abc,
+        ac/abc,
+        bc/abc}
+        \draw (\Source) to (\Target);
+\end{tikzpicture}
+\end{document}

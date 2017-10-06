@@ -1,0 +1,160 @@
+# Possible Worlds as Ultrafilters
+
+Lattices are very common in semantics, the study of meaning.
+Due to space constraints, we can only discuss one application here, the formalization of the notion *possible world*.
+Semantic theories frequently operate with this notion to describe the meaning of various sentences.
+For example, the sentence *John might be a scam artist* is taken to assert the existence of a possible world where John is a scam artist.
+Intuitively, the idea of possible worlds is similar to parallel dimensions in science fiction stories or the multiverse in DC comic books.
+But intuitions are not a sound foundation for a scientific theory, we need a more rigorously defined object.
+
+## Propositions and the Entailment Relation
+
+Semanticists use the term proposition to refer to any statement that is true or false.
+For example, *John likes Mary* or *Hell will freeze over before Mary goes with John* are both propositions, whereas "Who was the first president of the United States?", "Open a window!", or "I believe it was..." are not.
+Now let $P$ be the set of all propositions.
+It does not matter for our purposes whether $P$ is finite, countably infinite, or even larger.
+But it definitely is a large set and includes propositions that nobody has ever uttered.
+
+We can order $P$ by the logical entailment relation $\Rightarrow$.
+For all $p,q \in P$, $p \Rightarrow q$ iff $p$ being true implies $q$ being true.
+For example, *John and Bill like Mary* logically entails *John likes Mary* because it is impossible for the former to be true and the latter to be false.
+On the other hand, *John or Bill likes Mary* does not logically entail *John likes Mary* because the former can be true while the latter is false.
+
+Let us investigate which properties of relations hold for $\Rightarrow$.
+First, one can tell immediately that $\Rightarrow$ is reflexive.
+If *John likes Mary* is true, then *John likes Mary* cannot be false.
+So the truth of $p$ implies the truth of $p$, which is an instance of logical entailment --- even if it is a very simple one.
+Turning to the next property, it is also fairly easy to see that logical entailment is transitive.
+If $p$ entails $q$ and $q$ entails $r$, then $q$ must be true whenever $p$ is true and $r$ must be true whenever $q$ is true.
+Hence $r$ must be true whenever $p$ is true.
+More succinctly, we have $p \Rightarrow q$ and $q \Rightarrow r$ jointly implying $p \Rightarrow r$, which is the definition of transitivity.
+So $\Rightarrow$ is both transitive and reflexive, which makes it at least a pre-order.
+
+This only leaves the question of symmetry.
+Symmetry clearly does not hold because even though *John and Bill like Mary* entails *John likes Mary*, the opposite does not hold.
+Asymmetry cannot hold because we already established that $\Rightarrow$ is reflexive, and reflexivity is incompatible with asymmetry.
+So at most $\Rightarrow$ can be antisymmetric.
+Intuitively, this does not seem to hold: *Groundhogs are also called woodchucks* and *Woodchucks are also called groundhogs* entail each other, but they are different statements.
+However, the semantic notion of proposition is more abstract than this.
+Semanticists commonly assume that if two statements entail each other, then there is no scenario that can ever tell them apart, so there is no point in treating them as distinct propositions.
+So at least as far as theoretical semantics is concerned, $\Rightarrow$ is antisymmetric.
+This means that $\Rightarrow$ is a weak partial order, and $\tuple{P, \Rightarrow}$ is a poset.
+
+## The Lattice of Propositions
+
+Whenever you encounter a poset, your first instinct should be to test whether it is a (semi)lattice.
+This means testing whether any two arbitrarily chosen elements have both a greatest lower bound and a least upper bound.
+For $\tuple{P, \Rightarrow}$, this is indeed the case.
+
+Given two propositions $p$ and $q$, their greatest lower bound is *$p$ and $q$*.
+After all, *$p$ and $q$* entails $p$ and it also entails $q$, so it must be a lower bound of the two.
+Showing that it is a greatest lower bound is a bit convoluted.
+Suppose that there is some lower bound $r$ of $p$ and $q$ such that *$p$ and $q$* \Rightarrow $r$.
+If the two are distinct, then it should be possible for *$p$ and $q$* to be false at the same time as $r$ is true. 
+But if $r$ is true, then $p$ and $q$ must both be true.
+But then *$p$ and $q$* must also be true, contradicting our initial assumption that *$p$ and $q$* is distinct from $r$.
+So *$p$ and $q$* is indeed the greatest lower bound of $p$ and $q$.
+
+The same line of reasoning can be applied in the other direction to show that *$p$ or $q$* is the least upper bound of $p$ and $q$.
+Since $p$ and $q$ were chosen arbitrarily, it really is the case that any two propositions have a greatest lower bound and a least upper bound.
+This makes $\tuple{P, \Rightarrow}$ a meet semilattice, a join semilattice, and hence a lattice.
+
+## Filters for Possible Worlds
+
+It is intuitively plausible that a possible world must satisfy certain minimum standards of internal consistency.
+For example, it cannot be the case that a proposition $p$ is both true and false in one and the same possible world.
+Similarly, logical entailment should be observed: if $p$ is true in the possible world, then anything that $p$ entails must also be true.
+And if both $p$ and $q$ are true, then their greatest lower bound *$p$ and $q$* also has to be true.
+These are all fairly minimal restrictions on what a possible world has to look like.
+Possible worlds may still violate the laws of physics or be the equivalent of a Lovecraftian nightmare, as long as these basic rules of logic are still obeyed.
+
+These conditions on possible worlds are eerily similar to a familiar concept from lattice theory.
+From that perspective, every possible world is a *filter* over the proposition lattice. 
+
+\begin{definition}
+Let $\tuple{S, \leq}$ be a lattice.
+Then $F \subseteq S$ is a *filter* iff all of the following hold.
+
+<ol>
+<li>$F$ is non-empty</li>
+<li>$F$ is *downard directed*: for all $x, y \in F$ there is some $z \in F$ such that $z \leq x$ and $z \leq y$</li>
+<li>$F$ is *upward closed*: for all $x \in F$ and $y \in S$, $x \leq y$ implies $y \in F$</li>
+</ol>
+
+We call $F$ *proper* iff $F \neq S$.
+\end{definition}
+
+\begin{example}
+Consider the lattice $\tuple{\wp(\setof{1,2,3}), \subseteq}$, which is depicted below.
+
+\input_mid{123lattice.tikz}
+
+The smallest filter over this lattice has $\setof{1,2,3}$ as its only member.
+The full set of filters is :
+
+<ul>
+<li>$\setof{ \setof{1,2,3} }$<li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,3}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{2,3}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}, \setof{1,3}, \setof{1}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}, \setof{2,3}, \setof{2}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,3}, \setof{2,3}, \setof{3}}$</li>
+<li>$\wp(\setof{1,2,3})$</li>
+</ul>
+
+All except the last are proper filters.
+\end{example}
+
+Intuitively, a filter is like a rubber sheet that one spans from the top of the lattice downwards to include certain elements.
+Since the rubber sheet has no holes, it is impossible for it to cover $p$ without covering any $q$ between $p$ and the top of the lattice.
+In addition, the sheet cannot be safely kept in place by any $p$ and $q$ alone, it also be strapped to their greatest lower bound (and the glb $x$ of this glb and anything else in the filter, and the glb $y$ of $x$ and anything else in the filter, and the glb $z$ of $y$ and anything else in the filter, and so on).
+
+At this point, we can give the vague notion of possible worlds a more rigorous meaning via lattices: the set of all possible worlds is identical to the set of all filters over $\tuple{P, \Rightarrow}$, the set of all propositions ordered by logical entailment.
+Then the claim *proposition $p$ holds in possible world $w$* reduces to the mathematical relation $p \in w$, i.e. $p$ is an element of the filter $w$ over $\tuple{P, \Rightarrow}$.
+
+## From Filters to Ultrafilters
+
+While conceptually appealing, the characterization of possible worlds as filters is too permissive.
+One would expect that if $p$ is true in $w$, then *it is not the case that $p$* should be false in $w$.
+And the other way round, if $p$ is false in $w$, then *it is not the case that $p$* should be true in $w$.
+Right now, this is not the case because filters can be so small that they contain neither $p$ nor *it is not the case that $p$*, in which case both would be false.
+
+\begin{example}
+For the powerset lattice from the previous example, the problem can be rephrased in set-theoretic terms.
+We want $x \in w$ iff $\setof{1,2,3} - x \notin w$.
+This holds for three of the filters we have identified:
+
+<ul>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}, \setof{1,3}, \setof{1}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}, \setof{2,3}, \setof{2}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,3}, \setof{2,3}, \setof{3}}$</li>
+</ul>
+
+But several filters are so small that both $x \notin w$ and $\setof{1,2,3} - x \notin w$.
+
+<ul>
+<li>$\setof{ \setof{1,2,3} }$<li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,2}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{1,3}}$</li>
+<li>$\setof{ \setof{1,2,3}, \setof{2,3}}$</li>
+</ul>
+
+And $\wp(\setof{1,2,3})$ is too large, we have both $x in w$ and $\setof{1,2,3} - x \in w$ for all choices of $x$.
+\end{example}
+
+So we need a more specific kind of filters for possible worlds.
+It turns out that the property of containing either $p$ or *it is not the case that $p$* coincides with the property of being a proper filter that cannot be extended without losing the property of being a proper filter.
+Such maximal proper filters are called *ultrafilters*.
+
+\begin{definition}
+Let $F$ be a filter over the lattice $\tuple{S, \leq}$. 
+Then $F$ is an *ultrafilter* iff $F$ is proper and there is no proper filter $F'$ such that $F \subseteq F' \subseteq S$.
+\end{definition}
+
+Over finite lattices, an ultrafilter is a filter that spans from the top all the way to a single element right above the bottom element.
+Over infinite lattices, ultrafilters are harder to visualize.
+For one thing, there may not be a bottom element, or it may not be possible to refer to an element right above it because for any element $x$ one picks there may be infinitely many elements between $x$ and the bottom element.
+While this sounds very counterintuitive, it is just a slightly more complex counterpart to the fact that any two rationals have infinitely many rationals between them. 
+Rather than trying to visualize an ultrafilter over an infinite lattice, it is more helpful to think of ultrafilters as filters that are maximal in the sense that they contain either $x$ or its negation.
+From this perspective, it also makes more sense to define possible worlds as ultrafilters over the lattice of propositions.
