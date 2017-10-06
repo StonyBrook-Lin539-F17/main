@@ -134,7 +134,7 @@ This holds for three of the filters we have identified:
 But several filters are so small that both $x \notin w$ and $\setof{1,2,3} - x \notin w$.
 
 <ul>
-<li>$\setof{ \setof{1,2,3} }$<li>
+<li>$\setof{ \setof{1,2,3} }$</li>
 <li>$\setof{ \setof{1,2,3}, \setof{1,2}}$</li>
 <li>$\setof{ \setof{1,2,3}, \setof{1,3}}$</li>
 <li>$\setof{ \setof{1,2,3}, \setof{2,3}}$</li>
