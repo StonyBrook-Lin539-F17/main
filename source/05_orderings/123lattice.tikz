@@ -8,7 +8,7 @@
     \node (ac) at ($(ab) !.5! (bc)$) {$\{1,3\}$};
     \node (a) [below=2em of ab] {$\{1\}$};
     \node (c) [below=2em of bc] {$\{3\}$};
-    \node (b) at ($(a) !.5! (c)$) {$\{3\}$};
+    \node (b) at ($(a) !.5! (c)$) {$\{2\}$};
     \node (e) [below=2em of b] {$\emptyset$};
 
     \foreach \Source/\Target in {%
