@@ -2,13 +2,17 @@
 \usepackage[linguistics]{forest}
 \begin{document}
 \begin{forest}
-    [pre-order
-        [equivalence relation]
-        [weak partial order
-            [total order]
+    [,phantom
+        [pre-order
+            [equivalence relation]
+            [weak partial order
+                [total order]
+            ]
         ]
-        [strict partial order
-            [strict total order]
+        [,phantom
+            [strict partial order
+                [strict total order]
+            ]
         ]
     ]
 \end{forest}
