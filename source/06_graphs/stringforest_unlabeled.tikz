@@ -1,0 +1,23 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc, positioning}
+\begin{document}
+\begin{tikzpicture}[%
+    every node/.style = {circle, fill=blue!25, minimum size=2em}]
+
+    \node (0) at (0,0) {0};
+    \foreach \Node/\Label [remember=\Node as \previous (initially 0)] in {%
+        1/2,
+        2/4,
+        3/5,
+        4/6,
+        5/7}
+        {
+        \node (\Node) [right=3em of \previous] {\Label};
+        \draw[->] (\previous) to (\Node);
+        }
+    \node (a) [above=3em of 1] {1};
+    \node (u) [below=3em of 1] {3};
+    \foreach \Source/\Target in {0/a, 0/u, a/2, u/2}
+        \draw[->] (\Source) to (\Target);
+\end{tikzpicture}
+\end{document}
