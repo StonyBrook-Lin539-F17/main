@@ -284,6 +284,7 @@ In that case, we have two distinct labeling functions, one for nodes and one for
 
 \begin{definition}
 An *edge-labeling* for a graph $\tuple{V,E}$ is a total function $\ell: E \rightarrow \Sigma$.
+For every path $p \is \tuple{v_0, v_1, \ldots, v_{n-1}, v_n}$ ($n \geq 1$), we call $s \is \ell(\tuple{v_0, v_1}) \cdots \ell(\tuple{v_{n-1}, v_n})$ the *string associated with $p$*.
 \end{definition}
 
 \begin{definition}
@@ -295,3 +296,5 @@ A *prefix tree* is a 4-tuple $\tuple{V,E,c,\ell}$ such that
 <li>$\ell: E \rightarrow \Sigma$ is an edge labeling function.</li>
 <ol>
 \end{definition}
+
+The string language encoded by a prefix tree is the set of all strings associated with a path from the root to a node with label $1$.
