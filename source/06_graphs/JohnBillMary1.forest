@@ -1,0 +1,38 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [S
+        [NP
+            [NP
+                [NP [John]]
+                [and]
+                [NP [Bill]]
+            ]
+            [or]
+            [NP [Mary]]
+            ]
+        [VP
+            [VP
+                [left]
+                [NP
+                    [Det [the]]
+                    [N [party]]
+                ]
+            ]
+            [PP
+                [P [in]]
+                [NP
+                    [Det [a]]
+                    [N [hurry]]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

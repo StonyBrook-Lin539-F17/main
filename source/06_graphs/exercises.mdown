@@ -1,0 +1,33 @@
+## General Graph Properties
+
+1. Draw a (directed) graph with 5 vertices that has as few edges as possible while being strongly connected.
+1. Draw a (directed) graph with 5 vertices that has as few edges as possible while being connected but not strongly connected.
+1. Draw a (directed) graph with 5 vertices that has as few edges as possible while being weakly connected but not connected.
+1. Draw the smallest possible graph that is weakly connected but not connected.
+
+## Prefix Trees
+
+1.  Represent the following list of words as a prefix tree (assuming characters as the basic alphabet).
+    1. nation
+    1. nature
+    1, national
+    1. natural
+    1. nationalize
+    1. naturalize
+
+1.  Represent the same list of words as a prefix tree but taking morphemes as the basic unit.
+    For example, *natural* would only consist of the symbols *nature* and *-al*.
+
+## DAGs
+
+1.  Represent the character-based prefix tree from the exercise above as a DAG instead.
+    Can you think of a word that cannot easily be added to this prefix DAG?
+
+1.  Represent the morpheme-based prefix tree from the exercise above as a DAG instead.
+    Can you think of a word that cannot easily be added to this prefix DAG?
+
+1.  Below are two syntactic analyses for *John and Bill or Mary left the party in a hurry*.
+    Draw the corresponding parse forest.
+
+\input{./JohnBillMary1.forest}
+\input{./JohnBillMary2.forest}
