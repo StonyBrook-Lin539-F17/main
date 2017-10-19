@@ -1,0 +1,27 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [S
+        [NP [I]]
+        [VP
+            [VP
+                [watched]
+                [NP
+                    [Det [a]]
+                    [N [movie]]
+                ]
+            ]
+            [PP
+                [P [with]]
+                [NP [Arnold]]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

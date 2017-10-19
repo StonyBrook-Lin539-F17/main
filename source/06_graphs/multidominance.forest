@@ -1,0 +1,26 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [S$'$, name=target
+        [,phantom]
+        [S
+            [NP [N [John]]]
+            [VP
+                [V [loves]]
+                [NP, name=source
+                    [Det [this]]
+                    [N [boy]]
+                ]
+            ]
+        ]
+    ]
+    %
+    \draw (source) to [out=160,in=220] (target.south west);
+\end{forest}
+\end{document}

@@ -1,0 +1,43 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [,phantom
+        [S
+            [NP,name=subj
+                [I]
+            ]
+            [VP,l sep=4em, s sep=5em
+                [VP
+                    [watched,name=watched]
+                    [NP,name=NP1
+                        [Det [a]]
+                        [N [movie]]
+                    ]
+                ]
+                [PP,name=PP1
+                    [P [with]]
+                    [NP [Arnold]]
+                ]
+            ]
+        ]
+        [S,name=S2
+            [,phantom]
+            [VP,name=VP2
+                [,phantom]
+                [NP,name=NP2]
+            ]
+        ]
+    ]
+    %
+    \draw (S2.south) to (subj.north);
+    \draw (VP2.south) to (watched.north);
+    \draw (NP2.south) to (NP1.north);
+    \draw (NP2.south) to (PP1.north);
+\end{forest}
+\end{document}

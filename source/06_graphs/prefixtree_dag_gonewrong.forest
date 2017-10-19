@@ -1,0 +1,46 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [$\varepsilon$, bad
+        [a, good
+            [n, good
+                [y, good]
+            ]
+            [l, bad, name=l
+                [l, good]
+            ]
+        ]
+        [b, bad
+            [e, good
+                [t, good
+                    [t, bad, name=t
+                        [e, bad
+                            [r, good
+                                [n, bad
+                                    [a, bad
+                                        [t, bad
+                                            [e, good]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                    [,phantom]
+                ]
+                [e, good
+                    [n, good]
+                ]
+            ]
+        ]
+    ]
+    %
+    \draw (l) to (t);
+\end{forest}
+\end{document}

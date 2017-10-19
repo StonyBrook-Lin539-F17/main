@@ -1,0 +1,38 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [,phantom
+        [S
+            [NP [John]]
+            [VP
+                [went]
+                [PP
+                    [P [to]]
+                    [NP [Chicago, name=target]]
+                ]
+            ]
+        ]
+        [S
+            [NP [I]]
+            [VP
+                [believe]
+                [S
+                    [NP [it]]
+                    [VP, name=source
+                        [was]
+                        [,phantom]
+                    ]
+                ]
+            ]
+        ]
+    ]
+    %
+    \draw (source) to [out=290,in=45] (target.north east);
+\end{forest}
+\end{document}
