@@ -1,0 +1,35 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\forestset{
+    prefix/.style = {circle, fill=#1!25, minimum size=2em},
+    good/.style = {prefix=blue},
+    bad/.style = {prefix=red}
+}
+\begin{document}
+\begin{forest}
+    [, bad
+        [, edge label={node[left,pos=.5]{a}}, good
+            [, edge label={node[left,pos=.5]{n}}, good
+                [, edge label={node[left,pos=.5]{y}}, good]
+            ]
+            [, edge label={node[right,pos=.5]{l}}, bad
+                [, edge label={node[left,pos=.5]{l}}, good]
+            ]
+        ]
+        [, edge label={node[right,pos=.5]{b}}, bad
+            [, edge label={node[left,pos=.5]{e}}, good
+                [, edge label={node[left,pos=.5]{e}}, good
+                    [, edge label={node[left,pos=.5]{n}}, good]
+                ]
+                [, edge label={node[right,pos=.5]{t}}, good
+                    [, edge label={node[left,pos=.5]{t}}, bad
+                        [, edge label={node[left,pos=.5]{e}}, bad
+                            [, edge label={node[left,pos=.5]{r}}, good]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

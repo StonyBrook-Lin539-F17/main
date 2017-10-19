@@ -1,0 +1,26 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\begin{document}
+\begin{forest}
+    [$\varepsilon$
+        [a
+            [n
+                [y]
+            ]
+            [l
+                [l]
+            ]
+        ]
+        [b
+            [e
+                [e
+                    [n]
+                ]
+                [t
+                    [t [e [r]]]
+                ]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

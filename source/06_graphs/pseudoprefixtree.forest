@@ -1,0 +1,22 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\begin{document}
+\begin{forest}
+    [$\varepsilon$
+        [a
+            [an
+                [any]
+            ]
+            [all]
+        ]
+        [be
+            [bee
+                [been]
+            ]
+            [bet
+                [better]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}

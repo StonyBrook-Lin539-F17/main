@@ -1,0 +1,24 @@
+\documentclass[tikz]{standalone}
+\usepackage[linguistics]{forest}
+\newcommand{\tuple}[1]{\ensuremath{\left \langle #1 \right \rangle}}
+\begin{document}
+\begin{forest}
+    [,phantom
+        [$\tuple{0,2}$
+            [$\tuple{1,1}$
+                [$\tuple{1,0}$]
+            ]
+            [$\tuple{1,0}$]
+        ]
+        [$\tuple{0,2}$
+            [$\tuple{1,1}$
+                [$\tuple{1,0}$]
+            ]
+            [$\tuple{1,1}$
+                [$\tuple{1,0}$]
+            ]
+        ]
+    ]
+\end{forest}
+\end{document}
+
