@@ -1,0 +1,309 @@
+# Finite-State Automata
+
+Prefix trees, albeit being limited to tree structures rather than arbitrary graphs, generalize our standard notion of graphs in that they have both vertex labels and edge labels.
+We briefly entertained the notion of generalizing prefix trees to prefix DAGs, but that did not turn out to be particularly useful for our intended application, namely a more efficient encoding of word lists.
+But when we take one more step and generalize prefix trees from trees to arbitrary graphs, we do get a very useful kind of object: *finite-state automata*.
+
+## Automata as Graphs
+
+A finite-state automaton (FSA) is a finite graph that has both edge labels and vertex labels.
+The edge labels are drawn from some arbitrary, finite set $\Sigma$, which is called the *alphabet*.
+The vertex labels are used to distinguish between four types of vertices, two of which are already familiar from prefix trees:
+
+1. normal vertices,
+1. *final* vertices,
+1. *initial* vertices,
+1. vertices that are both initial and final.
+
+We already had normal and final vertices for prefix trees (they were color-coded as red and blue, respectively).
+Initial vertices are a new type.
+For prefix trees, it was obvious that we always wanted to start at the source, i.e. the root of the tree.
+An arbitrary graph may have multiple sources, however, or none at all, so instead the possible starting points have to be indicated explicitly by marking them as initial.
+
+Any graph that satisfies the requirements above is a finite-state automaton.
+As for prefix trees, we can look at the strings that are associated with paths from an initial to a final vertex and thus compute a (possibly infinite) set of strings.
+
+\begin{example}
+Consider the FSA below, where initial states are marked by an edge labeled *start* and final nodes are doubly circled.
+
+\input_med{./abaa.tikz}
+
+The shorted path from an initial to a final state is simply $\tuple{0,1}$, which is associated with the string $a$.
+The next longer path is $\tuple{0,1,2,0,1}$, yielding $\String{abaa}$.
+After that, one can follow the path $\tuple{0,1,2,0,1,2,0,1}$ and obtain the string $\String{abaabaa}$.
+In sum, all the associated strings start with an $\String{a}$, followed by 0 or more instances of $\String{baa}$.
+\end{example}
+
+\begin{example}
+In the minor variant below, the initial state is also a final state.
+
+\input_med{./aba.tikz}
+
+As a result, the empty path is a valid path from an initial to a final state.
+The empty path is associated with the empty string $\emptystring$.
+In addition, for every valid path ending in $1$ there is now a valid truncated version missing the final step from $0$ to $1$.
+This also allows for the following strings: $\String{a}$, $\String{aba}$, $\String{ababa}$, and so on.
+\end{example}
+
+\begin{example}
+The automaton below produces strings over $\setof{a}$ of length $l$ such that $l \mod 4 = 2$.
+
+\input_med{./modulo4.tikz}
+\end{example}
+
+FSAs are incredibly useful for modeling natural language.
+For example, the Boolean SL, SP, and TSL grammars we have seen are all special cases of FSAs.
+
+\begin{example}
+Consider the SL grammar that bans word-final voicing for German:
+
+$$
+\setof{
+\text{b} \RightEdge,
+\text{d} \RightEdge,
+\text{v} \RightEdge,
+\text{z} \RightEdge
+}
+$$
+
+We can convert this into an FSA that will move us into a non-final vertex whenever a voiced consonant is encountered.
+Since we only consider paths that end in a final vertex, it is impossible for a word to end in a voiced consonant.
+For the sake of succinctness, we denote all voiced consonants by $Z$ and all other sounds by $\neg Z$.
+
+\input_med{./voicing.tikz}
+\end{example}
+
+\begin{example}
+Recall the SP-grammar that enforces unbounded tone plateauing with the constraint $^*$HLH.
+This can be translated into an automaton where seeing an L after an H moves us into a special part of the graph where all edges are labeled L.
+This way it becomes impossible to continue a string like HLLL with an H.
+
+\input_med{./utp.tikz}
+\end{example}
+
+The last example illustrates how vertices in an FSA serve as a limited kind of memory.
+The fact that we are in a specific vertex implicitly encodes that a certain symbol was encountered along the path to this vertex, and by carefully placing edges from this node we can regulate how the computation proceeds from here.
+This connection between vertices and "memory states" is why the term is finite *state* automata.
+
+## Definition and Terminology
+
+The canonical definition of FSAs looks very different from the graph-theoretic one.
+This is because FSAs were invented independently, and none of the important theorems about them build on the insights of graph theory.
+I will first define FSAs in graph-theoretic terms, and then contrast those definitions with the canonical one from formal language theory.
+
+\begin{definition}
+A *finite-state automaton* (FSA) is a vertex- and edge-labeled graph $A \is \tuple{V, E, c, \ell}$ such that
+
+<ol>
+<li>$V$ is finite, and</li>
+<li>$\ell$ maps vertices to members of $\wp(\Sigma)$ for some fixed set $\Sigma$, and</li>
+<li>$c$ maps edges to members of $\wp(\setof{I,F})$.</li>
+</ol>
+
+A vertex $v$ is called *initial* iff $I \in c(v)$ and *final* iff $F \in c(v)$.
+We also call vertices *states*.
+\end{definition}
+
+The definition above is mostly straight-forward, except that the edge labeling function has $\wp{\Sigma}$ as its co-domain instead of $\Sigma$.
+This is done to accommodate cases like the devoicing automaton above, where several symbols can take us from state $u$ to another state $v$.
+Since our definition of graphs only allows for at most one edge between two states, cases with several symbols must be handled by tying all those symbols to that edge.
+The easiest way of doing so is to label edges with subsets of $\Sigma$. 
+
+However, this change also necessitates a modification in how strings are associated with paths.
+Instead of to a single string, each path is now associated to a set of strings.
+
+\begin{definition}
+With every path $p = \tuple{v_1, v_2, v_3 \ldots, v_{n-1}, v_n}$ we associate a string set $L(p) \is \ell(v_1, v_2) \times \ell(v_2, v_3) \cdots \times \ell(v_{n-1}, v_n)$.
+If $p = \tuple{}$, $L(p) = \setof{\emptystring}$.
+Let $P$ be the set of all paths from an initial state to a final state.
+Then the language *recognized* by $A$ is $\bigcup_{p \in P} L(p)$.
+For every stringset $L \subseteq \Sigma^*$, $L$ is *regular* iff $L$ is recognized by some FSA.
+\end{definition}
+
+The canonical definition of FSAs can avoid this complication by directly treating edges as triples of the form *start*, *label*, *end*.
+
+\begin{definition}
+A *finite-state automaton* (FSA) is a 5-tuple $A \is \tuple{\Sigma, Q, I, F, \Delta}$ such that
+
+<ol>
+<li>the *alphabet* $\Sigma$ is a finite, non-empty set,</li>
+<li>$Q$ is a finite set of *states*,</li>
+<li>$I \subseteq Q$ is the set of *initial* states,</li>
+<li>$F \subseteq Q$ is the set of *final* states,</li>
+<li>$\Delta \subseteq Q \times \Sigma \times Q$ is the *transition relation*.</li>
+</ol>
+
+Given a string $s \is \sigma_1 \cdots \sigma_n \in \Sigma^n$ ($n \geq 0$), a *run* of $A$ over $s$ is a tuple $r \is \tuple{q_0, q_1, \ldots, q_n}$ such that $q_0 \in I$ and for all $0 < i \leq n$, $\tuple{q_{i-1}, \sigma_i, q_i} \in \Delta$.
+A run is *accepting* iff its last component is a final state.
+A string $s$ is *recognized* or *generated* by $A$ iff there is some accepting run of $A$ over $s$.
+The string language $L(A)$ recognized/generated by $A$ is the smallest set containing all strings recognized by $A$.
+\end{definition}
+
+
+## Important Results
+
+### Automaton Intersection
+
+Given two FSAs $A$ and $B$ that recognize the languages $L(A)$ and $L(B)$, respectively, one can construct an automaton $A \cap B$ that recognizes $L(A) \cap L(B)$.
+This shows that the class of regular languages are closed under intersection.
+Closure under intersection is an incredibly valuable property because it means that a complex pattern can be factored into simpler patterns such that the intersection of all the simple patterns produces the complex pattern.
+
+The construction of $A \cap B$ is actually fairly simple as it all amounts to constructing an automaton that runs $A$ and $B$ in parallel.
+But one thing after another:
+intuitively, a string $s$ is in the intersection of $L(A)$ and $L(B)$ only if there is an accepting run of $A$ over $s$ and an accepting run of $B$ over $s$.
+So if we were to run $A$ and $B$ in parallel, both would have to end up in a final state.
+
+Let's imagine this in an even more visual manner. 
+Suppose our automata $A$ and $B$ are as below.
+
+\input_med{abaa.tikz}
+\input_med{modulo4_ab.tikz}
+
+Here $A$ recognizes strings of the form $\String{a(baa)^*}$ (where $^*$ means 0 or more iteration of the bracketed part).
+And $B$ recognizes any string over $a$ and $b$ whose length is a multiple of $4$.
+So $abaa$ would be recognized by both and thus in the intersection of $L(A)$ and $L(B)$, whereas $a$ would be rejected by $B$ and $abab$ would be rejected by $A$.
+
+Now imagine that you put your left index finger on the initial state of $A$, and your right index finger on the initial state of $B$.
+Move your fingers in parallel as you move along with the symbols in $\String{abaa}$.
+So after the first $a$ your finger moves from $0$ to $1$ in $A$, and from $0$ to $1$ in $B$.
+Then the $b$ pushes your finger from $1$ to $2$ in $A$, and similarly in $B$.
+After the next $a$ your finger moves from $2$ to $0$ in $A$, and from $2$ to $3$ in $B$.
+Finally, the last $a$ shifts you from $0$ to $1$ in $A$, and from $3$ to $0$ in $B$.
+Both are final states, and thus the string is recognized.
+
+Based on this intuiton, we construct an automaton where each state keeps track of the position of our fingers in these two automata.
+For the string above, we start out in $0,0$ and move to $1,1$ with an $a$ transition.
+After that a $b$ transition moves us to $2,2$, from which another $a$ gets us to $0,3$, and from there to $1,0$.
+For any two states $a,x$ and $b,y$, there is a $\sigma$-transition from $a,x$ to $b,y$ iff there is a $\sigma$-transition from $a$ to $b$ and in the first automaton and a $\sigma$-transition from $x$ to $y$ in the second automaton. 
+Furthermore, a state $a,x$ is initial iff both $a$ and $x$ are initial, and it is final iff both $a$ and $x$ are final.
+
+Applying this construction to the two automata above yields the following:
+
+\input_med{intersection_automaton.tikz}
+
+
+\begin{definition}
+Let $A \is \tuple{\Sigma, Q_A, I_A, F_A, \Delta_A}$ and $B \is \tuple{\Sigma, Q_B, I_B, F_B, \Delta_B}$ be two FSAs.
+The *intersection automaton* $A \cap B$ is the FSA $\tuple{Sigma, Q_A \times Q_B, I, F, \Delta}$ such that
+
+<ol>
+<li>$\tuple{a,x} \in I$ iff $a \in I$ and $x \in I$,</li>
+<li>$\tuple{a,x} \in F$ iff $a \in F$ and $x \in F$,</li>
+<li>$\tuple{\tuple{a,x}, \sigma, \tuple{b,y}} \in \Delta$ iff $\tuple{a,\sigma,b} \in \Delta_A$ and $\tuple{x, \sigma, y} \in \Delta_B$.</li>
+</ol>
+\end{definition}
+
+\begin{theorem}
+For all FSAs $A$ and $B$, $L(A) \cap L(B) = L(A \cap B)$.
+\end{theorem}
+
+### Determinization
+
+Notice that nothing in our definition of FSAs prevents $\Delta$ from containing two transitions of the form $\tuple{q, \sigma, u}$ and $\tuple{q, \sigma, v}$.
+In this case, a single string containing the symbol $\sigma$ may have multiple runs because we can move from $q$ to $u$ or to $v$.
+Such an automaton is called *non-deterministic*.
+Automata for which this not the case are called *deterministic*.
+
+\begin{definition}
+An FSA $\tuple{V, E, c, \ell}$ is *deterministic* iff for all edges $\tuple{u,v}$ and $\tuple{u,w}$ it holds that $\ell(\tuple{u,v}) = \ell(\tuple{u,w})$ iff $v = w$.
+Otherwise it is *non-deterministic*.
+\end{definition}
+
+Determinism is a very desirable property.
+Not only does it simplify certain proofs, it also is essential for efficient recognition.
+With a deterministic automaton, recognition proceeds in real-time.
+Just as in a prefix tree, we can immediately start moving through the automaton as the symbols of the string are read in.
+
+With a non-deterministic automaton, recognition is more complex.
+Suppose we reach a fork where we could move from $q$ to $u$ or $v$.
+We could try $u$, and if we're lucky this is the correct path.
+But if we do not make it to a final state along this path, we have to backtrack to $q$ and try $v$ instead.
+Since each state may have many different choice points, recognition becomes much slower.
+If every state has at most $m$ choice points, recognition of a string of length $n$ can take up to $m^n$ steps.
+That is truly awful, with $m = 4$ and a short string of length $5$ this may already require $4^5 = (2^2)^5 = 2^10 = 1024$ steps instead of just $5$.
+
+An alternative to this kind of serial search is to do parallel search: whenever we reach a state with $m$ choices, we make $m$ copies of the automaton and each copy proceeds along of the possible paths.
+Now recognition can again proceed in real-time (modulo the cost of spawning copies of the automaton), but we consume a lot of memory.
+This situation is very common in software engineering, and it is known as a time-space tradeoff: either we do it slow but memory-efficient, or we do it fast but at a much higher memory cost.
+
+The copy-spawning idea can be compiled directly into a non-deterministic automaton by *determinizing* it.
+The idea isn't too dissimilar from the construction of the intersection automaton: each state consists of multiple components that encode the state of one of the spawned copies.
+The construction is slightly more efficient though.
+If one represents the state configuration of $m$ copies by a member of $Q^m$, then there is a risk that one ends up with many redundant states.
+For example, the states $\tuple{q,u,q}$ and $\tuple{q,q,u}$ encode the same information: one copy is in state $u$, the other two in state $q$.
+Since all copies are exactly the same automaton, there is no point in maintaining two copies that are both in state $q$.
+Instead, states are chosen from $2^Q$.
+A state like $\setof{q}$ encodes that we only need one copy of the machine, which is in state $q$.
+If we then transition from $\setof{q}$ to $\setof{u,v}$, that is tantamount to saying "we had a single automaton in state $q$, and then we spawned a copy so that we now have one automaton in state $u$ and one in state $v$".
+The if we go from $\setof{u,v}$ to $\setof{w}$, this means that both automata moved into state $w$ so we destroyed one of them because it had become redundant.
+
+\begin{definition}
+Let $A \is \tuple{\Sigma, Q, I, F \Delta}$ be a non-deterministic FSA.
+Then the *determinization* of $A$ is the FSA $\mathrm{Det}(A) \is \tuple{\Sigma, 2^Q, 2^I, F_D, \Delta_D}$ such that
+
+<ol>
+<li>$\setof{q_1, \ldots, q_n} \in 2^Q$ is a member of $F_D$ iff $q_i \in F$ for some $1 \leq i \leq n$,</li>
+<li>$\tuple{u, \sigma, v} \in \Delta_D$ iff $v \is \setof{ q \in Q \mid \tuple{p, \sigma, q} \in \Delta \text{ for some } p \in u}.$</li>
+</ol>
+\end{definition}
+
+fixme: add example
+
+### Adding a Sink
+
+There are two reasons why a string $s$ might not be recognized by an automaton $A$: either there is a run of $A$ over $s$ that is not accepting, or there is no run at all because at some point we reach a state from which no transition can be taken.
+
+\begin{example}
+Consider once more the automaton for $\String{a(baa)^*}$.
+
+\input_med{./abaa.tikz}
+
+This automaton rejects $\String{ab}$ because the run for this string ends in state $2$, which is not a final state.
+But it also rejects $\String{abb}$ because there is no $b$-transition from $2$.
+\end{example}
+
+It is sometimes convenient to eliminate the latter case by adding a *sink state*.
+For every state $q$ that currently has no $\sigma$-transition emanating from it, we add a $\sigma$-transition to the sink state.
+From the sink state, every $\sigma$-transition can only take us back to the sink state.
+So once we end up in the sink state, we are trapped and cannot reach a final state anymore.
+Adding a sink state ensures that there is a run for every $s \in \Sigma^*$ without altering the recognized string language.
+Hence the only distinction between recognized and rejected strings is whether their run is accepting, not whether they have a run at all.
+
+\begin{example}
+Here is the result of adding a sink state to the automaton above:
+
+\input_med{./abaa_sink.tikz}
+\end{example}
+
+### Myhill-Nerode Theorem
+
+Remember that the right congruence relation $\equiv_L$ with respect to some string language $L$ partitions $\Sigma^*$ into (possibly infinitely many) equivalence classes of strings.
+Two strings are in the same equivalence class iff they have the same good continuations with respect to $L$.
+
+It is fairly easy to see that if a language $L$ is recognized by some FSA, then $\equiv_L$ induces only finitely many equivalence classes.
+We also say that $\equiv_L$ has *finite index*.
+Here's why this must be the case: consider two arbitrary strings $s$ and $t$ of $\Sigma^*$.
+We will look at how some arbitrary FSA $A$ behaves with respect to those strings.
+To simplify things, we will assume that $A$ is deterministic and has a sink.
+As all non-deterministic FSAs can be determinized and adding a sink is trivial, these simplifying assumptions do not endanger the validity of the argument.
+
+Suppose that the runs $r(s)$ and $r(t)$ of $A$ over $s$ and $t$ end in the same state $q$.
+Now if $u$ is a good continuation of $s$ with respect to $L$, then there must be some path from $q$ to a final state.
+But then this path is also available for $t$, because $t$ also ends in $q$.
+Hence $u$ must also be a good continuation of $t$.
+Therefore any two strings whose run ends in the same state have the same good continuations, and whenever $r(s)$ and $r(t)$ end in the same state it must be the case that $r \equiv_L t$.
+
+It is also clear that every run of $A$ over a $\Sigma$-string must end in some state.
+Hence we can partition $\Sigma^*$ such that $s \equiv_A t$ iff $r(s)$ and $r(t)$ end in the same state.
+But since $A$ has only finitely many states, there can be only finitely many equivalence classes.
+And we know from our previous observations that $s \equiv_A t$ implies $s \equiv_L t$.
+So the fact that $\equiv_A$ has finite index implies that $\equiv_L$ has finite index.
+
+The same reasoning can be applied in the other direction to show that whenever $\equiv_L$ has finite index, once can construct an FSA from $\equiv_L$ that recognizes a string $s$ iff $s \in L$.
+But this is left as a challenge exercise to the reader.
+
+\begin{theorem}
+A string language $L$ is regular iff $\equiv_L$ has finite index.
+\end{theorem}
+
+In an earlier unit we saw that the right congruence relation of $a^n b^n$ does not have finite index, so this language is not regular.

@@ -1,0 +1,35 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows, automata, calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node[state, initial] (00) at (0,0) {0,0};
+    \node[state] (11) [right=of 00] {1,1};
+    \node[state] (22) [right=of 11] {2,2};
+    \node[state] (03) [right=of 22] {0,3};
+
+    \node[state, accepting] (10) [below=of 03] {1,0};
+    \node[state] (21) [below=of 10] {2,1};
+
+    \node[state] (02) [below=of 21] {0,2};
+    \node[state] (13) [left=of 02] {1,3};
+    \node[state] (20) [left=of 13] {2,0};
+    \node[state] (01) [left=of 20] {0,1};
+
+    \node[state] (12) [above=of 01] {1,2};
+    \node[state] (23) [above=of 12] {2,3};
+
+    \path[->]
+        (00) edge node [above] {a} (11)
+        (11) edge node [above] {b} (22)
+        (22) edge node [above] {a} (03)
+        (03) edge node [right] {a} (10)
+        (10) edge node [right] {b} (21)
+        (21) edge node [right] {a} (02)
+        (02) edge node [below] {a} (13)
+        (13) edge node [below] {b} (20)
+        (20) edge node [below] {a} (01)
+        (01) edge node [left]  {a} (12)
+        (12) edge node [left]  {b} (23)
+        (23) edge node [left]  {a} (00);
+\end{tikzpicture}
+\end{document}

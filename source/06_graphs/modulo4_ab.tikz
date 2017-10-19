@@ -1,0 +1,16 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows, automata, calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node[state, initial, accepting] (0) at (0,0) {0};
+    \node[state] (1) [right=of 0] {1};
+    \node[state] (2) [below=of 1] {2};
+    \node[state] (3) [left=of 2] {3};
+
+    \path[->]
+        (0) edge node [above] {a,b} (1)
+        (1) edge node [right] {a,b} (2)
+        (2) edge node [below] {a,b} (3)
+        (3) edge node [left]  {a,b} (0);
+\end{tikzpicture}
+\end{document}

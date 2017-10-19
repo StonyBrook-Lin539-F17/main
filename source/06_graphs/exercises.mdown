@@ -31,3 +31,16 @@
 
 \input{./JohnBillMary1.forest}
 \input{./JohnBillMary2.forest}
+
+## FSAs
+
+1.  Draw an FSA that recognizes the language $\String{a^* b^+}$, where $a^*$ denotes "0 or more $a$s" and $b^+$ is short for "1 or more $b$s".
+
+1.  Draw an FSA that recognizes the language $\String{a^+ b^+ a^*}$.
+
+1.  Construct the intersection automaton of the two automata above.
+
+1.  The construction of the intersection automaton can be adapted to instead build an automaton that recognizes the union of two regular languages.
+    Explain how.
+
+1.  Describe in intuitive terms how given a right congruence relation $\equiv_L$ with finite index, one constructs an FSA that recognizes $L$.
