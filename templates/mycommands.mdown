@@ -28,3 +28,5 @@ $\newcommand{\domsymbol}{\ensuremath{\triangleleft}}$
 $\newcommand{\idom}{\ensuremath{\domsymbol}}$
 $\newcommand{\pdom}{\ensuremath{\domsymbol^+}}$
 $\newcommand{\rdom}{\ensuremath{\domsymbol^*}}$
+$\newcommand{\indegree}[1]{\ensuremath{\mathrm{in}(#1)}}$
+$\newcommand{\outdegree}[1]{\ensuremath{\mathrm{out}(#1)}}$
