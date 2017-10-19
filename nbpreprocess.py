@@ -128,7 +128,7 @@ def header_preprocess(line: str) -> str:
 def regexes(line: str) -> str:
     """Replace Latex code for processing with notedown."""
     # replace input tikz/forest by image link to svg, with size as alt text
-    line = re.sub(r"\\input_([^{]*){([^}]*).(tikz|forest)}",
+    line = re.sub(r"\\input_?(.*?){(.*?).(tikz|forest)}",
                   r"![\1](\2.svg)", line)
     # replace math environments by div containers
     line = re.sub(r"\\begin{(definition|theorem|lemma|proof|example|remark|advice)}",
