@@ -1,0 +1,293 @@
+# Modelling the Person Case Constraint with Graphs
+
+Languages do a lot of quirky things, and one particularly quirky thing is the *Person Case Constraint*, short PCC.
+The PCC is a restriction on pronouns: if two pronouns are selected by the same verb, the pronouns cannot have certain person combinations.
+An example of the PCC can be seen in certain dialects of French.
+The sentence *Roger me leur a présenté* 'Roger has shown me to them' is ungrammatical.
+But the minimally different *Roger le leur a présenté* 'Rogers has shown him to them' is perfectly fine.
+In these dialects, it is alright to combine
+
+- a **third** person direct object pronoun with a **third** person indirect object pronoun,
+
+but not
+
+- a **first** person direct object pronoun with a **first* person indirect object pronoun.
+
+A variety of PCCs have been found across languages --- it almost seems as if new PCCs are discovered every year.
+Four PCCs are robustly attested at this point.
+Using 1/2/3 as shorthands for first/second/third person and DO/IO as abbreviations for direct and indirect object, they are usually defined as follows:
+
+1. **S(trong)-PCC:** DO must be 3.
+1. **U(ltrastrong)-PCC:** DO is less prominent than IO, where 3 is less prominent than 2, and 2 is less prominent than 1.
+1. **W(eak)-PCC:** 3IO combines only with 3DO.
+1. **M(e first)-PCC** If IO is 2 or 3, then DO is not 1.
+
+That is, to be frank, a mess.
+The attested PCCs look like a random collection of conditions, if there is anything principled going on it must be well-hidden.
+Or maybe not.
+The four PCCs above actually look much more intuitive once we describe them with graphs.
+
+## PCC Graphs
+
+### A Graph for the U-PCC
+
+First a disclaimer: for the rest of the unit we will ignore cases where both DO and IO have the same person.
+That is because these configurations often display special behavior that obscures the PCC effects.
+By putting aside those cases, we can be sure that the behavior we are describing is part of a PCC rather than some unrelated process.
+
+With that out of the way, consider once more the four PCCs listed above.
+The U-PCC differentiates itself from the other PCCs because it is stated in terms of a hierarchy: 3 is less prominent than 2, and 2 is less prominent than 1.
+Let us write $x < y$ for *$x$ is less prominent than $y$*.
+Then the hierarchy is $3 < 2 < 1$.
+The U-PCC requires that the value of DO is less than that of IO: $\text{DO} < \text{IO}$.
+Since we ignore cases where both DO and IO have the same value, the U-PCC can also be viewed as the requirement that the value of IO is not less than that of DO: $\text{IO} \not< \text{DO}$.
+
+Now let us depict this person hierarchy as a graph and interpret $<$ as inverse reachability.
+That is to say, $x < y$ iff $x$ is reachable from $y$ (as a mnemonic, you can think of $<$ as the tip of an arrow from $y$ to $x$).
+
+\input_med{./pcc_upcc.tikz}
+
+No matter whether we pick $\text{DO} < \text{IO}$ or $\text{IO} \not< \text{DO}$, the same combinations are forbidden:
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | Y   | Y
+2   | N   | -   | Y
+3   | N   | N   | -
+
+\begin{example}
+Consider the second field in the first row.
+This field represents a combination of a first person IO with a second person DO.
+Since $2 < 1$, DO is less than IO, wherefore both $\text{DO} < \text{IO}$ and $\text{IO} \not< \text{DO}$ are satisfied.
+So we can indeed put a Y(es) in this field to indicate that the combination is well-formed.
+
+On the other hand, the first field in the second row combines a second person IO with a first person DO.
+Now neither $\text{DO} < \text{IO}$ nor $\text{IO} \not< \text{DO}$ are satisfied, and the combination is ill-formed.
+\end{example}
+
+This graph-theoretic perspective is not limited to the U-PCC.
+By keeping the constraint fixed to $\text{IO} \not< \text{DO}$ while varying the structure of the graph, we can actually express each one of the four PCCs in a graph-theoretic manner.
+
+### Graphs for S-PCC, W-PCC, and M-PCC
+
+Let us start with the S-PCC, the definition of which is repeated here for your convenience:
+
+1. **S(trong)-PCC:** DO must be 3.
+
+When viewed as a table, the S-PCC only differs from the U-PCC in that the combination of IO1 and DO2 is forbidden (so in a sense the strong PCC is stronger than the ultrastrong PCC --- don't ask me why they are named the way they are).
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | N   | Y
+2   | N   | -   | Y
+3   | N   | N   | -
+
+Recall that we equate $<$ with reachability in a graph such that $x < y$ iff $x$ is reachable from $y$.
+And if we assume that there is a fixed constraint $\text{IO} \not< \text{DO}$, then the fact that this combination is illicit tells us that $1 < 2$.
+Consequently, $1$ must be reachable from $2$.
+Since this is the only difference between the U-PCC and the S-PCC, all we have to do is take the U-PCC graph and change is so that $1$ can be reached from $2$ but not from $3$.
+
+\input_med{./pcc_spcc.tikz}
+
+Simple, isn't it?
+
+The W-PCC is almost the symmetric opposite of the S-PCC with respect to the U-PCC.
+Whereas the S-PCC forbids the well-formed combination of $1$ and $2$ in the U-PCC, the W-PCC allows the ill-formed combination of $1$ and $2$ in the U-PCC.
+
+1. **W(eak)-PCC:** 3IO combines only with 3DO.
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | Y   | Y
+2   | Y   | -   | Y
+3   | N   | N   | -
+
+If both 1IO+2DO and 2IO+1DO are well-formed, then shouldn't it be the case that we have both $2 < 1$ and $1 < 2$?
+But this can't be the case, because that's exactly what we find with the S-PCC, which is distinct from the W-PCC.
+If we take the basic constraint to be $\text{DO} < \text{IO}$, then we are truly stuck at this point.
+However, with $\text{IO} \not< \text{DO}$, there is an option: neither $2 < 1$ nor $1 < 2$ holds.
+The two are simply unordered with respect to each other, and neither can be reached from the other.
+The W-PCC thus can be associated with the graph below.
+
+\input_med{./pcc_wpcc.tikz}
+
+This only leaves the M-PCC.
+
+1. **M(e first)-PCC** If IO is 2 or 3, then DO is not 1.
+
+Since we ignore cases where both IO and DO have the same person, the M-PCC reduces to a ban against IO1, a more permissive version of the S-PCC's canonical ban against IO1 and IO2.
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | Y   | Y
+2   | N   | -   | Y
+3   | N   | Y   | -
+
+In order to derive this pattern in conjunction with the principle $\text{IO} \not< \text{DO}$, both $2 < 1$ and $3 < 1$ must hold, but $2$ and $3$ are unordered with respect to each other.
+
+\input_med{./pcc_mpcc.tikz}
+
+### Interim Summary
+
+At this point we have given a more unified description of the four types of PCC.
+Rather than relying on completely different definitions that seem to have little to do with each other, we have identified a general constraint $\text{IO} \not< \text{DO}$, with the four PCC variants arising from minor differences in how first, second, and third person are ordered with respect to each other.
+These orderings are in turn conveniently depicted via graphs.
+
+- U-PCC
+\input{./pcc_upcc.tikz}
+
+- S-PCC
+\input{./pcc_spcc.tikz}
+
+- W-PCC
+\input{./pcc_wpcc.tikz}
+
+- M-PCC
+\input{./pcc_mpcc.tikz}
+
+
+## A Graph-Theoretic Characterization
+
+So far our goal has just been to provide a more intuitive description of the four main PCC-types.
+But we can do much more than that.
+With graph theory, we can try to explain what makes a PCC a PCC.
+If you consider our tabular format, there are 6 cells that can be filled with one of 2 values (Y or N).
+Hence there could $2^6 = 64$ distinct PCCs, yet we only find a fraction of that.
+Why are the majority of pseudo-PCCs unattested, what separates them from the attested PCCs?
+The answer is that the attested PCCs form a natural class given certain assumptions.
+
+First, let us add one more PCC to the list.
+The *indiscriminate PCC* (I-PCC) forbids all combinations of DO and IO.
+This variant is attested in Cairene Arabic.
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | N   | N
+2   | N   | -   | N
+3   | N   | N   | -
+
+It arises whenever $x < y$ for all choices of $x$ and $y$.
+The corresponding graph expands the U-PCC with an edge from $3$ to $1$.
+
+\input_med{./pcc_ipcc.tikz}
+
+Now we have 5 distinct graphs.
+That is just a tiny fraction of all the possible graphs with three vertices.
+However, we can already put the first restriction in place: all the PCC graphs are weakly connected.
+So there are no persons that are completely unordered with respect to the other persons.
+But there's still many more weakly connected graphs than just the five we have seen so far.
+
+For example, the following graph is also weakly connected.
+
+\input_med{./pcc_2pcc.tikz}
+
+This would correspond to a PCC where IO must be 1, a *me second*-PCC (M2-PCC).
+
+$\downarrow$IO/DO$\rightarrow$ | 1 | 2 | 3
+--: | :-: | :-: | :-:
+1   | -   | Y   | Y
+2   | N   | -   | N
+3   | N   | N   | -
+
+Such a PCC-variant is still unattested.
+
+Let's hold here for a moment.
+If we include the M2-PCC in the collection of PCC graphs, we have already assembled a natural class.
+Consider the class of weakly connected graphs with three vertices. 
+We say that two of these graphs are *reachability equivalent* ($\equiv_R$) iff the reflexive, transitive closures of their respective edge relations are identical.
+
+\begin{example}
+The graph for the I-PCC is equivalent to the graph below.
+
+\input_med{./pcc_uipcc.tikz}
+
+This is the case because there are no two vertices $x$ and $y$ such that $x$ is reachable from $y$ in one graph but not the other.
+\end{example}
+
+Now let us layer another equivalence relation over the existing one.
+Two graphs $G_1 \is \tuple{V, E_1}$ and $G_2 \is \tuple{V, E_2}$ are *structure equivalent* ($\equiv_S$) iff there is a total surjective function $f: V \rightarrow V$ such that $\tuple{V, \setof{\tuple{f(u), f(v)} \mid \tuple{u,v} \in E_1}} \equiv_R G_2$.
+
+\begin{example}
+Consider once more the S-PCC graph.
+
+\input_med{./pcc_spcc.tikz}
+
+It is structure equivalent to the graph below:
+
+\input_med{./pcc_spcc2.tikz}
+
+To show this we define a total surjective function $f$ with $f(1) = 3$, $f(2) = 2$, and $f(3) = 1$, yielding a graph that is reachability equivalent to the S-PCC graph:
+
+\input_med{./pcc_spcc3.tikz}
+\end{example}
+
+When we look at the class of all weakly connected graphs with $V \is \setof{1,2,3}$ and put them into equivalence classes according to $\equiv_S$, there are only 6 equivalence classes.
+And each one of these six equivalence classes contains one of the six PCC graphs we have seen so far --- I-PCC, U-PCC, S-PCC, W-PCC, M-PCC, M2-PCC. 
+
+\input{./pcc_ipcc.tikz}
+\input{./pcc_upcc.tikz}
+\input{./pcc_spcc.tikz}
+\input{./pcc_wpcc.tikz}
+\input{./pcc_mpcc.tikz}
+\input{./pcc_2pcc.tikz}
+
+What does this tell us?
+The six PCC graphs we have identified are very natural from a mathematical perspective in that each one is an instance of one the six possible types of reachability relations in a 3-vertex graph.
+But they are also special in that they require 1, 2, and 3 to appear in specific positions.
+Permuting the positions of persons can easily produce a graph that does not correspond to any known PCC (see e.g. the second graph in the previous example).
+
+The last and final step of our account, then, has to provide an explanation of why 1, 2, and 3 seem to be tied to specific positions in these graphs.
+
+## Structure Preservation
+
+Our discussion of PCCs started with the U-PCC, and we are returning to it once again.
+Upon closer inspection of the six PCC-graphs, it becomes clear that every single one of them can be constructed from the U-PCC graph in a particular fashion.
+Suppose we start out with the U-PCC graph and may add or remove edges as we see fit as long as the following condition holds for the graph $G$ constructed this way: if $y$ is reachable from $x$ in the U-PCC graph and $x$ is reachable from $y$ in $G$, then $y$ is reachable from $x$ in $G$.
+In other words, we may reverse the direction of reachability only if we also preserve the original reachability relation.
+Intuitively, this has a certain antisymmetric flavor to it: we cannot reverse edges, at best we can produce a cycle.
+
+\begin{example}
+The graph below cannot be produced from U-PCC in the prescribed fashion because it inverts the reachability relation between $1$ and $2$.
+
+\input{./pcc_upcc2.tikz}
+
+However, the minimally different graph below is fine.
+
+\input{./pcc_upcc3.tikz}
+
+It defines the same reachability relation as the I-PCC graph.
+\end{example}
+
+We now make this idea of constructing graphs from the U-PCC graph more precise.
+
+\begin{definition}
+Let $f_V: \wp(V \times V) \rightarrow \wp(V \times V)$ be a mapping from edges relations to edge relations over some fixed set $V$ of vertices.
+Then $f_V$ is *weakly non-inverting* with respect to some edge relation $E$ iff $x E^* y$ and $y f(E)^* x$ jointly imply $x f(E)^* y$.
+\end{definition}
+
+With this definition we can look at the set of weakly connected graphs that may be obtained from the U-PCC graph by some function $f$ that is weakly non-inverting with respect to the U-PCC graph.
+And what we see is that they are all reachability equivalent to one of the 6 PCC graphs.
+
+We can make sense of this result as follows.
+Many years ago, the linguist Arnold Zwicky posited a universal person hierarchy of $3 < 2 < 1$.
+His claim was that every language respects this hierarchy to some extent, and that reflexes of this can be seen in the grammar.
+But suppose that this hierarchy is just a base that languages are allowed to modify to a certain degree.
+At the very least, one would expect that languages don't get to outright contradict the base hierarchy by positing, say, its mirror image $1 < 2 < 3$.
+This kind of structure preservation is what is captured by the idea of a weakly non-inverting map between edge relations --- we are allowed to make changes to the hierarchy, but they must not be so egregious that they contradict the original order.
+It is also reasonable to assume that hierarchies have to hang together, i.e. we cannot have an element that is completely unordered with respect to all other elements.
+That wouldn't be much of a hierarchy, now would it?
+This additional condition gives us the limitation to weakly connected graphs.
+And thus we arrive at the 6 PCC graphs, or rather, a large set of graphs that are reachability equivalent to one of the 6 PCC graphs.
+In combination with our abstract PCC $\text{IO} \not< \text{DO}$, this yields the attested PCCs (and one guy that will hopefully show up at some point).
+
+This is pretty neat.
+We have reduced an array of wildly different definitions to a bundle of intuitive ideas:
+
+1. There is a general ban against indirect objects being less prominent than direct objects.
+1. Prominence is determined by language-specific hierarchies for person.
+1. Language-specific hierarchies must not deviate too much from the universal base hierarchy $3 < 2 < 1$.
+1. The degree of deviation is captured by weakly non-inverting maps.
+
+That said, four assumptions for 5 PCCs is not particularly economic.
+Fortunately, the same idea can also be extended to several other phenomena.
+So we might really be on to something here!
