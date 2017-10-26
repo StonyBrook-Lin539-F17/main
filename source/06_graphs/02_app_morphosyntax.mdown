@@ -1,0 +1,138 @@
+# Paradigms in Morphosyntax
+
+The graph-theoretic perspective can also explain an array of phenomena in *morphosyntax*, the domain of language where word structure interacts with sentence structure.
+The phenomena all fall under the umbrella of the *$^*$ABA generalization*.
+This is best explained with an example.
+
+## $^*$ABA Explained
+
+Adjectives usually come in three degrees:
+
+1. a *positive* form, e.g. *good* or *hard*
+1. a *comparative* form, e.g. *better* or *harder*
+1. a *superlative* form, e.g. *best* or *hardest*
+
+The contrast between *good* and *hard* already shows that these three forms are not always built the same way.
+In *good*-*better*-*best*, the comparative and superlative look very similar, but they are both different from the positive.
+This is an ABB pattern.
+In *hard*-*harder*-*hardest*, all three forms are very similar.
+That's an AAA pattern.
+
+Additional patterns can be found in other languages.
+The Latin counterpart to *good*-*better*-*best* is *bonus*-*melior*-*optimus*.
+Here all three forms are distinct, which is why this is called an ABC pattern.
+
+Curiously absent is anything like *good*-*better*-*goodest*, which would be an ABA pattern.
+The curious absence of such ABA patterns is exactly what the $^*$ABA generalization is about.
+
+The ban against ABA patterns can also be found in pronoun paradigms.
+If we ignore number, English has a separate pronoun form for each person.
+First person is *I*, second person is *you*, and third person is *he*/*she*/*it.
+This is an ABC pattern.
+But looking across languages, we also find languages with AAA, AAB, and ABB.
+Only ABA is again curiously absent.
+
+The absence of ABA patterns is an intriguing puzzle, and it can be solved in multiple ways.
+
+## Monotonicity and $^*$ABA
+
+In the previous unit, we learned that some linguists have argued for a person hierarchy of the form $3 < 2 < 1$, or equivalently $1 > 2 > 3$.
+Adopting this hierarchy helped us in explaining the limited variation for the Person Case Constraint.
+But it can also be used to explain why we find the patterns AAA, AAB, ABB, and ABC, but not ABA.
+
+Recall that a function $f$ is *monotonic* iff $x \leq y$ entails $f(x) \leq f(y)$ for all $x$ and $y$ in the domain of $f$.
+Now suppose that we map $1$ and $3$ to the same output form $A$, whereas $2$ is mapped to $B$.
+No matter how we order the output forms, whether we posit $A \leq B$ or $B \leq A$, this mapping is not monotonic.
+So no monotonic map can produce an ABA pattern for pronouns given the person hierarchy $3 < 2 < 1$.
+
+The same argument holds for adjectives.
+It is intuitively plausible to posit an ordering $\text{positive} < \text{comparative} < \text{superlative}$, which reflects their meaning --- *faster* is more than *fast*, but less than *fastest*.
+Again no monotonic function can map this to ABA.
+
+## A Graph-Theoretic Alternative
+
+Recall that we restricted the class of PCC graphs to just 6 types (ignoring variants that define the same reachability relation).
+
+\input{./pcc_ipcc.tikz}
+\input{./pcc_spcc.tikz}
+\input{./pcc_upcc.tikz}
+\input{./pcc_wpcc.tikz}
+\input{./pcc_mpcc.tikz}
+\input{./pcc_2pcc.tikz}
+
+Now suppose that we allow two vertices $x$ and $y$ to be mapped to the same form A only if both $x$ is reachable from $y$ and $y$ is reachable from $x$.
+In other words, we can only conflate parts of the graph that belong to the same cycle.
+We can make this more precise via the notion of a strongly connected component.
+
+\begin{definition}
+Let $G \is \tuple{V, E}$ be a directed graph.
+For any two $u, v \in V$, let $u \equiv_E v$ iff $\tuple{u,v} \in E^*$ and $\tuple{v,u} \in E^*$.
+For every vertex $u$, we use $[u] \is \setof{ v \mid u \equiv_E v}$ to denote the equivalence class it belongs to.
+Then $[V] \is \setof{[u] \mid u \in V}$ is the set of *strongly connected components* of $G$.
+The *condensation* of $G$ is the graph $C(G) \is \tuple{[V], E_C}$ such that $[u] E_C [v]$ iff $[u] \neq [v]$ and $u E v$.
+\end{definition}
+
+(*Side note*: $C(G)$ is a DAG!)
+
+\begin{example}
+The M2-PCC graph contains a strongly connected component consisting of $2$ and $3$.
+
+\input{./pcc_2pcc.tikz}
+
+The other strongly connected component is just $1$ by itself.
+Hence the condensation of the graph consists of two vertices.
+
+\input{./pcc_2pcc_condensation.tikz}
+
+In the S-PCC graph, it is $1$ and $2$ instead that form a strongly connected component, with $3$ remaining on its own.
+
+\input{./pcc_spcc.tikz}
+\input{./pcc_spcc_condensation.tikz}
+
+All the vertices of the I-PCC graph are reachable from each other, so they form a single strongly connected component.
+
+\input{./pcc_ipcc.tikz}
+\input{./pcc_ipcc_condensation.tikz}
+
+In all the remaining PCC-graphs, no two nodes are mutually reachable, so the strongly connected components are just the nodes themselves.
+Hence these graphs are identical to their condensations.
+\end{example}
+
+The idea that two forms can both be mapped to A only if they are part of the same cycle can now be stated in terms of strongly connected components:
+a function $f$ maps vertices $u$ and $v$ of graph $G$ to the same element iff $u$ and $v$ are part of the same strongly connected component of $G$.
+We can visualize this by looking at the condensation of a graph: if $u$ and $v$ are now part of the same node, they are also mapped to the same form $A$.
+The conflation we see in the morphological paradigm corresponds to condensation of the graph.
+
+Now consider the condensations of the 6 PCC-graphs:
+
+1.  I-PCC condensation
+    \input{./pcc_ipcc_condensation.tikz}
+1.  S-PCC condensation
+    \input{./pcc_spcc_condensation.tikz}
+1.  M2-PCC condensation
+    \input{./pcc_2pcc_condensation.tikz}
+1.  U-PCC condensation
+    \input{./pcc_upcc.tikz}
+1.  W-PCC condensation
+    \input{./pcc_wpcc.tikz}
+1.  M-PCC condensation
+    \input{./pcc_mpcc.tikz}
+
+Now let's apply the principle we just staked out: if two forms are part of the same node, they have the same realization.
+Then the graphs above correspond to the following morphological patterns:
+
+1. AAA
+1. AAB
+1. ABB
+1. ABC
+1. ABC
+1. ABC
+
+This is exactly the range of attested patterns, with the unattested $^*$ABA missing.
+So the same range of graphs that we carved out for the PCC is also at work in morphological paradigms.
+Now that is an unexpected connection!
+
+This is a nice example of why a mathematical perspective is so useful.
+Yes, math is abstract and that makes it harder to grasp.
+But the abstractness is exactly what allows us to connect phenomena that seem to have nothing to do with each other.
+Abstractness is your friend --- an abrasive friend that often says cryptic things and can be quite a pain in the butt, but that's what real friends are like...
