@@ -1,0 +1,11 @@
+# From Automata to Transducers
+
+This unit was mostly discussed in class, so I'll leave the writing for a later point.
+The following topics were covered:
+
+1. Transducers as automata with complex edge labels
+1. Regular languages are closed under FSTs
+1. FSTs are not closed under intersection
+1. FSTs are closed under composition
+1. Connection between FSTs and SPE
+1. Implications for phonology
