@@ -1,0 +1,10 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows, arrows.meta, calc, positioning}
+\tikzset{arrow/.style = {-{Latex[length=.5em]}}}
+\begin{document}
+\begin{tikzpicture}
+    \begin{scope}[every node/.style = {draw, circle, minimum size = 1.25em, inner sep=0pt}]
+        \node[draw] (1) at (0,0) {1,2,3};
+    \end{scope}
+\end{tikzpicture}
+\end{document}
