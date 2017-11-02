@@ -1,0 +1,12 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows, automata, calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node[state, initial, accepting] (0) at (0,0) {p};
+    \node[state] (1) [right=of 0] {q};
+
+    \path[->]
+        (0) edge [bend left] node [above] {a} (1)
+        (1) edge [bend left] node [above] {b} (0);
+\end{tikzpicture}
+\end{document}

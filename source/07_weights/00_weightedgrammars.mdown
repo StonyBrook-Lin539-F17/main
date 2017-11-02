@@ -1,0 +1,464 @@
+# Adding Weights to Grammars
+
+## Shades of Gray in Language
+
+Local grammars and finite-state automata (FSAs) are devices that can tell us for a given string whether it is well-formed or not.
+This allows us to use them formal model of a speaker's knowledge of their language --- a mechanism that can tell us whether certain strings are grammatical or not.
+But sometimes we are dealing with issues that aren't quite as black and white.
+
+For example, whether a sentence is grammatical is a very different question from whether it is comprehensible.
+Garden path sentences are well-formed utterances of English that most speakers cannot recognize as well-formed.
+
+1. The horse raced past the barn fell.
+1. The old man the boat.
+1. The cotton clothes are made of grow in Mississippi.
+1. Until the police arrest the drug dealers are free to roam the streets.
+
+These sentences are equivalent to the following, which are much easier to understand.
+
+1. The horse that was raced past the barn fell.
+1. The old people man the boat.
+1. The cotton that clothes are made of grow in Mississippi.
+1. Until the police arrest, the drug dealers are free to roam the streets.
+
+While the first four sentences above are difficult to understand, there is a certain gradation.
+Barely any native speaker can figure out the meaning of *the horse raced past the barn fell* without some hints, whereas *the old man the boat* is rather easy in comparison.
+So we don't have a simple split between comprehensible and incomprehensible, but a scale of values.
+
+A similar patter emerges with center embedding constructions, which get increasingly difficult to understand even though they obey the rules of English grammar.
+
+1. The cheese that the mouse that the cat that the dog barked at chased ate was delicious.
+1. The cheese that the mouse that the cat chased ate was delicious.
+1. The cheese that the mouse ate was delicious.
+1. The cheese was delicious.
+
+And this isn't just a property of sentences, we find something similar with sounds, too.
+There it isn't so much comprehensibility but rather productivity.
+Many rules for English sound structure are fluid, people do not obey them all the time.
+Many US-American dialects of English, for instance, have a process known as *intervocalic flapping* which "softens" some consonants between vowels.
+Hence an American may pronounce *butter* similar to *budder*.
+But this does not always happen.
+When linguists talk about Sanskrit, they may discuss a process known as *nati* --- and most linguists, including Americans, will say *nati* rather than *nadi*.
+Flapping is also very rare with *military*, whereas it is very common with *capital*.
+So the process of flapping is not a hard black-and-white rule, flapping is more likely in some words than in others.
+
+Devices that only have black-and-white distinctions cannot model this behavior.
+But it is actually very easy to add shades of grey to them without changing their core behavior, turning them into *weighted grammars* and *weighted automata*.
+Instead of *well-formed* and *ill-formed*, these weighted devices have a range of values to choose from and provide a mechanism for computing the total value of a string based on the values of its parts.
+
+## From SL Grammars to Weighted Grammars
+
+Before we talk about weighted grammars and automata, let us recall how local grammars were made probabilistic.
+Remember that a strictly $k$-local grammar is a finite set of $k$-grams.
+Originally we said that the grammar lists forbidden $k$-grams, such that a string is ill-formed iff it contains at least one of those $k$-grams.
+This is a *negative* grammar.
+But we can just as well work with *positive* grammars, where a string is well-formed iff it only contains $k$-grams listed in the grammar.
+
+\begin{example}
+Consider the SL-$2$ grammar $G \is \setof{\LeftEdge a, \String{ab}, \String{ba}, b \RightEdge}$.
+When interpreted as a negative grammar with alphabet $\setof{a,b}$, it only licenses the empty string $\emptystring$.
+Any other string over $\setof{a,b}$ contains at least one offending bigram:
+
+<ol>
+<li>$\String{a}$ violates $\LeftEdge a$,</li>
+<li>$\String{b}$ violates $b \RightEdge$,</li>
+<li>$\String{aa}$ violates $\LeftEdge a$,</li>
+<li>$\String{ba}$ violates $\String{ba}$,</li>
+<li>$\String{bb}$ violates $b \RightEdge$,</li>
+<li>and so on.</li>
+</ol>
+
+However, as a positive grammar it generates $(\String{ab})^+$, i.e. $\String{ab}$, $\String{abab}$, $\String{ababab}$, and so forth.
+Among the illicit strings we find
+
+<ol>
+<li>$\emptystring$ because $\LeftEdge \RightEdge \notin G$,</li>
+<li>$\String{a}$ because $a \RightEdge \notin G$,</li>
+<li>$\String{b}$ because $\LeftEdge b \notin G$,</li>
+<li>$\String{aab}$ because $\String{aa} \notin G$,</li>
+<li>$\String{abb}$ because $\String{bb} \notin G$,</li>
+<li>and so on.</li>
+</ol>
+\end{example}
+
+For every positive grammar, we can calculate the well-formedness of a string with an arithmetic formula.
+Given a string $s$, compute the multiset $M$ of $k$-grams it is built up from.
+From $M$, we build the formula
+$$
+\prod_{g \in M} G(g)^{M(g)}
+$$,
+where $G(g)$ is $1$ if $g \in G$ and $0$ otherwise, whereas $M(g)$ indicates the count of $g$ in the multiset $M$.
+
+\begin{example}
+Let $G$ be as before.
+For the well-formed string $\String{abab}$, its multiset of bigrams is
+$$
+\setof{
+    \LeftEdge \String{a}: 1,
+    \String{ab}: 2,
+    \String{ba}: 1,
+    \String{b} \RightEdge: 1
+}_M
+$$
+Plugging this into the template above we get
+$$
+\begin{align*}
+\prod_{g \in M} G(g)^{M(g)}
+    &=
+    G(\LeftEdge\String{a})^{M(\LeftEdge\String{a})}
+    \times
+    G(\String{ab})^{M(\String{ab})}
+    \times
+    G(\String{ba})^{M(\String{ba})}
+    \times
+    G(\String{b}\RightEdge)^{M(\String{b}\RightEdge)}
+    \\
+    &=
+    G(\LeftEdge\String{a})^{1}
+    \times
+    G(\String{ab})^{2}
+    \times
+    G(\String{ba})^{1}
+    \times
+    G(\String{b}\RightEdge)^{1}
+    \\
+    &=
+    1^{1}
+    \times
+    1^{2}
+    \times
+    1^{1}
+    \times
+    1^{1}
+    \\
+    &=
+    1
+    \times
+    1
+    \times
+    1
+    \times
+    1
+    \\
+    &=
+    1
+\end{align*}
+$$
+
+For the ill-formed string $\String{aabab}$, on the other hand, we get
+$$
+\setof{
+    \LeftEdge \String{a}: 1,
+    \String{aa}: 1,
+    \String{ab}: 2,
+    \String{ba}: 1,
+    \String{b} \RightEdge: 1
+}_M
+$$
+and thus
+$$
+\begin{align*}
+\prod_{g \in M} G(g)^{M(g)}
+    &=
+    G(\LeftEdge\String{a})^{M(\LeftEdge\String{a})}
+    \times
+    G(\String{aa})^{M(\String{aa})}
+    \times
+    G(\String{ab})^{M(\String{ab})}
+    \times
+    G(\String{ba})^{M(\String{ba})}
+    \times
+    G(\String{b}\RightEdge)^{M(\String{b}\RightEdge)}
+    \\
+    &=
+    G(\LeftEdge\String{a})^{1}
+    \times
+    G(\String{aa})^{1}
+    \times
+    G(\String{ab})^{2}
+    \times
+    G(\String{ba})^{1}
+    \times
+    G(\String{b}\RightEdge)^{1}
+    \\
+    &=
+    1^{1}
+    \times
+    0^{1}
+    \times
+    1^{2}
+    \times
+    1^{1}
+    \times
+    1^{1}
+    \\
+    &=
+    1
+    \times
+    0
+    \times
+    1
+    \times
+    1
+    \times
+    1
+    \\
+    &=
+    0
+\end{align*}
+$$
+\end{example}
+
+From this view, it is a trivial step to make an SL-grammar probabilistic: instead of mapping every $k$-gram to either $0$ or $1$, we allow ourselves values in between such as $0.5$ or $0.3582107$.
+The values can also be multiplied, giving us a total probability value for a string based on the probabilities of the $k$-grams it is built from.
+This is a special instance of *weighting* a grammar, which means to allow more than just two values.
+Probabilities are a common choice for weights because they can be derived from frequencies in corpus data, and because multiplications works the same way for them as for the *Boolean weights* $0$ and $1$.
+
+But one can have weights without going all the way to a probabilistic grammar.
+For example, we could choose our weights to be $0$, $1$ and $2$ instead, where $0$ means *ill-formed*, $1$ is *slightly deviant*, and $2$ is *well-formed*.
+Or we could just have the special symbols $\diamondsuit$, $\clubsuit$, and $\spadesuit$.
+But then it is no longer obvious how to compute the aggregate value for a string.
+What does $\clubsuit \times \spadesuit$ evaluate to?
+We could define it for sure, but how do we know that the result will behave in a reasonable manner?
+In order to answer these questions, we have to delve a bit into a subbranch of mathematics known as *abstract algebra*.
+
+## Algebras and Monoids
+
+When the average person hears the word *algebra*, they think of things like quadratic equations.
+Abstract algebra is very different in nature.
+It is the study of algebraic structures, which are sets with certain operations defined over them.
+For example, the set of natural numbers with addition is an algebraic structure, and so is $\Sigma^*$ with string concatenation.
+But one step at a time.
+
+The reason we are looking at abstract algebra now is because it provides a way to identify operations that behave similarly. 
+This will allow us to generalize multiplication to arbitrary sets of weights, greatly expanding our ability to define weighted grammars with whatever weights we deem appropriate.
+
+As a starting point, we should identify the core properties of multiplication that we want to preserve.
+We consider both the Boolean case where our only values are $0$ and $1$, and the probabilistic case with arbitrary real numbers between $0$ and $1$.
+We denote the former class of weights by $\setof{0,1}$ and the latter by $[0,1]$.
+The first thing to notice is that both $\setof{0,1}$ and $[0,1]$ are closed under multiplication.
+No matter whether take the domain of multiplication to be $\setof{0,1} \times \setof{0,1}$ or $[0,1] \times [0,1]$, the result of multiplication is also a member of the domain.
+For instance, $1 \times 0 = 0$, which is in the domain $\setof{0,1}$, and $0.3 \times 0.766 = 0.2298$, which is in the domain $[0,1]$.
+No matter how many values we multiply, we always stay within the domain.
+This is the fundamental criterion of an *algebra*.
+
+\begin{definition}
+An *algebra* is a pair $\tuple{D,\otimes}$ such that the domain $D$ is some fixed set that is closed under the function $\otimes: D \times D \rightarrow D$.
+\end{definition}
+
+\begin{example}
+The structure $\tuple{\mathbb{N}, +}$ is an algebra because $+$ is defined over natural numbers and $\mathbb{N}$ is closed under addition.
+On the other hand, $\tuple{\mathbb{N}, -}$ is an algebra only if we require that $x - y = 0$ for all $y \geq x$.
+Otherwise $\mathbb{N}$ is not closed under $-$ and $\tuple{\mathbb{N}, - }$ cannot be an algebra.
+\end{example}
+
+Another important property of multiplication is that the order of evaluation does not matter.
+In $3 \times 2 \times 1$ it does not matter if we first compute $3 \times 2$ or $2 \times 1$, the outcome is always the same.
+A function that satisfies this property is *associative*, and an algebra whose operation is associative is called a *semigroup*.
+
+\begin{definition}
+A function $\otimes: D \times D \rightarrow D$ is *associative* iff $a \otimes (b \otimes c) = (a \otimes b) \otimes c$ for all $a,b,c \in D$.
+An algebra $\tuple{D, \otimes}$ is a *semigroup* iff $\otimes$ is associative.
+\end{definition}
+
+\begin{example}
+The algebra $\tuple{\mathbb{N}, +}$ is in fact a semigroup because addition is associative.
+An easy way of telling is that multiple additions never need to be bracketed --- instead of $(3 + 4) + 2$ one can simply write $3 + 4 + 2$.
+The structure $\tuple{\mathbb{N}, -}$, on the other hand, is not a semigroup even if we require subtraction to never drop below $0$.
+To prove this, we only need one example where the order of subtraction matters: $8 - ( 3 - 2 ) = 7 \neq 3 = (8 - 3) - 2$.
+\end{example}
+
+At this point, we know that both the Boolean and the probabilistic SL grammars operate with algebraic structures that are at least semigroups.
+For Boolean SL grammars, the formulas for computing the value of a string operate with the algebraic structure $\tuple{\setof{0,1}, \times}$, whereas probabilistic grammars uses $\tuple{[0,1], \times}$.
+But both structures are semigroups because their domains are closed under multiplication and multiplication is associative.
+
+However, both structures enjoy another welcome property: they contain an *identity element* for multiplication.
+An identity element is some $x$ such that for all $y$ it holds that $y \times x = y$.
+For multiplication, this is $1$.
+No matter what number $n$ we multiply by $1$, we just get $n$ again.
+If a semigroup has an identity element, then it is a *monoid*.
+
+\begin{definition}
+Let $\tuple{D, \otimes}$ be an algebra.
+Then $\otimes$ has an *identity element* iff there is some $x \in D$ such that $y \otimes x = y$ for all $y \in D$.
+A semigroup with an identity element is called a *monoid*.
+\end{definition}
+
+\begin{example}
+$\tuple{\mathbb{N}, +}$ is a monoid because the identity element for $+$ is $0$, which is a member of $\mathbb{N}$.
+$\tuple{\mathbb{N}, -}$ is not a monoid:
+Even though $0$ is an identity element for substraction, $\tuple{\mathbb{N}, -}$ is no a semigroup so it cannot be a monoid, either.
+\end{example}
+
+All the definitions above can be compacted into a single hierarchy of algebraic structures:
+
+**Structure** | **Additional Property**
+--:           | :--
+Algebra       | closure under operations
+Semigroup     | associativity
+Monoid        | identity element
+
+Monoids are of enormous importance for formal language theory.
+For example, $\tuple{\Sigma^*, \stringcat}$ (where $\stringcat$ denotes string concatenation) is a monoid.
+In fact, it is known as the *free monoid* of $\Sigma$ because it can be produced by freely concatenating elements of $\Sigma$.
+Hundreds of papers have been written about how certain monoids are equivalent to certain types of grammars and automata.
+This is a very rich research literature, but one we will stay away from.
+Our main goal is to figure out how we can change the range of available values in grammars in a way that preserves the spirit of the Boolean and probabilistic grammars.
+
+Monoids provide the answer to this question.
+As long as we pick a domain $D$ and operation $\otimes$ such that $\tuple{D, \otimes}$ is a monoid, we can compute the total value of a string with the formula
+$$
+\bigotimes_{g \in M} G(g)^{M(g)}
+$$
+such that $G(g) \in D$ and $M(g) \in \mathbb{N}$.
+The Boolean and probabilistic grammars are the special case where $\otimes$ is standard multiplication.
+So let's see what other grammars we could define.
+
+## Weighted Local Grammars
+
+Suppose we want to have a grammar with three degrees of grammaticality: *ill-formed*, *slightly deviant*, *well-formed*.
+One natural choice would be to equate this degrees with the values $0$, $0.5$, and $1$.
+But then we must not use multiplication to compute the value of a string.
+That is because $0.5 \times 0.5 = 0.25$, so the domain $\setof{0, 0.5, 1}$ is not closed under $\times$, wherefore $\tuple{\setof{0, 0.5, 1}, \times}$ is not an algebra and hence cannot be a monoid, either.
+
+We have to find a different operation $\otimes$ such that $\setof{0, 0.5, 1}$ is closed under $\otimes$, $\otimes$ is associative, and one of $0$, $0.5$, and $1$ is an identity element for $\otimes$.
+There are many different choices, but a very natural one would be the function $\min$, which returns the smaller one of two values:
+$$
+\min(x,y) \is
+    \begin{cases}
+    x & \text{if } x \leq y\\
+    y & \text{otherwise}
+    \end{cases}
+$$
+
+Let us verify step-by-step that $\min$ satisfies all the requirements.
+Closure definitely holds because $\min(x,y)$ returns either $x$ or $y$, so the co-domain of $\min$ is the same as its domain.
+In fact, since $\min(x,x) = x$, we know for sure that the domain and range of $\min$ are identical.
+It is also easy to see that $\min$ has an identity element, namely $1$.
+Since we have $0 \leq 1$, $0.5 \leq 1$, and $1 \leq 1$, it must be the case that $\min(x,1) = x$.
+This only leaves us with associativity, which takes a bit more thought.
+
+\begin{proof}
+We have to show that $\min(x, \min(y,z)) = \min(\min(x,y), z)$.
+We do this by considering several distinct cases.
+
+<br/>
+Suppose that $\min(y,z) = y$, so that $\min(x, \min(y,z)) = \min(x,y)$.
+Then we only have to show $\min(x,y) = \min(\min(x,y), z)$.
+No matter whether $\min(x,y) = x$ or $\min(x,y) = y$, it must be the case that $\min(x,y) \leq z$ because $\min(y,z) = y$ implies $y \leq z$.
+Therefore $\min(\min(x,y), z) = \min(x,y)$.
+But we already kow that $\min(x, \min(y,z)) = \min(x,y)$, and thus $\min(\min(x,y), z) = \min(x,y) = \min(x, \min(y,z))$.
+
+<br/>
+Now suppose that $\min(y,z) = z$, which entails $z \leq y$.
+Then $\min(x, \min(y,z)) = \min(x,z)$.
+If $x \leq z$, then $x \leq y$ by transitivity of $\leq$ and we have $\min(\min(x,y), z) = \min(x,z) = x = \min(x, \min(y,z))$.
+If $z \leq x$, then $\min(\min(x,y), z) = z = \min(x, \min(y,z))$.
+
+This exhausts all possible cases, showing that associativity holds irrespective of the choice of $x$, $y$, and $z$.
+\end{proof}
+
+Alright, so now we know for a fact that $\tuple{\setof{0, 0.5, 1}, \min}$ is a monoid, and we can define a trivalent SL-grammar $G$ that assigns every $k$-gram a value of the domain and computes the total value of a string with the standard formula.
+
+\begin{example}
+Consider the SL-$2$ grammar $G \is \setof{\LeftEdge a: 1, \String{ab}: 1, \String{ba}: 1, \String{aa}: 0.5, b \RightEdge: 0}$, where the numbers indicate the weight of a bigram.
+Bigrams not listed in the grammar have a weight of $0$.
+Then the value of the string $\String{abaaab}$ is computed as follows:
+
+$$
+\begin{align*}
+G(\String{abaaab})
+    & = \min(G(\LeftEdge a), \min(G(\String{ab}), \min(G(\String{ba}), \min(G(\String{aa}), \min(G(\String{aa}, \min(G(\String{ab}), G(\String{b} \RightEdge))))))))\\
+    & = \min(1, \min(1, \min(1, \min(0.5, \min(0.5, \min(1, 1))))))\\
+    & = 0.5\\
+\end{align*}
+$$
+\end{example}
+
+# Some Creative Uses for Weights
+
+The term *weights* suggests that weights can be used only to allow for more fine-grained classification of strings.
+But this is not true, any domain $D$ and operation $\otimes$ such that $\tuple{D, \otimes}$ is a monoid could be used in a weighted grammar.
+This allows for some very creative uses of weighted grammars.
+
+For example, the function that maps every string to the set of $k$-grams that occur in said string can be viewed as a weighted grammar.
+How so?
+Consider a weighted grammar that operates with the algebraic structure $\tuple{\wp(\Sigma^k), \cup}$.
+This is a monoid: $\wp(\Sigma^k)$ is closed under union, union is associative, and for every set $S$ it holds that $S \cup \emptyset = S$, so that $\emptyset \in \wp(\Sigma^k)$ is an identity element for $\cup$.
+Now suppose that the grammar contains every $k$-gram $g \in \Sigma^k$ and assigns it the weight $\setof{g}$.
+Using our standard formula, the total value of the string according to this grammar is the set of all its $k$-grams.
+
+\begin{example}
+Consider once more the string $\String{abaaab}$.
+Then we get the following formula:
+
+$$
+\begin{align*}
+G(\String{abaaab})
+    & = G(\LeftEdge \String{a}) \cup G(\String{ab}) \cup G(\String{ba}) \cup G(\String{aa}) \cup G(\String{aa}) \cup G(\String{ab}) \cup G(\String{b} \RightEdge)\\ 
+    & = \setof{\LeftEdge \String{a}} \cup \setof{\String{ab}} \cup \setof{\String{ba}} \cup \setof{\String{aa}} \cup \setof{\String{aa}} \cup \setof{\String{ab}} \cup \setof{\String{b} \RightEdge}\\
+    & = \setof{\LeftEdge \String{a}, \String{ab}, \String{ba}, \String{aa}, \String{b} \RightEdge}\\
+\end{align*}
+$$
+\end{example}
+
+That's pretty cool, and it's also very useful.
+For example, it makes it possible to use one and the same algorithm for very different problems.
+The code below uses the same function `monoid_scanner` to
+
+- determine if a string is licensed by a grammar, or
+- extract all $k$-grams for any given $k$, or
+- extract all illicit $k$-grams for any given $k$.
+
+```python
+# a list of example grammars
+grammars = [
+    # define a boolean SL-2 grammar, consisting of
+    # - a set of bigrams
+    # - a function for computing the base value of each bigram
+    # - a function for composing the base values into a total value
+    {"name": "Boolean SL2",
+     "kgrams": ("La", "aa", "ab", "ba", "bR"),
+     "base": lambda x, y: x in y["kgrams"],
+     "composition": min},
+    # and now the counterpart for extracting all bigrams;
+    # we specify a single bigram to indicate that we want to extract bigrams
+    {"name": "Extract all bigrams",
+     "kgrams": ("LL", ),
+     "base": lambda x, y: set([x]), 
+     "composition": lambda x: set.union(*x)},
+    # and now a grammar that collects the set of all illicit bigrams
+    {"name": "Extract all illicit bigrams",
+     "kgrams": ("La", "aa", "ab", "ba", "bR"),
+     "base": lambda x, y: set([x])
+             if x not in y["kgrams"] else set(),
+     "composition": lambda x: set.union(*x)}]
+
+
+def monoid_scanner(string, grammar):
+    # determine length of k-grams
+    k = len(grammar["kgrams"][0])
+    # add k-1 edge markers
+    string = "L"*(k-1) + string + "R"*(k-1)
+    # compute sequence of k-gram values
+    kgrams = (grammar["base"](string[i:i+k], grammar)
+              for i in range(len(string) - (k - 1)))
+    # and then return the total value
+    return grammar["composition"](kgrams)
+
+
+for string in ["abaab", "abaaaabba"]:
+    for grammar in grammars:
+        print("Value of {} with {}".format(string, grammar["name"]))
+        print(monoid_scanner(string, grammar))
+        print()
+```
+
+This is an elegant solution because it avoids duplicating code and means that all optimizations of the function `monoid_scanner` optimize three different problems at once.
+
+## Take-Home Message
+
+We can generalize SL grammars by changing the range of base values for $k$-grams and how these base values are combined to yield the total value for the string.
+The important thing is that the evaluation domain --- i.e. the combination of the set of values and the operation defined over this set --- must be a monoid.
+As long as this is the case, the same kind of "multiplicative" formula can be used to compute the total value of the string.
+This in turn allows us to view all kinds of functions and operations on strings as the work of SL grammars.

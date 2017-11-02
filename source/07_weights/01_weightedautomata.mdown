@@ -1,0 +1,41 @@
+# Adding Weights to Automata
+
+## From FSAs to Weighted Automata
+
+Before we talk about weighted automata, let us look at the familiar FSAs from a slightly different perspective.
+Consider the FSA below, which produces strings of the form $(\String{ab})^*$, i.e. $\emptystring$, $\String{ab}$, $\String{abab}$, and so on.
+
+\input_med{abplus_standard.tikz}
+
+The edge from $p$ to $q$ tells us that we can move from $0$ to $1$ when we see an $a$.
+And then we can move from $q$ to $p$ upon seeing a $b$.
+However, we cannot move from $p$ to $q$ when we see a $b$, nor can we move from $q$ to $p$ when we see an $a$.
+It is also impossible to ever move from $p$ to $p$ or from $q$ to $q$.
+
+Suppose we use $1$ as a shorthand for *Yes, you can go here* and $0$ for *No, you cannot pass*.
+Then we could represent the FSA in a slightly more verbose fashion as follows:
+
+\input_med{abplus_weighted.tikz}
+
+The FSA is almost exactly the same as the previous one, except that every edge also has a *weight* of $1$ attached to it.
+This provides a new way of calculating whether a string is well-formed.
+Given a string $s$, we look at the transitions for $s$ through the automaton and multiply all the weights encountered along this path.
+If there is no transition, we assume a transition with a weight of $0$.
+
+\begin{example}
+Consider the string $\String{abab}$, which is recognized by the automaton above.
+The transitions are as follows:
+
+1. $\tuple{p,a:1,q}$
+1. $\tuple{q,b:1,p}$
+1. $\tuple{p,a:1,q}$
+1. $\tuple{q,b:1,p}$
+
+Multiplying out the weights, we get $1 \times 1 \times 1 \times 1 = 1$.
+Interpeting a total weight of $1$ as an indicator that the string is well-formed, we get that $\String{abab}$ is accepted by the automaton.
+
+For $\String{aba}$, on the other hand, we cannot find a sequence of transitions that evaluates to $1$.
+\end{example}
+
+\input_med{abplus_weighted_verbose.tikz}
+The FSA has an edge for every possible transition in the automaton, but each edge also has a *weight* attached to it, in this case $0$ or $1$.
