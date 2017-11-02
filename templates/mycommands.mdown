@@ -5,6 +5,7 @@ $\newcommand{\card}[1]{\ensuremath{\left | #1 \right |}}$
 $\newcommand{\tuple}[1]{\ensuremath{\left \langle #1 \right \rangle}}$
 $\newcommand{\emptytuple}{\ensuremath{\left \langle \right \rangle}}$
 $\newcommand{\tuplecat}{\ensuremath{\cdot}}$
+$\newcommand{\stringcat}{\ensuremath{\cdot}}$
 $\newcommand{\emptystring}{\ensuremath{\varepsilon}}$
 $\newcommand{\String}[1]{\ensuremath{\mathit{#1}}}$
 $\newcommand{\LeftEdgeSymbol}{\ensuremath{\rtimes}}$
