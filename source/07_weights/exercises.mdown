@@ -1,0 +1,79 @@
+## Monoids and Weighted Grammars
+
+1.  Let $G$ be a weighted trigram grammar $\setof{\LeftEdge \LeftEdge a, \LeftEdge a a, aab, abb, bbb, bb\RightEdge, b \RightEdge\RightEdge}$ with the following probabilities:
+    - $P(\LeftEdge \LeftEdge a) = 1$
+    - $P(\LeftEdge a a) = 1$
+    - $P(aab) = 1$
+    - $P(abb) = 1$
+    - $P(bbb) = .7$
+    - $P(bb\RightEdge) = .3$
+    - $P(b \RightEdge\RightEdge) = 1$  
+    What value does $G$ assign to
+    1. $aabb$
+    1. $aabbbb$
+    1. $abbb$
+
+1.  For each one of the following, say whether it is an algebra, a semigroup, a monoid, or none of the three.
+    Justify your answer!
+    1. the set $\mathbb{Q}$ of rationals with division
+    1. $\Sigma^*$ with concatenation
+    1. $\Sigma^+$ with concatenation
+    1. the set of all (partial) functions with function composition $\circ$ (where $f \circ g$ maps every $x$ to $f(g(x))$)
+    1. the set of all binary branching trees with free Merge
+    1. the set of all well-formed trees of English with free Merge
+    1. $\tuple{\Sigma^*, \overleftarrow{\cdot}}$ such that $s \overleftarrow{\cdot} t = ts$
+
+1.  Let $G$ be a trigram grammar $\setof{\LeftEdge \LeftEdge a, \LeftEdge a a, aab, abb, bbb, bb\RightEdge, b \RightEdge\RightEdge}$.
+    What values does $G$ compute for the strings $aabb$ and $abbb$ if it is instantiated with one of the following monoids:
+    1. $\tuple{\mathbb{N}, +}$ such that $G(g) = 0$ for all $g \in G$ and $1$ otherwise
+    1. $\tuple{\mathbb{N}, +}$ such that $G(g) = 1$ for all trigrams
+    1. $\tuple{\wp(\Sigma^n), \cupdot}$ such that $G(g) = \setof{g}$ and
+       $S \cupdot T \is
+       \setof{xyz \mid
+       \text{there exist }
+       abc \in S
+       \text{ and }
+       bcd \in T
+       \text{ and }
+       s,t,u,v \in \Sigma^*
+       \text{ s.t. }
+       abcd = sxtyuzv}$
+    1. $\tuple{\wp(\Sigma^n) \times \setof{0,1}, \cupdot_B}$ such that $G(g) = \tuple{\setof{g}, 0}$ if $g \in G$ and $\tuple{\setof{g}, 1}$ otherwise; and $\tuple{S, s} \cupdot_B \tuple{T,t} \is \tuple{S \cupdot T, G(S \cupdot T)}$, where $G(S \cupdot T)$ is $1$ if $(S \cupdot T) \cap G = \emptyset$ and $0$ otherwise
+
+1.  Construct a monoid that computes for every string $s$ the largest negative bigram grammar that generates $s$.
+
+1.  Construct an SL grammar $G$ with a monoid $M$ such that $G$ maps every string $\sigma_1 \sigma_2 \cdots \sigma_{n-1} \sigma_n$ to $\sigma_n a \sigma_{n-1} a \cdots a \sigma_2 a \sigma_1$.
+
+## Semirings, Weighted Automata, and PCFGs
+
+1.  Draw a weighted finite-state automaton such that $P(a) = 0.5$, $P(ab) = 0.4$, and $P(ac) = 0.1$.
+
+1.  Let $A$ be the following weighted finite-state automaton:
+    \input_med{exercise_weighted.tikz}
+    What probability values does $A$ assign to the following strings?
+    (Don't forget that the probablity of a string is the sum of the probabilities of all possible paths through the automaton!)
+    1. $abbbc$
+    1. $abbbd$
+    1. $abb$
+    1. $abbb$
+
+1.  Let $G$ be a PCFG with
+    - $P(S \rightarrow A B) = 1$, 
+    - $P(A \rightarrow a) = 1$, 
+    - $P(B \rightarrow A B) = .5$, 
+    - $P(B \rightarrow A A B) = .3$, 
+    - $P(B \rightarrow b) = .2$  
+    What probability values does $G$ assign to the following strings?
+    (Don't forget that the probablity of a string is the sum of the probabilities of all its trees!)
+    1. $ab$
+    1. $aab$
+    1. $aaab$
+    1. $aaaab$
+
+1.  For each one of the following, say whether it is a semiring.
+    Justify your answer!
+    1. $\tuple{\mathbb{N}, +, \times, 0, 1}$
+    1. $\tuple{\wp(S), \cup, \cap, \emptyset, S}$
+    1. $\tuple{\Sigma^*, \cdot, \overleftarrow{\cdot}, \emptystring, \emptystring}$ where $s \cdot t = st$ and $s \overleftarrow{\cdot} t = ts$.
+    1. $\tuple{\setof{0,1}, \max, \min, 0, 1}$
+    1. $\tuple{\wp(\Sigma^*), \cup, \cdot, \emptyset, \setof{\emptystring}}$ where $S \cdot T \is \setof{ st \mid s \in S, t \in T}$
