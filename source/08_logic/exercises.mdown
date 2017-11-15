@@ -5,8 +5,11 @@
 
    1. John likes Mary.
    1. John likes hates Mary.
-   1. John and Bill like and adore Sue, respectively. (treat *respectively* as a VP-adjunct of type $(S\NP)\(S\NP)$)
+   1. John and Bill like and adore Sue, respectively. (treat *respectively* as a VP-adjunct of type $(S\\NP)\\(S\\NP)$)
    1. John must and will file his paperwork.
    1. John must file his paperwork and will.
    1. John gave to Bill and gifted Mary a book.
+   1. Sue may sue Bill.
+   1. Sue may may may sue Bill.
    1. Who may Sue sue?
+   1. Who may sue Sue?
