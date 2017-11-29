@@ -1,0 +1,49 @@
+# Linear Algebra
+
+## Vectors 
+
+1.  Calculate the following vector sums.
+    If this isn't possible, say so.
+    1. $$\pmatrix{2\\1\\3} + \pmatrix{7\\11\\3}$$
+    1. $$\pmatrix{2} + \pmatrix{7}$$
+    1. $$\pmatrix{2\\1\\3} + \pmatrix{7}$$
+
+1.  Calculate the following dot products.
+    If this isn't possible, say so.
+    1. $$\pmatrix{2\\1\\3} \cdot \pmatrix{7\\11\\3}$$
+    1. $$\pmatrix{2} \cdot \pmatrix{7}$$
+    1. $$\pmatrix{2\\1\\3} \cdot \pmatrix{7}$$
+
+
+## Matrices
+
+1.  Calculate the transpose of the following matrices:
+    1. $$\pmatrix{1 & 1\\1 & 1}$$
+    1. $$\pmatrix{1 & 2\\3 & 4\\5 & 6\\}$$
+
+1.  Finish each matrix multiplication (with addition and multiplication as usual).
+    If this isn't possible, say so.
+    1. $$\pmatrix{1 & 1\\1 & 1} \times \pmatrix{1 & 2\\3 & 4}$$
+    1. $$\pmatrix{1 & 2\\3 & 4} \times \pmatrix{1 & 2\\3 & 4}$$
+    1. $$\pmatrix{117 & 25\\.7 & 290\\ 1 & \sqrt{2}} \times \pmatrix{0 & 0 & 1 & 0 & 1\\0 & 1 & 0 & 1 & 1}$$
+    1. $$\pmatrix{1 & 1 & 1\\3 & 5 & 0\\2 & 2 & -1} \times \pmatrix{2 & 4 & 3\\0 & 0 & 0} \times \pmatrix{1 & 0\\ 0 & 1\\1 & 1}$$
+
+
+## Boolean Matrices for Automata
+
+1.  For each one of the languages below, do the following:
+    - construct an automaton,
+    - represent the automaton as a Boolean matrix,
+    - construct the transition matrix for every symbol of the alphabet
+    - do the matrix multiplications for the listed example strings.
+        1. $a\setof{a,b}^*a \cup b\setof{a,b}^*b$;  
+           good: $\String{abaa}$; bad: $\String{abab}$
+        1. all strings over $a$ of length 3 or less;  
+           good: $\String{aaa}$; bad: $\String{aaaa}$
+        1. all strings over $\setof{a,b}$ whose length is a multiple of $3$;  
+           good: $\String{abb}$; bad: $\String{abba}$
+        1. all strings over $\setof{a,b}$ that contain exactly one $a$, and at least three $b$s if there is more than one $a$;  
+           good: $\String{bbba}$; bad: $\String{bbaa}$
+
+1.  How does matrix multiplication work for weighted automata?
+    Give an example.
