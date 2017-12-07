@@ -1,0 +1,48 @@
+# Information Theory
+
+1.  Suppose you have a system with 4 distinct events A, B, C, D.
+    The table below shows the probabilities for those events and a proposed encoding.
+    - Is this encoding unambiguous (i.e. no two strings of events have the same binary encoding)?
+    - Is this encoding optimal?
+    Justify your answer.
+
+Event | Probability | Encoding
+--:   | --:         | :--
+A     | .5          | 0
+B     | .125        | 110
+C     | .125        | 111
+D     | .25         | 10
+
+
+1.  Try to design a maximally efficient, unambiguous encoding for the following system:
+
+Event | Probability
+--:   | --:          
+A     | .25
+B     | .22
+C     | .15
+D     | .13
+E     | .125
+F     | .125
+
+1.  Suppose you have a probabilistic model $Q$ for the system above that instead uses the probability estimates shown below.
+    What is the cross-entropy of $Q$ with respect to $P$?
+
+Event | Estimated probability
+--:   | --:          
+A     | .3
+B     | .22
+C     | .11
+D     | .12
+E     | .125
+F     | .125
+
+1.  Consider the weighted automaton below:
+    \input_med{det_automaton.tikz}
+    - Based on this automaton, what is the surprisal of seeing $a$ after $abab$?
+    - What is the surprisal of seeing a $b$ after this $a$?
+
+1.  Consider the weighted automaton below:
+    \input_med{ndet_automaton.tikz}
+    - Based on this automaton, what is the surprisal of seeing $a$ after $abab$?
+    - What is the surprisal of seeing a $b$ after this $a$?

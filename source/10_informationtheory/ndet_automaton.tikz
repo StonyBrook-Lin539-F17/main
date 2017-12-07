@@ -1,0 +1,15 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows, automata, calc, positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node[state, initial,accepting] (0) at (0,0) {p};
+    \node[state] (1) [right=of 0] {q};
+    \node[state, accepting] (2) [right=of 1] {r};
+
+    \path[->]
+        (0) edge [bend left] node [above] {a:.25} (1)
+        (1) edge [bend left] node [above] {b:.8}  (0)
+            edge             node [above] {b:.2}  (2)
+        (2) edge [loop above] node [above] {a:.8} (2);
+\end{tikzpicture}
+\end{document}
