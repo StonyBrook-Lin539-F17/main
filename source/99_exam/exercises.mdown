@@ -1,0 +1,92 @@
+# Final Exam
+
+1.  Below is a Gorn domain $D$ and the specification of a labeling function $\ell$.
+    Draw the corresponding tree $T$.
+    Then define $T$ as a directed graph instead.
+    - $D = \setof{\emptystring, 0, 00, 000, 01, 010, 1, 10, 100, 1000, 11, 110, 1100}$,
+    - $\ell(\emptystring) =$ S,
+    - $\ell(0) =$ NP,
+    - $\ell(00) =$ Det,
+    - $\ell(01) =$ PN,
+    - $\ell(000) =$ some,
+    - $\ell(010) =$ Paul,
+    - $\ell(1) =$ VP,
+    - $\ell(10) =$ VP,
+    - $\ell(11) =$ AdvP,
+    - $\ell(100) =$ V,
+    - $\ell(1000) =$ called,
+    - $\ell(110) =$ Adv,
+    - $\ell(1100) =$ today
+
+1.  Let $\tuple{A, \leq_A}$ and $\tuple{B, \leq_B}$ be two partial orders.
+    A function $f: A \rightarrow B$ is *monotonic* iff $x \leq_A y$ implies $f(x) \leq_B f(y)$.
+    Monotonicity is surprisingly common in natural language.
+    For each one of the following, explain why it can be regarded as a requirement that a certain mapping be monotonic:
+    1. **The $^*$ABA generalization in morphology**  
+       If the positive and superlative form of an adjective are identical, then the comparative form cannot be different ($^*$good-better-goodest).
+    1. **The no-crossing branches constraint in phonology**  
+       An autosegmental representation is a graph where elements are loosely attached to a skeleton, like balloons attached to a handrail.
+       Sticking with this metaphor, the no-crossing branches constraint requires that the strings of the balloons may never cross.
+    1. **The locality of operations in syntax**  
+       Syntacticians distinguish three operations Select, A-move, and A$'$-move. Once an item has undergone A-movement, it can no longer be selected, and once it has undergone A$'$-movement, it can no longer undergo A-movement.
+
+1.  A metric space is a set $M$ with a *distance metric* $d: S \times S \rightarrow [0,\infty]$ such that the following three axioms hold:
+    1. identity of indiscernables: $d(x,y) = 0$ iff $x = y$,
+    1. symmetry: $d(x,y) = d(y,x)$,
+    1. triangle inequality: $d(x,z) \leq d(x,y) + d(y,z)$.  
+    Now let $L$ be the set of English strings that do not contain any adjuncts.
+    For every $s \in L$, we use $A(s)$ to denote its Adjunct Extension lattice.
+    Explain why the union of all $A(s)$ can be regarded as a metric space.
+    
+1.  A TSL grammar can be defined as an SL grammar $G$ where all symbols that belong to a fixed set $S$ are deleted from the string before it is evaluated by $G$.
+    For any given alphabet $\Sigma$ and integer $k$, $\mathbf{G} \is \tuple{\wp(A), \subseteq}$ is the lattice of all possible SL-$k$ grammars over $\Sigma$ (we ignore the edge markers $\LeftEdge$ and $\RightEdge$ here to keep the length of the exercise manageable). 
+    In addition, $\mathbf{S} \is \tuple{\wp(S), \supseteq}$ is the lattice of possible tiers.
+    The lattice of TSL grammars is their cross-product $\mathbf{G} \times \mathbf{T} \is \tuple{\wp(A) \times \wp(S), \leq}$, where $\tuple{U,X} \leq \tuple{V, Y}$ iff $U \subseteq V$ and $X \supseteq Y$.
+    Construct $\mathbf{G} \times \mathbf{S}$ for $\Sigma \is {a,b}$ and $k = 2$.
+    Are there any elements of $\mathbf{G} \times \mathbf{S}$ that are redundant in the sense that they define the same string language as some other element?
+
+1.  Construct
+    1. an automaton that recognizes $L_1 \is \setof{a,b,c}^* - \setof{ s \mid s \text{ contains at least 2 instances of } b }$,
+    1. an automaton that recognizes $L_2 \is (xy)^*$, where $x \in \setof{a,b}$, $y \in \setof{b,c}$, and $x \neq y$,
+    1. their intersection automaton.
+
+1.  Draw an automaton that recognizes the language $L$ with $\Sigma \is \setof{a, b, c}$ such that every string contains either an odd number of $a$s or both an even number of $a$s and at least one $b$.
+    Then use matrix multiplication to establish the following facts:
+    - $\String{aaa} \in L$
+    - $\String{aaab} \notin L$
+    - $\String{aab} \in L$
+    - $\String{caa} \notin L$
+
+1.  Let $A$ be an arbitrary weighted automaton.
+    Define a semiring for $A$ to compute for any given string $s$ the three (3) most likely runs of $A$ over $s$ (if there are less than 3 runs, the semiring should compute all runs).
+
+1.  Even native speakers of English often have a hard time figuring out the structure of *the old man the boat*, where *man* is used as a transitive verb rather than a noun.
+    Let $G$ be a PCFG with the following rules and probabilities:
+    - $P(\text{S} \rightarrow \text{DP}\ \text{VP}) = 1$
+    - $P(\text{DP} \rightarrow \text{Det}\ \text{NP}) = 1$
+    - $P(\text{NP} \rightarrow \text{N}) = .6$
+    - $P(\text{NP} \rightarrow \text{AP}\ \text{NP}) = .4$
+    - $P(\text{AP} \rightarrow \text{A}) = 1$
+    - $P(\text{VP} \rightarrow \text{V}) = .3$
+    - $P(\text{VP} \rightarrow \text{V}\ \text{NP}) = .5$
+    - $P(\text{VP} \rightarrow \text{V}\ \text{NP}\ \text{NP}) = .2$
+    - $P(\text{Det} \rightarrow \text{the}) = .6$
+    - $P(\text{Det} \rightarrow \text{a}) = .35$
+    - $P(\text{Det} \rightarrow \text{an}) = .05$
+    - $P(\text{N} \rightarrow \text{boat}) = .3$
+    - $P(\text{N} \rightarrow \text{man}) = .5$
+    - $P(\text{N} \rightarrow \text{men}) = .1$
+    - $P(\text{N} \rightarrow \text{old}) = .1$
+    - $P(\text{A} \rightarrow \text{old}) = 1$
+    - $P(\text{V} \rightarrow \text{sleep}) = .5$
+    - $P(\text{V} \rightarrow \text{man}) = .1$
+    - $P(\text{V} \rightarrow \text{give}) = .4$  
+    Compute the probabilities of *the old man the boat* and *the old men man the boat*.
+    Also propose a method for computing the surprisal of seeing *the* after *man* in *the old man the boat*.
+
+1.  The term *gapping* refers to constructions where the finite verb is omitted if it is identical to the previous one.
+    Here are a few examples:
+    1. John likes beans, and Mary potatoes.
+    1. John gave a picture to his daughter, and Mary a gift to her girlfriend.
+    1. John confessed his love to Mary, and Mary her loathing of John.  
+    Explain in detail why these sentences are problematic for CCG and cannot be accounted for given the standard mechanisms (functional application, functional composition, type raising).
