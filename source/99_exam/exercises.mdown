@@ -40,8 +40,8 @@
     
 1.  A TSL grammar can be defined as an SL grammar $G$ where all symbols that belong to a fixed set $S$ are deleted from the string before it is evaluated by $G$.
     For any given alphabet $\Sigma$ and integer $k$, $\mathbf{G} \is \tuple{\wp(A), \subseteq}$ is the lattice of all possible SL-$k$ grammars over $\Sigma$ (we ignore the edge markers $\LeftEdge$ and $\RightEdge$ here to keep the length of the exercise manageable). 
-    In addition, $\mathbf{S} \is \tuple{\wp(S), \supseteq}$ is the lattice of possible tiers.
-    The lattice of TSL grammars is their cross-product $\mathbf{G} \times \mathbf{T} \is \tuple{\wp(A) \times \wp(S), \leq}$, where $\tuple{U,X} \leq \tuple{V, Y}$ iff $U \subseteq V$ and $X \supseteq Y$.
+    In addition, $\mathbf{S} \is \tuple{\wp(\Sigma), \supseteq}$ is the lattice of possible tier alphabets.
+    The lattice of TSL grammars is their cross-product $\mathbf{G} \times \mathbf{S} \is \tuple{\wp(A) \times \wp(S), \leq}$, where $\tuple{U,X} \leq \tuple{V, Y}$ iff $U \subseteq V$ and $X \supseteq Y$.
     Construct $\mathbf{G} \times \mathbf{S}$ for $\Sigma \is \setof{a,b}$ and $k = 2$.
     Are there any elements of $\mathbf{G} \times \mathbf{S}$ that are redundant in the sense that they define the same string language as some other element?
 
@@ -68,8 +68,8 @@
     - $P(\text{NP} \rightarrow \text{AP}\ \text{NP}) = .4$
     - $P(\text{AP} \rightarrow \text{A}) = 1$
     - $P(\text{VP} \rightarrow \text{V}) = .3$
-    - $P(\text{VP} \rightarrow \text{V}\ \text{NP}) = .5$
-    - $P(\text{VP} \rightarrow \text{V}\ \text{NP}\ \text{NP}) = .2$
+    - $P(\text{VP} \rightarrow \text{V}\ \text{DP}) = .5$
+    - $P(\text{VP} \rightarrow \text{V}\ \text{DP}\ \text{DP}) = .2$
     - $P(\text{Det} \rightarrow \text{the}) = .6$
     - $P(\text{Det} \rightarrow \text{a}) = .35$
     - $P(\text{Det} \rightarrow \text{an}) = .05$
